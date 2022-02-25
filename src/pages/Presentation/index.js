@@ -1,3 +1,5 @@
+
+// @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -33,8 +35,7 @@ import bgImage from "assets/images/bg-presentation.jpg";
 function Presentation() {
   return (
     <>
-      <DefaultNavbar
-        routes={routes}
+      {/* <DefaultNavbar
         action={{
           type: "external",
           route: "https://www.creative-tim.com/product/material-kit-react",
@@ -42,7 +43,7 @@ function Presentation() {
           color: "info",
         }}
         sticky
-      />
+      /> */}
       <MKBox
         minHeight="75vh"
         width="100%"
@@ -199,9 +200,9 @@ function Presentation() {
           </Container>
         </MKBox>
       </Card>
-      <MKBox pt={6} px={1} mt={6}>
+      {/* <MKBox pt={6} px={1} mt={6}>
         <DefaultFooter content={footerRoutes} />
-      </MKBox>
+      </MKBox> */}
     </>
   );
 }
