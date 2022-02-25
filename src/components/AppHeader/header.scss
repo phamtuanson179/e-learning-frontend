@@ -1,0 +1,13 @@
+@import '../../assets/scss/variables/zIndexVariables';
+
+.header__wrapper {
+    position: fixed !important;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: $header-index;
+    >div {
+        width: 100%;
+        margin: 0;
+    }
+}
