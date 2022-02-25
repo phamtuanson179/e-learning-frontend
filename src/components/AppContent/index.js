@@ -1,32 +1,25 @@
-import Card from '@mui/material/Card';
-import Courses from 'pages/Courses';
-import Home from 'pages/Home';
-import React from 'react';
-import { Route, Routes } from 'react-router-dom'
-import router from '../../routes'
+import { Navigate, Route, Routes } from "react-router-dom";
+import router from "../../routes";
 const AppContent = () => {
   return (
     <>
       <Routes>
-        {
-          router.map((route, idx) => {
-            return (
-              route.component && (
-                <Route
-                  key={idx}
-                  path={route.path}
-                  exact={route.exact}
-                  element={route.component}
-                />
-              )
+        {router.map((route, idx) => {
+          return (
+            route.component && (
+              <Route
+                key={idx}
+                path={route.path}
+                exact={route.exact}
+                element={route.component}
+              />
             )
-          })
-        }
-        <Route path='' exact element={<Courses />} />
+          );
+        })}
+        <Route path='/' element={<Navigate to='/current-courses' />} />
       </Routes>
     </>
+  );
+};
 
-  )
-}
-
-export default AppContent
+export default AppContent;

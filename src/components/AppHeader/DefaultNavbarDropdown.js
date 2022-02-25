@@ -1,4 +1,3 @@
-
 import PropTypes from "prop-types";
 
 // react-router-dom components
@@ -37,46 +36,38 @@ function DefaultNavbarDropdown({
 
   return (
     <>
-      <MKBox
-        {...rest}
-        mx={1}
-        p={1}
-        display="flex"
-        alignItems="baseline"
-        color={light ? "white" : "dark"}
-        opacity={light ? 1 : 0.6}
-        sx={{ cursor: "pointer", userSelect: "none" }}
-        {...(route && routeComponent)}
-        {...(href && linkComponent)}
-      >
-        <MKTypography
-          variant="body2"
-          lineHeight={1}
-          color="inherit"
-          sx={{ alignSelf: "center", "& *": { verticalAlign: "middle" } }}
-        >
-          {icon}
-        </MKTypography>
-        <MKTypography
-          variant="button"
-          fontWeight="regular"
-          textTransform="capitalize"
+      <Link to={route}>
+        <MKBox
+          {...rest}
+          mx={1}
+          p={1}
+          display='flex'
+          alignItems='baseline'
           color={light ? "white" : "dark"}
-          sx={{ fontWeight: "100%", ml: 1, mr: 0.25 }}
+          opacity={light ? 1 : 0.6}
+          sx={{ cursor: "pointer", userSelect: "none" }}
+          {...(route && routeComponent)}
+          {...(href && linkComponent)}
         >
-          {name}
-        </MKTypography>
-        <MKTypography variant="body2" color={light ? "white" : "dark"} ml="auto">
-          <Icon sx={{ fontWeight: "normal", verticalAlign: "middle" }}>
-            {collapse && "keyboard_arrow_down"}
-          </Icon>
-        </MKTypography>
-      </MKBox>
-      {children && (
-        <Collapse in={Boolean(collapseStatus)} timeout={400} unmountOnExit>
-          {children}
-        </Collapse>
-      )}
+          <MKTypography
+            variant='body2'
+            lineHeight={1}
+            color='inherit'
+            sx={{ alignSelf: "center", "& *": { verticalAlign: "middle" } }}
+          >
+            {icon}
+          </MKTypography>
+          <MKTypography
+            variant='button'
+            fontWeight='regular'
+            textTransform='capitalize'
+            color={light ? "white" : "dark"}
+            sx={{ fontWeight: "100%", ml: 1, mr: 0.25 }}
+          >
+            {name}
+          </MKTypography>
+        </MKBox>
+      </Link>
     </>
   );
 }
