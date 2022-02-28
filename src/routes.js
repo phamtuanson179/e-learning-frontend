@@ -1,6 +1,8 @@
 import CurCourses from "pages/CurCourses";
+import ManagerInfo from "./pages/ManagerInfo";
 import { default as AllCourses, default as Course } from "./pages/AllCourses";
 import SignInBasic from "./pages/SignIn";
+import Exam from "pages/Exam";
 
 // const Home = React.lazy(() => import('./pages/Home'))
 // const Course = React.lazy(() => import('./pages/Course'))
@@ -30,6 +32,20 @@ const routes = [
     name: "Course",
     component: <SignInBasic />,
   },
+  {
+    path: "manager-info",
+    exact: true,
+    name: 'ManagerInfo',
+    component: <ManagerInfo />
+  },
+  {
+    path: "exam",
+    exact: true,
+    name: 'Exam',
+    component: <Exam />
+  },
+
+
 ];
 
 export default routes;
