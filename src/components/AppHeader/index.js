@@ -340,79 +340,79 @@ function AppHeader({
   const renderNestedRoutes = menuNavbar.map(({ collapse, columns }) =>
     collapse && !columns
       ? collapse.map(({ name: parentName, collapse: nestedCollapse }) => {
-          let template;
+        let template;
 
-          if (parentName === nestedDropdownName) {
-            template =
-              nestedCollapse &&
-              nestedCollapse.map((item) => {
-                const linkComponent = {
-                  component: MuiLink,
-                  href: item.href,
-                  target: "_blank",
-                  rel: "noreferrer",
-                };
+        if (parentName === nestedDropdownName) {
+          template =
+            nestedCollapse &&
+            nestedCollapse.map((item) => {
+              const linkComponent = {
+                component: MuiLink,
+                href: item.href,
+                target: "_blank",
+                rel: "noreferrer",
+              };
 
-                const routeComponent = {
-                  component: Link,
-                  to: item.route,
-                };
+              const routeComponent = {
+                component: Link,
+                to: item.route,
+              };
 
-                return (
-                  <MKTypography
-                    key={item.name}
-                    {...(item.route ? routeComponent : linkComponent)}
-                    display='flex'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    variant='button'
-                    textTransform='capitalize'
-                    minWidth={item.description ? "14rem" : "12rem"}
-                    color={item.description ? "dark" : "text"}
-                    fontWeight={item.description ? "bold" : "regular"}
-                    py={item.description ? 1 : 0.625}
-                    px={2}
-                    sx={({
-                      palette: { grey, dark },
-                      borders: { borderRadius },
-                    }) => ({
-                      borderRadius: borderRadius.md,
-                      cursor: "pointer",
-                      transition: "all 300ms linear",
+              return (
+                <MKTypography
+                  key={item.name}
+                  {...(item.route ? routeComponent : linkComponent)}
+                  display='flex'
+                  justifyContent='space-between'
+                  alignItems='center'
+                  variant='button'
+                  textTransform='capitalize'
+                  minWidth={item.description ? "14rem" : "12rem"}
+                  color={item.description ? "dark" : "text"}
+                  fontWeight={item.description ? "bold" : "regular"}
+                  py={item.description ? 1 : 0.625}
+                  px={2}
+                  sx={({
+                    palette: { grey, dark },
+                    borders: { borderRadius },
+                  }) => ({
+                    borderRadius: borderRadius.md,
+                    cursor: "pointer",
+                    transition: "all 300ms linear",
 
-                      "&:hover": {
-                        backgroundColor: grey[200],
+                    "&:hover": {
+                      backgroundColor: grey[200],
+                      color: dark.main,
+
+                      "& *": {
                         color: dark.main,
-
-                        "& *": {
-                          color: dark.main,
-                        },
                       },
-                    })}
-                  >
-                    {item.description ? (
-                      <MKBox>
-                        {item.name}
-                        <MKTypography
-                          display='block'
-                          variant='button'
-                          color='text'
-                          fontWeight='regular'
-                          sx={{ transition: "all 300ms linear" }}
-                        >
-                          {item.description}
-                        </MKTypography>
-                      </MKBox>
-                    ) : (
-                      item.name
-                    )}
-                  </MKTypography>
-                );
-              });
-          }
+                    },
+                  })}
+                >
+                  {item.description ? (
+                    <MKBox>
+                      {item.name}
+                      <MKTypography
+                        display='block'
+                        variant='button'
+                        color='text'
+                        fontWeight='regular'
+                        sx={{ transition: "all 300ms linear" }}
+                      >
+                        {item.description}
+                      </MKTypography>
+                    </MKBox>
+                  ) : (
+                    item.name
+                  )}
+                </MKTypography>
+              );
+            });
+        }
 
-          return template;
-        })
+        return template;
+      })
       : null
   );
 
@@ -484,15 +484,18 @@ function AppHeader({
           justifyContent='space-between'
           alignItems='center'
         >
-          <MKBox
-            component={Link}
-            to='/'
-            lineHeight={1}
-            py={transparent ? 1.5 : 0.75}
-            pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
-          >
-            <img src={brand} height='36px' />
-          </MKBox>
+          <Link to='/'>
+            <MKBox
+              component={Link}
+              to='/'
+              lineHeight={1}
+              py={transparent ? 1.5 : 0.75}
+              pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
+            >
+              <img src={brand} height='36px' />
+            </MKBox>
+          </Link>
+
           <MKBox
             color='inherit'
             display={{ xs: "none", lg: "flex" }}
