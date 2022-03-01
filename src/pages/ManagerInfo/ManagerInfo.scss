@@ -11,6 +11,7 @@
         @include main-section;
         margin-right: 16px;
         height: fit-content;
+        flex: 1;
 
         button {
             font-weight: 400;
@@ -23,7 +24,7 @@
 
     .right__container {
         @include main-section;
-        flex: 1;
+        flex: 4;
     }
 
     .tab--active {

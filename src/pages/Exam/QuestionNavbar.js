@@ -7,17 +7,25 @@ const QuestionNavbar = (menuBar) => {
     const [questionAmount, setQuestionAmout] = useState(20)
     const renderQuestionContainer = () => {
         let result = []
+        console.log('adsfasd')
         for (let i = 0; i < questionAmount; i++) {
-            result.push(<Button>i</Button>)
+            result.push(<Button>{i + 1}</Button>)
         }
-        return resul
+        console.log({ result })
+        return result
     }
 
     return (
         <Box>
-            <div>QuestionNavbar</div>
+            <div className='title__box'>QuestionNavbar</div>
             <hr />
-            {renderQuestionContainer}
+            <div className='select-question__box'>
+                <div className='select-question'>
+                    {renderQuestionContainer()}
+                </div>
+
+
+            </div>
 
 
         </Box>
