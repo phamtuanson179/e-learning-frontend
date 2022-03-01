@@ -10,14 +10,15 @@ import MKBox from "components/MKBox";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import infoAPI from "api/infoAPI";
 
 const QuestionDetail = () => {
 
     return (
         <>
-            <h3>QuestionDetail</h3>
+            {/* <h3>QuestionDetail</h3> */}
+            <Typography component={'h3'}>QuestionDetail</Typography>
         </>
     );
 }

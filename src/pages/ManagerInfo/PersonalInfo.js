@@ -10,8 +10,9 @@ import MKBox from "components/MKBox";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
-import { Box } from "@mui/material";
+import { Box, Button, Card, CardContent, CardHeader, Icon, Typography } from "@mui/material";
 import infoAPI from "api/infoAPI";
+import { Settings } from "@mui/icons-material";
 
 const PersonalInfo = () => {
     const [checked, setChecked] = useState(true);
@@ -27,7 +28,17 @@ const PersonalInfo = () => {
 
     return (
         <>
-            <h3>Thông tin cá nhân</h3>
+
+
+            <Card>
+                <CardHeader>
+                    <Typography component={'h3'}>Thông tin cá nhân</Typography>
+                    <Button><Settings></Settings></Button>
+                </CardHeader>
+                <CardContent>
+
+                </CardContent>
+            </Card>
         </>
     );
 }
