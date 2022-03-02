@@ -19,7 +19,6 @@ const PersonalInfo = () => {
     useEffect(() => {
         const data = async () => {
             const result = await infoAPI.getInfo();
-            console.log({ result })
         }
         data()
     }, [])

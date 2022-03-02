@@ -5,7 +5,8 @@
     display: flex;
     justify-content: space-between;
     margin: 124px 16px 32px 16px;
-    min-height: 500px;
+    // min-height: 500px;
+    min-height: calc(100vh - 170px - 124px - 32px);
     
     .exam__container--left {
         @include main-section;
@@ -24,31 +25,56 @@
             button {
                 padding: 0;
                 border-radius: 4px;
-                border: 1px solid $gray;
+                border: 0.5px solid $gray;
                 margin: 4px;
                 min-width: 32px;
                 max-width: 32px;
                 min-height: 32px;
                 max-height: 32px;
                 color:  $gray;
-
+                font-size: 0.7rem;
     
             }
 
             .MuiTouchRipple-root{
                 display: none
             }
-
         }
 
-        
+        .active {
+            background: $main-red !important;
+            color: $white !important;
+        }
 
-
+        .responsed{
+            background: $main-blue;
+            color: white !important;
+        }
     }
 
     .exam__container--right{
         @include main-section;
         flex: 4;
+
+        .answer__container{
+
+            > .MuiFormControl-root {
+                width: 100%;
+                border: 1px solid $gray;
+                border-radius: 8px;
+
+                .MuiFormControlLabel-root{
+                    padding: 4px;
+                    margin: 0;
+                    border-bottom: 1px solid $gray;
+                }
+
+                .MuiFormControlLabel-root:last-child {
+                    border-bottom: 0;
+                }
+
+            }
+        }
         
     }
 

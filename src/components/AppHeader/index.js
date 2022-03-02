@@ -486,8 +486,6 @@ function AppHeader({
         >
           <Link to='/'>
             <MKBox
-              component={Link}
-              to='/'
               lineHeight={1}
               py={transparent ? 1.5 : 0.75}
               pl={relative || transparent ? 0 : { xs: 0, lg: 1 }}
