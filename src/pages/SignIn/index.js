@@ -83,24 +83,26 @@ function SignInBasic(props) {
   // }
 
   const onSubmitLogin  = async () => {
-    const isValid = validateAll()
-    if (!isValid) return
+    // const isValid = validateAll()
+    // if (!isValid) return
 
     try {
-        const params = {
+        const data = {
             username: email,
             password: password
         }
-
-        const res = await axios.post(ENDPOINT.LOGIN, params)
-        if (res.data && res.data.messageCode === 1) {
+        console.log({data})
+        const url=ENDPOINT.LOGIN
+        console.log({url})
+          await axios.post(url, {data}).then((res)=> {
+          if (res.data && res.data.messageCode === 1) {
             localStorage.setItem(APP_CONSTANTS.USER_TOKEN, res.data.result.access_token)
             setMessage("")
-            history.replace('/admin')
+            history.replace('/get_exam')
         } else {
             setMessage(res.data.message)
         }
-        
+         })   
     } catch (error) {
         console.log("api login error: ", error)
     }
@@ -161,7 +163,7 @@ function SignInBasic(props) {
                 <MKTypography
                   variant='h4'
                   fontWeight='medium'
-                  color='white'
+                  //color='white'
                   mt={1}
                 >
                   Đăng nhập
@@ -197,7 +199,7 @@ function SignInBasic(props) {
                     <MKTypography
                       variant='button'
                       fontWeight='regular'
-                      color='text'
+                      // color='text'
                       onClick={handleSetRememberMe}
                       sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
                     >
@@ -208,14 +210,14 @@ function SignInBasic(props) {
                   <MKBox mt={4} mb={1}>
                     <MKButton 
                     variant='gradient' 
-                    color='info' 
+                    // color='info' 
                     onClick={onSubmitLogin}
                     fullWidth>
                       Đăng nhập
                     </MKButton>
                   </MKBox>
                   <MKBox mt={3} mb={1} textAlign='center'>
-                    <MKButton variant='button' color='text'>
+                    <MKButton >
                       Bạn quên mật khẩu?
                     </MKButton> 
                   </MKBox>
