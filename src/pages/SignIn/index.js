@@ -1,5 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
+// import {useNavigate} from 'react-router-dom'
+// import isEmpty from "validator/lib/isEmpty"
 import {useNavigate} from 'react-router-dom'
+// import isEmail from "validator/lib/isEmail"
+import axios from "api/axios"
+import ENDPOINT from "api/loginAPI"
+import APP_CONSTANTS from "constants/appConstants"
+//import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 // react-router-dom components
 //import { Link } from "react-router-dom";
@@ -30,40 +38,75 @@ import routes from "routes";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-// import axios from "./api/loginApi.js";
-// import AuthContext from "/AuthContext.js";
-// const LOGIN_URL='http://0.0.0.0:8000/login  ';
 
-const SignInBasic = () => {
+function SignInBasic(props) {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const history = useNavigate()    
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [validationMsg, setValidationMsg] = useState({})
+  const [message, setMessage] = useState("")
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const history = useNavigate();
-
-  useEffect(()=> {
-    if (localStorage.getItem('user-info')){
-      history.push("/add")
+  useEffect(() => {
+    const token = localStorage.getItem(APP_CONSTANTS.USER_TOKEN)
+    if (token) {
+        history.replace('./get_exam')
     }
-  },[])
-  async function Login () {
-    console.warn(email, password)
-    let item = (email, password);
-    let result = await fetch("http://0.0.0.0:8000/login",{
-      method: 'POST',
-      headers:{
-        "content-type":"application/json",
-        "accept":"application/json"
-      },
-      body: JSON.stringify(item)
-    });
-    result = await result.json();
-    localStorage.setItem(JSON.stringify(result))
-    history.push('./add')
+  })
 
+  const onChangeEmail = (event) => {
+    const value = event.target.value
+    setEmail(value)
   }
+
+  const onChangePassword = (event) => {
+    const value = event.target.value
+    setPassword(value)
+  }
+
+  // const validateAll = () => {
+  //   const msg = {}
+  //   if (isEmpty(email)) {
+  //       msg.email = "Please input your Email"
+  //   } else if (!isEmail(email)) {
+  //       msg.email = "Your email is incorrect"
+  //   }
+
+  //   if (isEmpty(password)) {
+  //       msg.password = "Please input your Password"
+  //   }
+
+  //   setValidationMsg(msg)
+  //   if (Object.keys(msg).length > 0) return false
+  //   return true
+  // }
+
+  const onSubmitLogin  = async () => {
+    const isValid = validateAll()
+    if (!isValid) return
+
+    try {
+        const params = {
+            username: email,
+            password: password
+        }
+
+        const res = await axios.post(ENDPOINT.LOGIN, params)
+        if (res.data && res.data.messageCode === 1) {
+            localStorage.setItem(APP_CONSTANTS.USER_TOKEN, res.data.result.access_token)
+            setMessage("")
+            history.replace('/admin')
+        } else {
+            setMessage(res.data.message)
+        }
+        
+    } catch (error) {
+        console.log("api login error: ", error)
+    }
+  }
+
  
   return (
     <>
@@ -131,14 +174,19 @@ const SignInBasic = () => {
                     <MKInput 
                       type='email' 
                       label='Email' 
-                      onChange={(e)=>setEmail(e.target.value)}
+                      id='email'
+                      placeholder='your email@.com'
+                      autoComplete='email'
+                      onChange={onChangeEmail}
                       fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
                     <MKInput 
                       type='password' 
                       label='Password' 
-                      onChange={(e)=>setPassword(e.target.value)}
+                      id='password'
+                      placeholder='******'
+                      onChange={onChangePassword}
                       fullWidth />
                   </MKBox>
 
@@ -162,7 +210,7 @@ const SignInBasic = () => {
                     <MKButton 
                     variant='gradient' 
                     color='info' 
-                    onClick={Login}
+                    onClick={onSubmitLogin}
                     fullWidth>
                       Đăng nhập
                     </MKButton>
