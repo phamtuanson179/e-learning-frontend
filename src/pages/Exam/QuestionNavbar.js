@@ -60,7 +60,7 @@ const QuestionNavbar = ({ questionAmount, curIndexQuestion, setCurIndexQuestion,
 
     return (
         <Box>
-            <div className='title__box'>QuestionNavbar</div>
+            <div className='title__box'>Question Navigator</div>
             <hr />
             <div className='select-question__box'>
                 <div className='select-question'>
