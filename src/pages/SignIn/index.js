@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
-// import isEmpty from "validator/lib/isEmpty"
+import isEmpty from "validator/lib/isEmpty"
 import {useNavigate} from 'react-router-dom'
-// import isEmail from "validator/lib/isEmail"
+import isEmail from "validator/lib/isEmail"
 import axios from "api/axios"
 import ENDPOINT from "api/loginAPI"
 import APP_CONSTANTS from "constants/appConstants"
@@ -65,45 +65,58 @@ function SignInBasic(props) {
     setPassword(value)
   }
 
-  // const validateAll = () => {
-  //   const msg = {}
-  //   if (isEmpty(email)) {
-  //       msg.email = "Please input your Email"
-  //   } else if (!isEmail(email)) {
-  //       msg.email = "Your email is incorrect"
-  //   }
+  const validateAll = () => {
+    const msg = {}
+    if (isEmpty(email)) {
+        msg.email = "Please input your Email"
+    } else if (!isEmail(email)) {
+        msg.email = "Your email is incorrect"
+    }
 
-  //   if (isEmpty(password)) {
-  //       msg.password = "Please input your Password"
-  //   }
+    if (isEmpty(password)) {
+        msg.password = "Please input your Password"
+    }
 
-  //   setValidationMsg(msg)
-  //   if (Object.keys(msg).length > 0) return false
-  //   return true
-  // }
+    setValidationMsg(msg)
+    if (Object.keys(msg).length > 0) return false
+    return true
+  }
 
   const onSubmitLogin  = async () => {
-    // const isValid = validateAll()
-    // if (!isValid) return
+    const isValid = validateAll()
+    if (!isValid) return
 
     try {
         const data = {
-            username: email,
+            email: email,
             password: password
         }
         console.log({data})
         const url=ENDPOINT.LOGIN
         console.log({url})
-          await axios.post(url, {data}).then((res)=> {
+        
+          const res = await axios.post(
+            url, 
+            data,
+            {
+              headers: {
+                'accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            }
+            ).then((res)=> {
+              //this.setState({data:res.data});
+            console.log(res.data);
           if (res.data && res.data.messageCode === 1) {
-            localStorage.setItem(APP_CONSTANTS.USER_TOKEN, res.data.result.access_token)
+            //localStorage.setItem(APP_CONSTANTS.USER_TOKEN, res.data.result.access_token)
             setMessage("")
             history.replace('/get_exam')
         } else {
             setMessage(res.data.message)
         }
          })   
-    } catch (error) {
+        }
+    catch (error) {
         console.log("api login error: ", error)
     }
   }

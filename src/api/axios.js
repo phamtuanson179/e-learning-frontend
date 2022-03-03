@@ -1,14 +1,16 @@
 
 import axiosInstance from 'axios'
 import ENDPOINT from './loginAPI'
-// import {showLoading} from '../utils/helpers'
-import APP_CONSTANTS from '../constants/appConstants.js'
+//import APP_CONSTANTS from '../constants/appConstants.js'
 
 const apiCallStack =  []
 
 const axios = axiosInstance.create({
     baseURL: ENDPOINT.BASE_URL,
-    timeout: 30000
+    timeout: 30000,
+    headers:{
+      'accept': 'application/json',
+      'Content-Type': 'application/json'}
 })
 
 // Add a request interceptor
@@ -35,7 +37,8 @@ axios.interceptors.request.use(function (config) {
     // config.headers.common = headers
 
     return config;
-  }, function (error) {
+  }, 
+  function (error) {
     // Do something with request error
     return Promise.reject(error);
   });
