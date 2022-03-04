@@ -1,27 +1,53 @@
 import axios from "axios";
+import axiosInstance from 'axios';
+import ENDPOINT from './loginAPI';
 import queryString from 'query-string'
 
-const axiosClient = axios.create({
-    baseURL: process.env.REACT_APP_API_URL_TEST,
+const apiCallStack = []
+
+const axiosClient = axiosInstance.create({
+    baseURL: ENDPOINT.BASE_URL,
     headers: {
         'content-type': 'application/json',
+        'accept': 'application/json',
+        timeout: 30000,
     },
     // paramsSerializer: params => queryString.stringifyUrl(params),
 });
 
-axiosClient.interceptors.request.use(async (config) => {
+axiosClient.interceptors.request.use(function (config) {
     //add handle token
-    return config
-})
-
-axiosClient.interceptors.response.use((response) => {
-    if (response && response.data) {
-        return response.data;
+    const headers ={
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
     }
+    config.headers = headers
+    return config;
+},
+function (error){
+    return Promise.reject(error);
+});
+
+axiosClient.interceptors.response.use(function (response) {
+    // if (response && response.data) {
+    //     return response.data;
+    // }
+    const apiCallIndex = apiCallStack.indexOf(response.config?.url)
+    if (apiCallIndex !== -1) {
+        // showLoading(false)
+        apiCallStack.splice(apiCallIndex, 1)
+    }
+
     return response
-}, (err) => {
-    throw err;
-})
+}, function (err) {
+    const apiCallIndex = apiCallStack.indexOf(error.config?.url)
+    if (apiCallIndex !== -1) {
+        //showLoading(false)
+        apiCallStack.splice(apiCallIndex, 1)
+    }
+
+    return Promise.reject(error);
+});
 
 export default axiosClient
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import isEmpty from "validator/lib/isEmpty"
 import {useNavigate} from 'react-router-dom'
 import isEmail from "validator/lib/isEmail"
-import axios from "api/axios"
+import axiosClient from "api/baseAPI"
 import ENDPOINT from "api/loginAPI"
 import APP_CONSTANTS from "constants/appConstants"
 //import useMediaQuery from '@mui/material/useMediaQuery';
@@ -91,11 +91,11 @@ function SignInBasic(props) {
             email: email,
             password: password
         }
-        console.log({data})
+        //console.log({data})
         const url=ENDPOINT.LOGIN
-        console.log({url})
+        //console.log({url})
         
-          const res = await axios.post(
+          const res = await axiosClient.post(
             url, 
             data,
             {
@@ -223,7 +223,7 @@ function SignInBasic(props) {
                   <MKBox mt={4} mb={1}>
                     <MKButton 
                     variant='gradient' 
-                    // color='info' 
+                    color='info' 
                     onClick={onSubmitLogin}
                     fullWidth>
                       Đăng nhập
