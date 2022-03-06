@@ -46,7 +46,8 @@ const Exam = () => {
         id: id,
       };
       await examAPI.getExam(params).then((res) => {
-        const result = convertDatas(res?.questions);
+        console.log({ res });
+        const result = convertDatas(res?.data.questions);
         console.log({ result });
         setNameTest(res?.name);
         setDuration(res?.duration);
