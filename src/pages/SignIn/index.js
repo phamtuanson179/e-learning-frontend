@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react"
-import isEmpty from "validator/lib/isEmpty"
-import { useNavigate } from 'react-router-dom'
-import isEmail from "validator/lib/isEmail"
-import axiosClient from "api/baseAPI"
-import ENDPOINT from "api/loginAPI"
-import APP_CONSTANTS from "constants/appConstants"
+import React, { useState, useEffect } from "react";
+import isEmpty from "validator/lib/isEmpty";
+import { useNavigate } from "react-router-dom";
+import isEmail from "validator/lib/isEmail";
+import axiosClient from "api/baseAPI";
+import ENDPOINT from "api/loginAPI";
+import APP_CONSTANTS from "constants/appConstants";
 //import useMediaQuery from '@mui/material/useMediaQuery';
-
 
 // react-router-dom components
 //import { Link } from "react-router-dom";
@@ -37,17 +36,17 @@ import routes from "routes";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import loginAPI from "api/loginAPI"
+import loginAPI from "api/loginAPI";
 
 function SignInBasic(props) {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-  const history = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [validationMsg, setValidationMsg] = useState({})
-  const [message, setMessage] = useState("")
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [validationMsg, setValidationMsg] = useState({});
+  const [message, setMessage] = useState("");
 
   // useEffect(() => {
   //   const token = localStorage.getItem(APP_CONSTANTS.USER_TOKEN)
@@ -56,53 +55,62 @@ function SignInBasic(props) {
   //   }
   // })
 
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+
   const onChangeEmail = (event) => {
-    const value = event.target.value
-    setEmail(value)
-  }
+    const value = event.target.value;
+    setEmail(value);
+  };
 
   const onChangePassword = (event) => {
-    const value = event.target.value
-    setPassword(value)
-  }
+    const value = event.target.value;
+    setPassword(value);
+  };
 
   const validateAll = () => {
-    const msg = {}
+    const msg = {};
     if (isEmpty(email)) {
-      msg.email = "Please input your Email"
+      msg.email = "Please input your Email";
     } else if (!isEmail(email)) {
-      msg.email = "Your email is incorrect"
+      msg.email = "Your email is incorrect";
     }
 
     if (isEmpty(password)) {
-      msg.password = "Please input your Password"
+      msg.password = "Please input your Password";
     }
 
-    setValidationMsg(msg)
-    if (Object.keys(msg).length > 0) return false
-    return true
-  }
+    setValidationMsg(msg);
+    if (Object.keys(msg).length > 0) return false;
+    return true;
+  };
 
   const onSubmitLogin = async () => {
-    const isValid = validateAll()
-    if (!isValid) return
+    const isValid = validateAll();
+    if (!isValid) return;
 
     try {
       const data = {
         email: email,
-        password: password
-      }
+        password: password,
+      };
 
-      await loginAPI.login(data).then(res => {
-        console.log({ res })
-        localStorage.setItem('access_token', res.data.access_token);
-      })
+      await loginAPI.login(data).then((res) => {
+        console.log({ res });
+        localStorage.setItem("accessToken", res.data.access_token);
+        localStorage.setItem("emailUser", data.email);
+        navigate("/");
+      });
       //console.log({data})
       // const url=ENDPOINT.LOGIN
       // //console.log({url})
 
       //   const res = await axiosClient.post(
-      //     url, 
+      //     url,
       //     data,
       //     {
       //       headers: {
@@ -120,13 +128,11 @@ function SignInBasic(props) {
       // } else {
       //     setMessage(res.data.message)
       // }
-      //  })   
+      //  })
+    } catch (error) {
+      console.log("api login error: ", error);
     }
-    catch (error) {
-      console.log("api login error: ", error)
-    }
-  }
-
+  };
 
   return (
     <>
@@ -198,7 +204,8 @@ function SignInBasic(props) {
                       placeholder='your email@.com'
                       autoComplete='email'
                       onChange={onChangeEmail}
-                      fullWidth />
+                      fullWidth
+                    />
                   </MKBox>
                   <MKBox mb={2}>
                     <MKInput
@@ -207,7 +214,8 @@ function SignInBasic(props) {
                       id='password'
                       placeholder='******'
                       onChange={onChangePassword}
-                      fullWidth />
+                      fullWidth
+                    />
                   </MKBox>
 
                   <MKBox display='flex' alignItems='center' ml={-1}>
@@ -231,14 +239,13 @@ function SignInBasic(props) {
                       variant='gradient'
                       color='info'
                       onClick={onSubmitLogin}
-                      fullWidth>
+                      fullWidth
+                    >
                       Đăng nhập
                     </MKButton>
                   </MKBox>
                   <MKBox mt={3} mb={1} textAlign='center'>
-                    <MKButton >
-                      Bạn quên mật khẩu?
-                    </MKButton>
+                    <MKButton>Bạn quên mật khẩu?</MKButton>
                   </MKBox>
                 </MKBox>
               </MKBox>
