@@ -24,12 +24,11 @@ import DefaultNavbarMobile from "./DefaultNavbarMobile";
 import brandLogoTechpro from "../../assets/images/techpro-images/brand.png";
 import "./header.scss";
 
-function AppHeader({
+function TPAppHeader({
   brand,
   transparent,
   light,
   action,
-  sticky,
   relative,
   center,
 }) {
@@ -547,7 +546,7 @@ function AppHeader({
 }
 
 // Setting default values for the props of DefaultNavbar
-AppHeader.defaultProps = {
+TPAppHeader.defaultProps = {
   brand: brandLogoTechpro,
   transparent: false,
   light: false,
@@ -558,7 +557,7 @@ AppHeader.defaultProps = {
 };
 
 // Typechecking props for the DefaultNavbar
-AppHeader.propTypes = {
+TPAppHeader.propTypes = {
   brand: PropTypes.string,
   transparent: PropTypes.bool,
   light: PropTypes.bool,
@@ -587,4 +586,4 @@ AppHeader.propTypes = {
   center: PropTypes.bool,
 };
 
-export default AppHeader;
+export default TPAppHeader;

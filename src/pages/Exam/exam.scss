@@ -14,9 +14,18 @@
         height: fit-content;
         flex: 1;
 
-
         .title__box {
-            text-align: center;
+            background: $sub-blue;
+            border-radius: 0.75rem;
+            padding: 16px;
+            min-height: 72px; 
+            display:flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .question_answered__amount{
+            color: $main-blue;
         }
 
         .select-question__box{
@@ -54,10 +63,28 @@
 
     .exam__container--right{
         @include main-section;
-        flex: 4;
+        flex: 3;
+
+        .detail__exam {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: $sub-blue;
+            border-radius: 0.75rem;
+            padding: 16px;
+            min-height: 64;
+            
+            button {
+                background: $main-blue;
+                color: $white;
+            }
+        }
+        .title__question {
+            padding: 16px;
+        }
 
         .answer__container{
-
+            padding: 16px;
             > .MuiFormControl-root {
                 width: 100%;
                 border: 1px solid $gray;

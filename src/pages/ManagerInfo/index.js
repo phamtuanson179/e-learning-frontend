@@ -31,11 +31,7 @@ const ManagerInfo = ({ role }) => {
         setValue(newValue);
     };
     return (
-
-        <Box
-
-            className='manager-info__container'
-        >
+        <Box className='manager-info__container' >
             <Box className='left__container'>
                 <Tabs
                     orientation="vertical"
@@ -53,14 +49,14 @@ const ManagerInfo = ({ role }) => {
                 </Tabs>
 
             </Box >
-            <div className='right__container'>
-                <TabPanel value={value} index={0}>
+            <Box className='right__container'>
+                <TabPanel value={value} index={0} className='tab--personal-info'>
                     <PersonalInfo />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     Item Two
                 </TabPanel>
-            </div>
+            </Box>
         </Box>
     );
 }

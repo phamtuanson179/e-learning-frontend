@@ -1,4 +1,4 @@
-import { Box, Tabs, Tab, Typography, CircularProgress } from "@mui/material";
+import { Box, Tabs, Tab, Typography, CircularProgress, Modal } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { MENUBAR } from "./constant";
 import QuestionNavbar from "./QuestionNavbar.js";
@@ -10,152 +10,121 @@ import { SettingsCellRounded } from "@mui/icons-material";
 import Countdown from "react-countdown";
 
 const convertDatas = (datas) => {
-  const result = datas?.map((data, idx) => {
-    console.log("data", data?.anwsers);
-    return {
-      ...data,
-      idx: idx,
-      status: STATUS.NORESPONSE,
-      curAnswer: -1,
-    };
-  });
-  return result;
+    const result = datas?.map((data, idx) => {
+        return {
+            ...data,
+            idx: idx,
+            status: STATUS.NORESPONSE,
+            curAnswer: -1,
+        };
+    });
+    return result;
 };
 
+
+
 const Exam = () => {
-  const [questions, setQuestions] = useState();
-  const [questionAmount, setQuestionAmount] = useState(0);
-  const [curQuestion, setCurQuestion] = useState("");
-  const [curIndexQuestion, setCurIndexQuestion] = useState(0);
-  const [time, setTime] = useState(30);
-  const [showModalResult, setShowModalResult] = useState(false);
-  const [nameTest, setNameTest] = useState("");
-  const [duration, setDuration] = useState();
-  const [minPointToPass, setMinPointToPass] = useState();
-  const [startCountDown, setStartCountDown] = useState(false);
+    const [questions, setQuestions] = useState();
+    const [questionAmount, setQuestionAmount] = useState(0);
+    const [curQuestion, setCurQuestion] = useState("");
+    const [curIndexQuestion, setCurIndexQuestion] = useState(0);
+    const [time, setTime] = useState(30);
+    const [nameTest, setNameTest] = useState("");
+    const [duration, setDuration] = useState();
+    const [minPointToPass, setMinPointToPass] = useState();
+    const [startCountDown, setStartCountDown] = useState(false);
+    const [loading, setLoading] = useState(true)
 
-  const getExam = async (id) => {
-    try {
-      const params = {
-        id: id,
-      };
-      await examAPI.getExam(params).then((res) => {
-        const result = convertDatas(res?.questions);
-        console.log({ result });
-        setNameTest(res?.name);
-        setDuration(res?.duration);
-        setMinPointToPass(res?.min_point_to_pass);
-        setQuestions(result);
-        setQuestionAmount(result.length);
-        setCurQuestion(result[0]);
-        setStartCountDown(true);
-        console.log("first");
-      });
-    } catch (error) {
-      console.log({ error });
-    }
-  };
-
-  const searchQuestionByIdx = (id, questions) => {
-    if (questions) {
-      for (let question of questions) {
-        if (question?.idx == id) {
-          setCurQuestion(question);
-          break;
+    const getExam = async (id) => {
+        try {
+            const params = {
+                id: id,
+            };
+            await examAPI.getExam(params).then((res) => {
+                const result = convertDatas(res?.questions);
+                setNameTest(res?.name);
+                setDuration(res?.duration);
+                setMinPointToPass(res?.min_point_to_pass);
+                setQuestions(result);
+                setQuestionAmount(result.length);
+                setCurQuestion(result[0]);
+                setLoading(false)
+            });
+        } catch (error) {
+            console.log({ error });
         }
-      }
-    }
-  };
+    };
 
-  // ham luu lai cau tra loi moi khi nguoi dung chon cau tra loi khac
-  const saveAnswerOfQuestion = (question, listQuestions) => {
-    console.log({ question });
-    console.log(question.idx);
-    if (questions) {
-      let curQuestions = [...listQuestions];
-      curQuestions[question.idx] = question;
-      console.log({ curQuestions });
-      setQuestions(curQuestions);
-    }
-  };
+    const searchQuestionByIdx = (id, questions) => {
+        if (questions) {
+            for (let question of questions) {
+                if (question?.idx == id) {
+                    setCurQuestion(question);
+                    break;
+                }
+            }
+        }
+    };
 
-  // const countDown = () => {
-  //   console.log({ time });
-  //   if (time > 0) {
-  //     setTime(time - 1);
-  //   } else {
-  //     clearInterval(startCountDown);
-  //     setShowModalResult(true);
-  //   }
-  // };
+    // ham luu lai cau tra loi moi khi nguoi dung chon cau tra loi khac
+    const saveAnswerOfQuestion = (question, listQuestions) => {
+        if (questions) {
+            let curQuestions = [...listQuestions];
+            curQuestions[question.idx] = question;
+            setQuestions(curQuestions);
+        }
+    };
 
-  // const startCountDown = (func) => {
-  //   setInterval(func, 1000);
-  // };
 
-  // call API
-  useEffect(() => {
-    getExam("TEL1645826061.724958");
-    // startCountDown(countDown);
-  }, []);
 
-  // tim cau hoi voi moi lua chon so cau
-  useEffect(() => {
-    searchQuestionByIdx(curIndexQuestion, questions);
-  }, [curIndexQuestion]);
+    // call API
+    useEffect(() => {
+        getExam("TEL1645826061.724958");
+        // startCountDown(countDown);
+    }, []);
 
-  //thay doi cau tra loi moi khi nguoi dung chon cau tra loi khac
-  useEffect(() => {
-    saveAnswerOfQuestion(curQuestion, questions);
-  }, [curQuestion]);
+    // tim cau hoi voi moi lua chon so cau
+    useEffect(() => {
+        searchQuestionByIdx(curIndexQuestion, questions);
+    }, [curIndexQuestion]);
 
-  const renderer = ({ hours, minutes, seconds, completed, api }) => {
-    console.log({ startCountDown });
-    if (startCountDown) {
-      api.start();
-      setStartCountDown(false);
-    }
-    if (completed) {
-      // Render a completed state
-      return;
-    } else {
-      // Render a countdown
-      return (
-        <span>
-          {hours}:{minutes}:{seconds}
-        </span>
-      );
-    }
-  };
+    //thay doi cau tra loi moi khi nguoi dung chon cau tra loi khac
+    useEffect(() => {
+        saveAnswerOfQuestion(curQuestion, questions);
+    }, [curQuestion]);
 
-  return (
-    <Box className='exam__container'>
-      <Countdown
-        date={Date.now() + 30000}
-        autoStart={false}
-        renderer={renderer}
-      />
-      <Box className='exam__container--left'>
-        <QuestionNavbar
-          questionAmount={questionAmount}
-          setCurIndexQuestion={setCurIndexQuestion}
-          curIndexQuestion={curIndexQuestion}
-          curQuestion={curQuestion}
-          questions={questions}
-        />
-      </Box>
 
-      <Box className='exam__container--right'>
-        <QuestionDetail
-          curQuestion={curQuestion}
-          setCurQuestion={setCurQuestion}
-          nameTest={nameTest}
-          startCountDown={startCountDown}
-          setStartCountDown={setStartCountDown}
-        />
-      </Box>
-    </Box>
-  );
+
+
+    return (
+        <Box className='exam__container'>
+            <Box className='exam__container--left'>
+                <QuestionNavbar
+                    questionAmount={questionAmount}
+                    setCurIndexQuestion={setCurIndexQuestion}
+                    curIndexQuestion={curIndexQuestion}
+                    curQuestion={curQuestion}
+                    questions={questions}
+                />
+            </Box>
+            <Box className='exam__container--right'>
+                <QuestionDetail
+                    curQuestion={curQuestion}
+                    setCurQuestion={setCurQuestion}
+                    nameTest={nameTest}
+                    startCountDown={startCountDown}
+                    setStartCountDown={setStartCountDown}
+                    loading={loading}
+                    questions={questions}
+                    duration={duration}
+                    minPointToPass={minPointToPass}
+                    questionAmount={questionAmount}
+                />
+            </Box>
+
+
+        </Box>
+    );
 };
 
 export default Exam;

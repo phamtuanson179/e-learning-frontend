@@ -25,6 +25,29 @@
     .right__container {
         @include main-section;
         flex: 4;
+        padding: 0;
+
+        .tab--personal-info {
+            padding: 16px;
+            >div{
+                padding: 0;
+            }
+            .personal-info__container{
+
+                .title__box {
+                    background: $sub-blue;
+                    border-radius: 0.75rem;
+                    padding: 16px;
+                    min-height: 72px; 
+                    display:flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+            }
+        }
+        
+
+        
     }
 
     .tab--active {

@@ -1,4 +1,7 @@
 import { useEffect } from "react";
+// or for Moment.js
+import DateAdapter from '@mui/lab/AdapterMoment';
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
 
 // react-router components
 import { Routes, Route, Navigate, useLocation, BrowserRouter } from "react-router-dom";
@@ -30,7 +33,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <DefaultLayout />
+      <LocalizationProvider dateAdapter={DateAdapter}> <DefaultLayout /></LocalizationProvider>
     </ThemeProvider>
   );
 }
