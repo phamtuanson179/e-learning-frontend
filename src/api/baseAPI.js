@@ -6,27 +6,27 @@ import queryString from 'query-string'
 const apiCallStack = []
 
 const axiosClient = axiosInstance.create({
-    baseURL: ENDPOINT.BASE_URL,
-    headers: {
-        'content-type': 'application/json',
-        'accept': 'application/json',
-        timeout: 30000,
-    },
+    baseURL: process.env.REACT_APP_API_URL_TEST,
+    // headers: {
+    //     'content-type': 'application/json',
+    //     'accept': 'application/json',
+    //     timeout: 30000,
+    // },
     // paramsSerializer: params => queryString.stringifyUrl(params),
 });
 
 axiosClient.interceptors.request.use(function (config) {
     //add handle token
-    const headers ={
+    const headers = {
         'accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
     }
     config.headers = headers
     return config;
 },
-function (error){
-    return Promise.reject(error);
-});
+    function (error) {
+        return Promise.reject(error);
+    });
 
 axiosClient.interceptors.response.use(function (response) {
     // if (response && response.data) {

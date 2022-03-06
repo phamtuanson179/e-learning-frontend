@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import isEmpty from "validator/lib/isEmpty"
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import isEmail from "validator/lib/isEmail"
 import axiosClient from "api/baseAPI"
 import ENDPOINT from "api/loginAPI"
@@ -37,23 +37,24 @@ import routes from "routes";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import loginAPI from "api/loginAPI"
 
 function SignInBasic(props) {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-  const history = useNavigate()    
+  const history = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [validationMsg, setValidationMsg] = useState({})
   const [message, setMessage] = useState("")
 
-  useEffect(() => {
-    const token = localStorage.getItem(APP_CONSTANTS.USER_TOKEN)
-    if (token) {
-        history.replace('./get_exam')
-    }
-  })
+  // useEffect(() => {
+  //   const token = localStorage.getItem(APP_CONSTANTS.USER_TOKEN)
+  //   if (token) {
+  //     history.replace('./get_exam')
+  //   }
+  // })
 
   const onChangeEmail = (event) => {
     const value = event.target.value
@@ -68,13 +69,13 @@ function SignInBasic(props) {
   const validateAll = () => {
     const msg = {}
     if (isEmpty(email)) {
-        msg.email = "Please input your Email"
+      msg.email = "Please input your Email"
     } else if (!isEmail(email)) {
-        msg.email = "Your email is incorrect"
+      msg.email = "Your email is incorrect"
     }
 
     if (isEmpty(password)) {
-        msg.password = "Please input your Password"
+      msg.password = "Please input your Password"
     }
 
     setValidationMsg(msg)
@@ -82,46 +83,51 @@ function SignInBasic(props) {
     return true
   }
 
-  const onSubmitLogin  = async () => {
+  const onSubmitLogin = async () => {
     const isValid = validateAll()
     if (!isValid) return
 
     try {
-        const data = {
-            email: email,
-            password: password
-        }
-        //console.log({data})
-        const url=ENDPOINT.LOGIN
-        //console.log({url})
-        
-          const res = await axiosClient.post(
-            url, 
-            data,
-            {
-              headers: {
-                'accept': 'application/json',
-                'Content-Type': 'application/json'
-              }
-            }
-            ).then((res)=> {
-              //this.setState({data:res.data});
-            console.log(res.data);
-          if (res.data && res.data.messageCode === 1) {
-            //localStorage.setItem(APP_CONSTANTS.USER_TOKEN, res.data.result.access_token)
-            setMessage("")
-            history.replace('/get_exam')
-        } else {
-            setMessage(res.data.message)
-        }
-         })   
-        }
+      const data = {
+        email: email,
+        password: password
+      }
+
+      await loginAPI.login(data).then(res => {
+        console.log({ res })
+        localStorage.setItem('access_token', res.data.access_token);
+      })
+      //console.log({data})
+      // const url=ENDPOINT.LOGIN
+      // //console.log({url})
+
+      //   const res = await axiosClient.post(
+      //     url, 
+      //     data,
+      //     {
+      //       headers: {
+      //         'accept': 'application/json',
+      //         'Content-Type': 'application/json'
+      //       }
+      //     }
+      //     ).then((res)=> {
+      //       //this.setState({data:res.data});
+      //     console.log(res.data);
+      //   if (res.data && res.data.messageCode === 1) {
+      //     //localStorage.setItem(APP_CONSTANTS.USER_TOKEN, res.data.result.access_token)
+      //     setMessage("")
+      //     history.replace('/get_exam')
+      // } else {
+      //     setMessage(res.data.message)
+      // }
+      //  })   
+    }
     catch (error) {
-        console.log("api login error: ", error)
+      console.log("api login error: ", error)
     }
   }
 
- 
+
   return (
     <>
       <MKBox
@@ -185,9 +191,9 @@ function SignInBasic(props) {
               <MKBox pt={4} pb={3} px={3}>
                 <MKBox component='form' role='form'>
                   <MKBox mb={2}>
-                    <MKInput 
-                      type='email' 
-                      label='Email' 
+                    <MKInput
+                      type='email'
+                      label='Email'
                       id='email'
                       placeholder='your email@.com'
                       autoComplete='email'
@@ -195,9 +201,9 @@ function SignInBasic(props) {
                       fullWidth />
                   </MKBox>
                   <MKBox mb={2}>
-                    <MKInput 
-                      type='password' 
-                      label='Password' 
+                    <MKInput
+                      type='password'
+                      label='Password'
                       id='password'
                       placeholder='******'
                       onChange={onChangePassword}
@@ -221,18 +227,18 @@ function SignInBasic(props) {
                   </MKBox>
 
                   <MKBox mt={4} mb={1}>
-                    <MKButton 
-                    variant='gradient' 
-                    color='info' 
-                    onClick={onSubmitLogin}
-                    fullWidth>
+                    <MKButton
+                      variant='gradient'
+                      color='info'
+                      onClick={onSubmitLogin}
+                      fullWidth>
                       Đăng nhập
                     </MKButton>
                   </MKBox>
                   <MKBox mt={3} mb={1} textAlign='center'>
                     <MKButton >
                       Bạn quên mật khẩu?
-                    </MKButton> 
+                    </MKButton>
                   </MKBox>
                 </MKBox>
               </MKBox>
