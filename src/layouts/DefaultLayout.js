@@ -11,8 +11,7 @@ const DefaultLayout = () => {
             <TPAppHeader
                 action={{
                     type: "external",
-                    route: "https://www.creative-tim.com/product/material-kit-react",
-                    label: "Đăng nhập",
+                    // route: "https://www.creative-tim.com/product/material-kit-react",
                     color: "info",
                 }}
                 sticky

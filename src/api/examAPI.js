@@ -6,7 +6,7 @@ const examAPI = {
     return axiosClient.get(url, { params });
   },
 
-  getListExamByRoom: (params) => {
+  getListExamForRoom: (params) => {
     const url = "/get_exams_for_room";
     return axiosClient.get(url, { params });
   },

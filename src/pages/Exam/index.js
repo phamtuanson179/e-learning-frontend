@@ -16,6 +16,8 @@ import { STATUS } from "./constant";
 import { SettingsCellRounded } from "@mui/icons-material";
 import Countdown from "react-countdown";
 
+import { useLocation } from 'react-router-dom'
+
 const convertDatas = (datas) => {
   const result = datas?.map((data, idx) => {
     return {
@@ -28,12 +30,14 @@ const convertDatas = (datas) => {
   return result;
 };
 
-const Exam = () => {
+const Exam = (props) => {
+
+  const location = useLocation();
+  console.log({ location })
   const [questions, setQuestions] = useState();
   const [questionAmount, setQuestionAmount] = useState(0);
   const [curQuestion, setCurQuestion] = useState("");
   const [curIndexQuestion, setCurIndexQuestion] = useState(0);
-  const [time, setTime] = useState(30);
   const [nameTest, setNameTest] = useState("");
   const [duration, setDuration] = useState();
   const [minPointToPass, setMinPointToPass] = useState();
@@ -46,16 +50,18 @@ const Exam = () => {
         id: id,
       };
       await examAPI.getExam(params).then((res) => {
-        console.log({ res });
-        const result = convertDatas(res?.data.questions);
-        console.log({ result });
-        setNameTest(res?.name);
-        setDuration(res?.duration);
-        setMinPointToPass(res?.min_point_to_pass);
-        setQuestions(result);
-        setQuestionAmount(result?.length);
-        setCurQuestion(result[0]);
-        setLoading(false);
+        if (res) {
+          const data = res?.data
+          const questions = convertDatas(data.questions);
+          setNameTest(data?.name);
+          setDuration(data?.duration);
+          setMinPointToPass(data?.min_point_to_pass);
+          setQuestions(questions);
+          setQuestionAmount(questions.length);
+          setCurQuestion(questions[0]);
+          setLoading(false);
+        }
+
       });
     } catch (error) {
       console.log({ error });
@@ -84,7 +90,7 @@ const Exam = () => {
 
   // call API
   useEffect(() => {
-    getExam("TEL1645826061.724958");
+    getExam(location?.state?.idExam);
     // startCountDown(countDown);
   }, []);
 
@@ -101,27 +107,40 @@ const Exam = () => {
   return (
     <Box className='exam__container'>
       <Box className='exam__container--left'>
-        <QuestionNavbar
-          questionAmount={questionAmount}
-          setCurIndexQuestion={setCurIndexQuestion}
-          curIndexQuestion={curIndexQuestion}
-          curQuestion={curQuestion}
-          questions={questions}
-        />
+        {
+          loading
+            ? <Box sx={{ textAlign: 'center' }}>
+              <CircularProgress />
+            </Box>
+            : <QuestionNavbar
+              questionAmount={questionAmount}
+              setCurIndexQuestion={setCurIndexQuestion}
+              curIndexQuestion={curIndexQuestion}
+              curQuestion={curQuestion}
+              questions={questions}
+              loading={loading}
+            />
+        }
       </Box>
       <Box className='exam__container--right'>
-        <QuestionDetail
-          curQuestion={curQuestion}
-          setCurQuestion={setCurQuestion}
-          nameTest={nameTest}
-          startCountDown={startCountDown}
-          setStartCountDown={setStartCountDown}
-          loading={loading}
-          questions={questions}
-          duration={duration}
-          minPointToPass={minPointToPass}
-          questionAmount={questionAmount}
-        />
+        {
+          loading
+            ? <Box sx={{ textAlign: 'center' }}>
+              <CircularProgress />
+            </Box>
+            : <QuestionDetail
+              curQuestion={curQuestion}
+              setCurQuestion={setCurQuestion}
+              nameTest={nameTest}
+              startCountDown={startCountDown}
+              setStartCountDown={setStartCountDown}
+              loading={loading}
+              questions={questions}
+              duration={duration}
+              minPointToPass={minPointToPass}
+              questionAmount={questionAmount}
+            />
+        }
       </Box>
     </Box>
   );

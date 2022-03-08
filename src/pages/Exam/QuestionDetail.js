@@ -1,31 +1,17 @@
-import { useEffect, useState } from "react";
-
-// @mui material components
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Switch from "@mui/material/Switch";
-
-// Material Kit 2 React components
-import MKBox from "components/MKBox";
-import MKInput from "components/MKInput";
-import MKButton from "components/MKButton";
-import MKTypography from "components/MKTypography";
 import {
   Box,
   Button,
-  Typography,
+  CircularProgress,
   FormControl,
-  FormLabel,
-  RadioGroup,
   FormControlLabel,
+  Modal,
   Radio,
-  Modal
+  RadioGroup,
+  Typography
 } from "@mui/material";
-import infoAPI from "api/infoAPI";
+import { padding } from "@mui/system";
+import { useEffect, useState } from "react";
 import { STATUS } from "./constant";
-import Countdown from "react-countdown";
-import { display } from "@mui/system";
-import { internal_resolveProps } from "@mui/utils";
 
 const style = {
   position: 'absolute',
@@ -49,14 +35,35 @@ const QuestionDetail = ({
   questionAmount,
   loading
 }) => {
+  console.log({ questions })
 
   const [valueRadio, setValueRadio] = useState(-1)
-  const [userPoint, setUserPoint] = useState(0)
   const [showModalResult, setShowModalResult] = useState(false);
+  const [countDown, setCountDown] = useState(60000);
+  const [time, setTime] = useState('00:00')
 
   useEffect(() => {
     setValueRadio(curQuestion?.curAnswer + 1 ? curQuestion?.curAnswer : -1)
   }, [curQuestion])
+
+  useEffect(() => {
+    if (curQuestion) {
+      if (countDown < 0) {
+        setTime('00:00')
+        setShowModalResult(true)
+      }
+      else {
+        setTimeout(() => {
+          setCountDown(countDown - 1000)
+          let minutes = Math.floor(countDown / (60 * 1000));
+          let seconds = Math.floor(countDown % (60 * 1000) / 1000);
+          setTime(`${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`)
+        }, 1000)
+        return
+      }
+    }
+
+  }, [countDown, loading])
 
   const onCloseModal = () => {
     setShowModalResult(false)
@@ -85,7 +92,6 @@ const QuestionDetail = ({
     const value = e.target.value;
     progressWhenChangeAnswer(value, curQuestion);
   };
-
 
   const renderAnwserQuestion = (listAnswers) => {
     return (
@@ -121,35 +127,6 @@ const QuestionDetail = ({
     setShowModalResult(true)
   }
 
-
-  const [countDown, setCountDown] = useState(10000);
-  const [time, setTime] = useState('00:00')
-
-  useEffect(() => {
-    if (curQuestion) {
-      if (countDown < 0) {
-        setTime('00:00')
-        setShowModalResult(true)
-      }
-      else {
-        setTimeout(() => {
-          setCountDown(countDown - 1000)
-          let minutes = Math.floor(countDown / (60 * 1000));
-          let seconds = Math.floor(countDown % (60 * 1000) / 1000);
-          setTime(`${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`)
-        }, 1000)
-        return
-      }
-    }
-
-  }, [countDown, loading])
-
-  // useEffect(() => {
-  //   if (curQuestion)
-  //     progressWhenChangeAnswer()
-  // }, [valueRadio])
-
-
   const excutePointOfExam = () => {
     let result = 0;
     for (let question of questions) {
@@ -157,22 +134,18 @@ const QuestionDetail = ({
         result += duration
       }
     }
+    console.log({ result })
     return result
   }
 
-  // useEffect(() => {
-  //   if (showModalResult) {
-  //     excutePointOfExam()
-  //   }
-  // }, [showModalResult])
-
   return (
-    <Box>
+    <Box >
       <Box className='detail__exam' >
-        <Typography component={"div"} variant='subtitle1' className="name__test">{nameTest}</Typography>
+        <Typography component={"div"} variant='subtitle1' className="name__test">{nameTest ? nameTest : ''}</Typography>
         <Typography component={"div"} variant='subtitle1' className="countdown__oclock">Thời gian: {time}</Typography>
         <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button>
       </Box>
+
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography
           component={"div"}
@@ -189,6 +162,7 @@ const QuestionDetail = ({
       <Box className='answer__container'>
         {renderAnwserQuestion(curQuestion.answers)}
       </Box>
+
       <Modal
         open={showModalResult}
         onClose={onCloseModal}

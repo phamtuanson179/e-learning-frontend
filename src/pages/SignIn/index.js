@@ -7,19 +7,12 @@ import ENDPOINT from "api/loginAPI";
 import APP_CONSTANTS from "constants/appConstants";
 //import useMediaQuery from '@mui/material/useMediaQuery';
 
-// react-router-dom components
-//import { Link } from "react-router-dom";
-
 // @mui material components
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
 //import MuiLink from "@mui/material/Link";
 
-// // @mui icons
-// import FacebookIcon from "@mui/icons-material/Facebook";
-// import GitHubIcon from "@mui/icons-material/GitHub";
-// import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
@@ -27,9 +20,6 @@ import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
 import MKButton from "components/MKButton";
 
-// Material Kit 2 React example components
-// import DefaultNavbar from "examples/Navbars/DefaultNavbar";
-// import SimpleFooter from "examples/Footers/SimpleFooter";
 
 // Material Kit 2 React page layout routes
 import routes from "routes";

@@ -11,7 +11,8 @@ const AppContent = () => {
                 key={idx}
                 path={route.path}
                 exact={route.exact}
-                element={route.component}
+                element={route.component ? route.component : ''}
+                render={route.render ? route.render : ''}
               />
             )
           );

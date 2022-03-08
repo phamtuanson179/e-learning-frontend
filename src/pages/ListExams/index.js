@@ -1,4 +1,4 @@
-import BlockCourse from "./BlockCourse";
+import BlockExams from "./BlockExams";
 import Card from "@mui/material/Card";
 const ListExams = () => {
   return (
@@ -14,7 +14,7 @@ const ListExams = () => {
         boxShadow: ({ boxShadows: { xxl } }) => xxl,
       }}
     >
-      <BlockCourse />
+      <BlockExams />
     </Card>
   );
 };

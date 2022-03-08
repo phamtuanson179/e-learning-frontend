@@ -49,7 +49,8 @@ const routes = [
     path: "exam",
     exact: true,
     name: "Exam",
-    component: <Exam />,
+    // render: (props) => { < Exam  {...props} /> },
+    component: < Exam />,
   },
 ];
 

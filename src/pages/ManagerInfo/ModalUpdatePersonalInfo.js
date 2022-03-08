@@ -54,6 +54,7 @@ const ModalUpdatePersonalInfo = ({
         console.log({ newData })
         await infoAPI.putUpdateUser(newData).then(() => {
             setPersonalInfo(newData)
+            setShowModalUpdatePersonalInfo(false)
         })
     }
     return (

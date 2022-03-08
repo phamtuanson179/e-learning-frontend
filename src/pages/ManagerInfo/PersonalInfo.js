@@ -18,11 +18,14 @@ import ModalUpdatePersonalInfo from "./ModalUpdatePersonalInfo";
 const PersonalInfo = () => {
     const [checked, setChecked] = useState(true);
     const [personalInfo, setPersonalInfo] = useState('');
-    const [showModalUpdatePersonalInfo, setShowModalUpdatePersonalInfo] = useState(false)
+    const [showModalUpdatePersonalInfo, setShowModalUpdatePersonalInfo] = useState(false);
+
+
 
     const getPersonalInfo = async () => {
         await infoAPI.getInfo().then((res) => {
-            setPersonalInfo(res)
+            console.log({ res })
+            setPersonalInfo(res?.data)
         })
     }
 
