@@ -15,7 +15,7 @@ import MKTypography from "components/MKTypography";
 
 import brand from '../../assets/images/techpro-images/brand.png'
 
-function AppFooter({ content }) {
+function TPAppFooter({ content }) {
   const { brand, socials, menus, copyright } = content;
   const location = useLocation()
 
@@ -58,8 +58,8 @@ function AppFooter({ content }) {
 }
 
 // Typechecking props for the DefaultFooter
-AppFooter.propTypes = {
+TPAppFooter.propTypes = {
   content: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.object, PropTypes.array])).isRequired,
 };
 
-export default AppFooter;
+export default TPAppFooter;

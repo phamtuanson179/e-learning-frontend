@@ -1,24 +1,23 @@
-import AppContent from 'components/AppContent'
-import AppFooter from 'components/AppFooter'
+import TPAppContent from 'components/TPAppContent'
+import TPAppFooter from 'components/TPAppFooter'
 import React from 'react'
-import AppHeader from '../components/AppHeader'
+import TPAppHeader from '../components/TPAppHeader'
 import footerRoutes from "footer.routes";
 
 
 const DefaultLayout = () => {
     return (
         <>
-            <AppHeader
+            <TPAppHeader
                 action={{
                     type: "external",
-                    route: "https://www.creative-tim.com/product/material-kit-react",
-                    label: "Đăng nhập",
+                    // route: "https://www.creative-tim.com/product/material-kit-react",
                     color: "info",
                 }}
                 sticky
             />
-            <AppContent />
-            <AppFooter
+            <TPAppContent />
+            <TPAppFooter
                 content={footerRoutes}
             />
 

@@ -1,14 +1,10 @@
-// prop-types is a library for typechecking of props
-import PropTypes from "prop-types";
 
-// @mui material components
-import Tooltip from "@mui/material/Tooltip";
-
-// Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
-function ExampleCard({ image, name, count, pro, ...rest }) {
+
+
+function TPCardItem({ image, name, count, type, ...rest }) {
   const imageTemplate = (
     <MKBox
       bgColor="white"
@@ -36,7 +32,6 @@ function ExampleCard({ image, name, count, pro, ...rest }) {
         alt={name}
         width="100%"
         my="auto"
-        opacity={pro ? 0.6 : 1}
       />
     </MKBox>
   );
@@ -54,7 +49,7 @@ function ExampleCard({ image, name, count, pro, ...rest }) {
           )}
           {count > 0 && (
             <MKTypography variant="button" fontWeight="regular" color="secondary">
-              {count} {count === 1 ? "Example" : "Examples"}
+              {count} {type}
             </MKTypography>
           )}
         </MKBox>
@@ -63,19 +58,4 @@ function ExampleCard({ image, name, count, pro, ...rest }) {
   );
 }
 
-// Setting default props for the ExampleCard
-ExampleCard.defaultProps = {
-  name: "",
-  count: 0,
-  pro: false,
-};
-
-// Typechecking props for the ExampleCard
-ExampleCard.propTypes = {
-  image: PropTypes.string.isRequired,
-  name: PropTypes.string,
-  count: PropTypes.number,
-  pro: PropTypes.bool,
-};
-
-export default ExampleCard;
+export default TPCardItem;

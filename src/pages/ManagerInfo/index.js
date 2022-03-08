@@ -7,7 +7,6 @@ import PersonalInfo from './PersonalInfo';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
-
     return (
         <div
             role="tabpanel"
@@ -25,26 +24,14 @@ const TabPanel = (props) => {
     );
 }
 
-// function a11yProps(index) {
-//     return {
-//         id: `vertical-tab-${index}`,
-//         'aria-controls': `vertical-tabpanel-${index}`,
-//     };
-// }
-
 const ManagerInfo = ({ role }) => {
     const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
-        console.log({ newValue })
         setValue(newValue);
     };
     return (
-
-        <Box
-
-            className='manager-info__container'
-        >
+        <Box className='manager-info__container' >
             <Box className='left__container'>
                 <Tabs
                     orientation="vertical"
@@ -62,17 +49,14 @@ const ManagerInfo = ({ role }) => {
                 </Tabs>
 
             </Box >
-            <div className='right__container'>
-                <TabPanel value={value} index={0}>
+            <Box className='right__container'>
+                <TabPanel value={value} index={0} className='tab--personal-info'>
                     <PersonalInfo />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     Item Two
                 </TabPanel>
-            </div>
-
-
-
+            </Box>
         </Box>
     );
 }

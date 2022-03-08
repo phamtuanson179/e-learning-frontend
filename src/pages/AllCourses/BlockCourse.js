@@ -14,30 +14,28 @@ Coded by www.creative-tim.com
 */
 
 // react-router-dom components
-import { Link } from "react-router-dom";
-
 // @mui material components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
-import MKBadge from "components/MKBadge";
 import MKTypography from "components/MKTypography";
-
-// Presentation page components
-import ExampleCard from "./ExampleCard";
-
+import TPCardItem from "components/TPCardItem";
+import { Link } from "react-router-dom";
 // Data
 import data from "./courseInfo";
 
+
+
+
+
 function BlockCourse() {
-    const renderData = data.map(({ title, description, items }) => (
-        <Grid container spacing={4}>
+    const renderData = data.map(({ title, description, items }, idx) => (
+        <Grid key={idx} container spacing={4}>
             {items.map(({ image, name, count, route, pro }, idx) => (
                 <Grid item xs={12} md={4} sx={{ mb: 2 }} key={name}>
                     <Link to={pro ? "/" : route}>
-                        <ExampleCard image={image} name={name} count={count} pro={pro} />
+                        <TPCardItem image={image} name={name} count={count} type={'Bài'} />
                     </Link>
                 </Grid>
             ))}

@@ -1,33 +1,71 @@
-import { MENUBAR } from './constant'
-import { Box, Button } from '@mui/material'
+import { MENUBAR, STATUS } from './constant'
+import { Box, Button, CircularProgress, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
-const QuestionNavbar = (menuBar) => {
-    const [questionAmount, setQuestionAmout] = useState(20)
+const QuestionNavbar = ({ questionAmount, curIndexQuestion, setCurIndexQuestion, questions, loading }) => {
+
+    useEffect(() => {
+        for (let i = 0; i < questionAmount; i++) {
+            //add style responsed cho nhung cau da tra loi
+            if (questions) {
+                if (questions[i]?.status !== STATUS.NORESPONSE)
+                    addStyleResponsed(i)
+                else
+                    removeStyleResponsed(i)
+            }
+
+            //add style cho cau dang tra loi
+            if (i === curIndexQuestion) {
+                addStyleActive(i)
+            } else {
+                removeStyleActive(i)
+            }
+        }
+    }, [curIndexQuestion])
+
     const renderQuestionContainer = () => {
         let result = []
-        console.log('adsfasd')
         for (let i = 0; i < questionAmount; i++) {
-            result.push(<Button>{i + 1}</Button>)
+            if (i === 0) {
+                result.push(<Button key={i} id={i} onClick={onClickButtonQuestion} className='active' >{i + 1}</Button>)
+            } else
+                result.push(<Button key={i} id={i} onClick={onClickButtonQuestion}>{i + 1}</Button>)
+
         }
-        console.log({ result })
         return result
     }
 
+    const onClickButtonQuestion = (e) => {
+        const idx = e.target.id
+        setCurIndexQuestion(parseInt(idx))
+    }
+
+    const addStyleActive = (id) => {
+        document.getElementById(id).classList.add('active')
+    }
+
+    const removeStyleActive = (id) => {
+        document.getElementById(id).classList.remove('active')
+    }
+
+    const addStyleResponsed = (id) => {
+        document.getElementById(id)?.classList.add('responsed')
+    }
+
+    const removeStyleResponsed = (id) => {
+        document.getElementById(id)?.classList.remove('responsed')
+    }
+
+
     return (
         <Box>
-            <div className='title__box'>QuestionNavbar</div>
-            <hr />
+            <Typography className='title__box' component='div' variant='subtitle1'>Exam Navigator</Typography>
             <div className='select-question__box'>
                 <div className='select-question'>
                     {renderQuestionContainer()}
                 </div>
-
-
             </div>
-
-
         </Box>
     )
 }
