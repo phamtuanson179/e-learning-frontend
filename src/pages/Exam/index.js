@@ -33,7 +33,6 @@ const convertDatas = (datas) => {
 const Exam = (props) => {
 
   const location = useLocation();
-  console.log({ location })
   const [questions, setQuestions] = useState();
   const [questionAmount, setQuestionAmount] = useState(0);
   const [curQuestion, setCurQuestion] = useState("");

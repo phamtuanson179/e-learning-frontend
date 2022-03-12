@@ -2,7 +2,7 @@ import { Box, Grid, Input, Modal, Typography, TextField, RadioGroup, Radio, Form
 import { useForm } from 'react-hook-form';
 import { DatePicker } from 'antd'
 import { DesktopDatePicker } from '@mui/lab';
-import infoAPI from '../../api/infoAPI'
+import infoAPI from '../../../api/infoAPI'
 import { Password } from '@mui/icons-material';
 
 const style = {
@@ -28,19 +28,9 @@ const ModalUpdatePersonalInfo = ({
         setShowModalUpdatePersonalInfo(false)
     }
 
-    const { register, handleSubmit } = useForm({
-        defaultValues: {
-            'fullname': personalInfo?.fullname,
-            'date_of_birth': personalInfo?.date_of_birth,
-            'email': personalInfo?.email,
-            'position': personalInfo?.position,
-            'role': personalInfo?.role,
-            'room': personalInfo?.room
-        }
-    });
+    const { register, handleSubmit } = useForm({});
 
     const onSubmit = async (data) => {
-        console.log({ data })
         const convertData = (data) => {
             return {
                 ...data,
@@ -51,7 +41,6 @@ const ModalUpdatePersonalInfo = ({
             }
         }
         const newData = convertData(data)
-        console.log({ newData })
         await infoAPI.putUpdateUser(newData).then(() => {
             setPersonalInfo(newData)
             setShowModalUpdatePersonalInfo(false)
@@ -66,12 +55,11 @@ const ModalUpdatePersonalInfo = ({
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
+                <Typography id="modal-modal-title" variant="h6">
                     Thay đổi thông tin cá nhân
                 </Typography>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    {console.log({})}
                     <Grid
                         className='detail-personal-info__box'
                         container
@@ -88,7 +76,6 @@ const ModalUpdatePersonalInfo = ({
                         </Grid>
                         <Grid item xs={4} className='left__label'>Ngày sinh</Grid>
                         <Grid item xs={8} className='right__detail'>
-                            {/* < {...register('date_of_birth')} defaultValue={personalInfo?.date_of_birth} /> */}
                             <TextField
                                 id="date"
                                 label="Birthday"
@@ -107,8 +94,6 @@ const ModalUpdatePersonalInfo = ({
                         </Grid>
                         <Grid item xs={4} className='left__label'>Vị trí</Grid>
                         <Grid item xs={8} className='right__detail'>
-                            {/* <Input {...register('position')} defaultValue={personalInfo?.position}></Input> */}
-
                             <RadioGroup
                                 aria-labelledby="demo-radio-buttons-group-label"
                                 name="radio-buttons-group"

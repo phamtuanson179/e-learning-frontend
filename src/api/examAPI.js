@@ -10,6 +10,16 @@ const examAPI = {
     const url = "/get_exams_for_room";
     return axiosClient.get(url, { params });
   },
+
+  addExamByAdmin: (data) => {
+    const url = '/admin/add_exam';
+    return axiosClient.post(url, data)
+  },
+
+  deleteExamById: (params) => {
+    const url = '/admin/delete_exam';
+    return axiosClient.delete(url, { params })
+  }
 };
 
 export default examAPI;

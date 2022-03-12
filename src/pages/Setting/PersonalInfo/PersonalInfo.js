@@ -1,30 +1,18 @@
-import { useEffect, useState } from "react";
-
-// @mui material components
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Switch from "@mui/material/Switch";
-
-// Material Kit 2 React components
-import MKBox from "components/MKBox";
-import MKInput from "components/MKInput";
-import MKButton from "components/MKButton";
-import MKTypography from "components/MKTypography";
-import { Box, Button, Card, CardContent, CardHeader, Icon, Typography } from "@mui/material";
-import infoAPI from "api/infoAPI";
 import { Settings } from "@mui/icons-material";
+import { Box, Button, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import infoAPI from "api/infoAPI";
+import { useEffect, useState } from "react";
 import ModalUpdatePersonalInfo from "./ModalUpdatePersonalInfo";
 
+
+
 const PersonalInfo = () => {
-    const [checked, setChecked] = useState(true);
     const [personalInfo, setPersonalInfo] = useState('');
     const [showModalUpdatePersonalInfo, setShowModalUpdatePersonalInfo] = useState(false);
 
-
-
     const getPersonalInfo = async () => {
         await infoAPI.getInfo().then((res) => {
-            console.log({ res })
             setPersonalInfo(res?.data)
         })
     }
@@ -33,7 +21,6 @@ const PersonalInfo = () => {
         getPersonalInfo()
     }, [])
 
-    const handleChecked = () => setChecked(!checked);
 
     const onShowModal = () => {
         setShowModalUpdatePersonalInfo(true)
@@ -41,7 +28,7 @@ const PersonalInfo = () => {
     return (
         <Box className="personal-info__container">
             <Box className="title__box" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography component={'h3'}>Thông tin cá nhân</Typography>
+                <Typography variant='h5' component={'div'}>Thông tin cá nhân</Typography>
                 <Button onClick={onShowModal}><Settings></Settings></Button>
             </Box>
             <Grid

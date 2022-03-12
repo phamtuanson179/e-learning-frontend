@@ -35,11 +35,10 @@ const QuestionDetail = ({
   questionAmount,
   loading
 }) => {
-  console.log({ questions })
 
   const [valueRadio, setValueRadio] = useState(-1)
   const [showModalResult, setShowModalResult] = useState(false);
-  const [countDown, setCountDown] = useState(60000);
+  const [countDown, setCountDown] = useState(duration * 1000);
   const [time, setTime] = useState('00:00')
 
   useEffect(() => {
@@ -72,18 +71,15 @@ const QuestionDetail = ({
   const progressWhenChangeAnswer = (answer, question) => {
     let curQuestion = JSON.parse(JSON.stringify(question));
     curQuestion.curAnswer = parseInt(answer);
-    console.log(curQuestion.curAnswer)
     if (curQuestion?.curAnswer !== -1) {
       const indexAnswerCorrect = curQuestion?.answers?.findIndex(
         (answer) => answer?.is_correct == true
       );
-      console.log({ indexAnswerCorrect })
       if (curQuestion?.curAnswer === indexAnswerCorrect) {
         curQuestion.status = STATUS.CORRECT;
       } else {
         curQuestion.status = STATUS.INCORRECT;
       }
-      console.log({ curQuestion })
       setCurQuestion(curQuestion);
     }
   };
@@ -134,7 +130,6 @@ const QuestionDetail = ({
         result += duration
       }
     }
-    console.log({ result })
     return result
   }
 
@@ -174,7 +169,7 @@ const QuestionDetail = ({
             Điểm của bạn là
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {showModalResult ? `${excutePointOfExam()}/${duration * questionAmount}` : ''}
+            {showModalResult ? `${excutePointOfExam()}/${10 * questionAmount}` : ''}
           </Typography>
         </Box>
       </Modal>
