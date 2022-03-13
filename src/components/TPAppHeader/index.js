@@ -9,10 +9,16 @@ import checkLogin from "utils/checkLogin";
 import brandLogoTechpro from "../../assets/images/techpro-images/brand.png";
 import DefaultNavbarDropdown from "./DefaultNavbarDropdown";
 import DefaultNavbarMobile from "./DefaultNavbarMobile";
+import { useNavigate } from "react-router-dom";
 import "./header.scss";
 
 const LOGIN = 'Đăng nhập'
-const LOGOUT = 'Đăng xuất'
+const LOGOUT = () =>{
+  'Đăng xuất';
+  localStorage.clear();
+  navigate("/");
+
+};
 
 function TPAppHeader({ transparent, light, action, relative, center }) {
 
@@ -130,7 +136,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
             display={{ xs: "none", lg: "flex" }}
             ml='auto'
             mr={center ? "auto" : 0}
-          >
+          > 
             {renderNavbarItems}
           </MKBox>
           <MKBox ml={{ xs: "auto", lg: 0 }}>
@@ -143,8 +149,9 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
                 }
                 color={action.color ? action.color : "info"}
                 size='small'
+                onClick={LOGOUT}
               >
-                {checkLogin() ? LOGOUT : LOGIN}
+                Đăng xuất
               </MKButton>
             </Link>
           </MKBox>
