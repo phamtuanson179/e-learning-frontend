@@ -5,6 +5,7 @@ import isEmail from "validator/lib/isEmail";
 import axiosClient from "api/baseAPI";
 import ENDPOINT from "api/loginAPI";
 import APP_CONSTANTS from "constants/appConstants";
+import Icon from "@mui/material/Icon";
 //import useMediaQuery from '@mui/material/useMediaQuery';
 
 // @mui material components
@@ -35,15 +36,9 @@ function SignInBasic(props) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [state, setState] = useState(false);
   const [validationMsg, setValidationMsg] = useState({});
   const [message, setMessage] = useState("");
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem(APP_CONSTANTS.USER_TOKEN)
-  //   if (token) {
-  //     history.replace('./get_exam')
-  //   }
-  // })
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -61,6 +56,10 @@ function SignInBasic(props) {
     const value = event.target.value;
     setPassword(value);
   };
+
+  const showPass = ()=>{
+    setState(prevState => !prevState);
+  }
 
   const validateAll = () => {
     const msg = {};
@@ -95,30 +94,6 @@ function SignInBasic(props) {
         localStorage.setItem("emailUser", data.email);
         navigate("/");
       });
-      //console.log({data})
-      // const url=ENDPOINT.LOGIN
-      // //console.log({url})
-
-      //   const res = await axiosClient.post(
-      //     url,
-      //     data,
-      //     {
-      //       headers: {
-      //         'accept': 'application/json',
-      //         'Content-Type': 'application/json'
-      //       }
-      //     }
-      //     ).then((res)=> {
-      //       //this.setState({data:res.data});
-      //     console.log(res.data);
-      //   if (res.data && res.data.messageCode === 1) {
-      //     //localStorage.setItem(APP_CONSTANTS.USER_TOKEN, res.data.result.access_token)
-      //     setMessage("")
-      //     history.replace('/get_exam')
-      // } else {
-      //     setMessage(res.data.message)
-      // }
-      //  })
     } catch (error) {
       console.log("api login error: ", error);
     }
@@ -178,7 +153,7 @@ function SignInBasic(props) {
                 <MKTypography
                   variant='h4'
                   fontWeight='medium'
-                  //color='white'
+                  color='white'
                   mt={1}
                 >
                   Đăng nhập
@@ -197,17 +172,21 @@ function SignInBasic(props) {
                       fullWidth
                     />
                   </MKBox>
-                  <MKBox mb={2}>
+                  <MKBox display='flex' alignItems='center' mb={2}>
                     <MKInput
-                      type='password'
+                      type={state ? "text" : "password"}
                       label='Password'
                       id='password'
                       placeholder='******'
                       onChange={onChangePassword}
-                      fullWidth
+                      fullWidth >
+                    </MKInput>
+                    <Switch
+                      checked={state}
+                      onChange={showPass}
                     />
                   </MKBox>
-
+                  
                   <MKBox display='flex' alignItems='center' ml={-1}>
                     <Switch
                       checked={rememberMe}
@@ -216,7 +195,7 @@ function SignInBasic(props) {
                     <MKTypography
                       variant='button'
                       fontWeight='regular'
-                      // color='text'
+                      color='text'
                       onClick={handleSetRememberMe}
                       sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
                     >
