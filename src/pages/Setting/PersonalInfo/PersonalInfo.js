@@ -3,7 +3,7 @@ import { Box, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import infoAPI from "api/infoAPI";
 import { useEffect, useState } from "react";
-import ModalUpdatePersonalInfo from "./ModalUpdatePersonalInfo";
+import ModalUpdatePersonalInfo from "./UpdatePersonalInfoModal";
 
 
 

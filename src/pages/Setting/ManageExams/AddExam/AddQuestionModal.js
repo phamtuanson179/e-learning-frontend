@@ -18,7 +18,12 @@ const style = {
 
 const yupSchema = yup.object().shape(
     {
-        content: yup.string().required('Trường này bắt buộc!')
+        content: yup.string().required('Trường này bắt buộc!'),
+        ans0: yup.string().required('Trường này bắt buộc!'),
+        ans1: yup.string().required('Trường này bắt buộc!'),
+        ans2: yup.string().required('Trường này bắt buộc!'),
+        ans3: yup.string().required('Trường này bắt buộc!'),
+        correctAnswerIndex: yup.string().required('Cần chọn một câu trả lời đúng!')
     }
 )
 
@@ -105,7 +110,7 @@ const AddQuestionModal = ({ setQuestionList, questionList }) => {
                                     name='content'
                                     control={control}
                                     render={({ field }) => {
-                                        return (<Input defaultValue='' error={errors?.content} {...field} />)
+                                        return (<Input defaultValue='' {...field} />)
                                     }}
                                 />
                                 <Typography variant='body2'>{errors.content?.message}</Typography>
@@ -121,41 +126,55 @@ const AddQuestionModal = ({ setQuestionList, questionList }) => {
                                     render={({ field }) => {
                                         return (
                                             <RadioGroup {...field}>
-                                                <FormControlLabel value='0' control={<Radio />} label="Câu trả lời 1" />
-                                                <Controller
-                                                    name='ans0'
-                                                    control={control}
-                                                    render={({ field }) => {
-                                                        return (<Input defaultValue='' {...field} />)
-                                                    }}
-                                                />
-                                                <FormControlLabel value='1' control={<Radio />} label="Câu trả lời 2" />
-                                                <Controller
-                                                    name='ans1'
-                                                    control={control}
-                                                    render={({ field }) => {
-                                                        return (<Input defaultValue='' {...field} />)
-                                                    }}
-                                                />
-                                                <FormControlLabel value="2" control={<Radio />} label="Câu trả lời 3" />
-                                                <Controller
-                                                    name='ans2'
-                                                    control={control}
-                                                    render={({ field }) => {
-                                                        return (<Input defaultValue='' {...field} />)
-                                                    }}
-                                                />
-                                                <FormControlLabel value="3" control={<Radio />} label="Câu trả lời 4" />
-                                                <Controller
-                                                    name='ans3'
-                                                    control={control}
-                                                    render={({ field }) => {
-                                                        return (<Input defaultValue='' {...field} />)
-                                                    }}
-                                                />
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <FormControlLabel value='0' control={<Radio />} label="" sx={{ display: 'flex' }} />
+                                                    <Controller
+                                                        name='ans0'
+                                                        control={control}
+                                                        render={({ field }) => {
+                                                            return (<Input defaultValue='' {...field} />)
+                                                        }}
+                                                    />
+                                                </Box>
+                                                <Typography variant='body2'>{errors.ans0?.message}</Typography>
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <FormControlLabel value='1' control={<Radio />} label="" />
+                                                    <Controller
+                                                        name='ans1'
+                                                        control={control}
+                                                        render={({ field }) => {
+                                                            return (<Input defaultValue='' {...field} />)
+                                                        }}
+                                                    />
+                                                </Box>
+                                                <Typography variant='body2'>{errors.ans1?.message}</Typography>
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <FormControlLabel value="2" control={<Radio />} label="" />
+                                                    <Controller
+                                                        name='ans2'
+                                                        control={control}
+                                                        render={({ field }) => {
+                                                            return (<Input defaultValue='' {...field} />)
+                                                        }}
+                                                    />
+                                                </Box>
+                                                <Typography variant='body2'>{errors.ans2?.message}</Typography>
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <FormControlLabel value="3" control={<Radio />} label="" />
+                                                    <Controller
+                                                        name='ans3'
+                                                        control={control}
+                                                        render={({ field }) => {
+                                                            return (<Input defaultValue='' {...field} />)
+                                                        }}
+                                                    />
+                                                </Box>
+                                                <Typography variant='body2'>{errors.ans3?.message}</Typography>
                                             </RadioGroup>)
                                     }}
                                 />
+                                <Typography variant='body2'>{errors.correctAnswerIndex?.message}</Typography>
+
                             </Grid>
                         </Grid>
                         <Button onClick={handleCloseAddQuestionModal}>Đóng</Button>

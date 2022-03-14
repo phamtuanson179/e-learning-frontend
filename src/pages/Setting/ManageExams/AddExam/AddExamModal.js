@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import './AddExamModal.scss';
 import AddQuestionModal from './AddQuestionModal';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 
 const style = {
     position: 'absolute',
@@ -28,10 +31,18 @@ const initExam =
     questions: []
 }
 
+const yupSchema = yup.object().shape({
+    name: yup.string().required('Trường này bắt buộc!'),
+    duration: yup.number().required('Trường này bắt buộc').integer('Cần nhập số nguyên!').min(0, 'Cần nhập số nguyên dương'),
+    minCorrectAnswers: yup.number().required('Trường này bắt buộc').integer('Cần nhập số nguyên!').min(0, 'Cần nhập số nguyên dương'),
+    requireRoom: yup.string().required('Trường này bắt buộc!')
+})
+
 const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
     const [isOpenAddExamModal, setIsOpenAddExamModal] = useState(false);
     const [exam, setExam] = useState(initExam)
     const [questionList, setQuestionList] = useState([])
+
     const handleCloseAddExamModal = () => {
         setIsOpenAddExamModal(false)
     }
@@ -40,7 +51,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
         setIsOpenAddExamModal(true)
     }
 
-    const { control, handleSubmit, reset } = useForm({});
+    const { control, handleSubmit, reset, formState: { errors } } = useForm({ resolver: yupResolver(yupSchema) });
 
     useEffect(() => {
         console.log({ questionList })
@@ -173,15 +184,14 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                     </Typography>
                                     <Controller
                                         name='name'
-                                        rules={{
-                                            required: true
-                                        }}
                                         control={control}
                                         render={({ field }) => {
                                             return (<Input sx={{ flex: 2 }} {...field} defaultValue='' />)
                                         }}
                                     />
+
                                 </Box>
+                                <Typography variant='body2' textAlign={'right'}>{errors.name?.message}</Typography>
                                 <Box sx={{ display: 'flex' }}>
                                     <Typography
                                         variant='body1'
@@ -196,11 +206,13 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                             required: true
                                         }}
                                         render={({ field }) => {
-                                            return (<Input sx={{ flex: 2 }} defaultValue='' {...field} />)
+                                            return (<Input sx={{ flex: 2 }} type='number'
+                                                defaultValue='0' {...field} />)
                                         }}
                                     />
 
                                 </Box>
+                                <Typography variant='body2' textAlign={'right'}>{errors.duration?.message}</Typography>
                                 <Box sx={{ display: 'flex' }}>
                                     <Typography
                                         variant='body1'
@@ -215,10 +227,13 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                             required: true
                                         }}
                                         render={({ field }) => {
-                                            return (<Input sx={{ flex: 2 }} defaultValue='' {...field} />)
+                                            return (<Input sx={{ flex: 2 }}
+                                                type='number'
+                                                defaultValue='0' {...field} />)
                                         }}
                                     />
                                 </Box>
+                                <Typography variant='body2' textAlign={'right'}>{errors.minCorrectAnswers?.message}</Typography>
                                 <Box sx={{ display: 'flex' }}>
                                     <Typography
                                         variant='body1'
@@ -242,6 +257,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                         }}
                                     />
                                 </Box>
+                                <Typography variant='body2' textAlign={'right'}>{errors.requireRoom?.message}</Typography>
                             </Box>
                             <Box className='right__section'>
                                 {renderQuestions(questionList)}
