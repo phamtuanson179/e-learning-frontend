@@ -14,7 +14,6 @@ import "./header.scss";
 
 const LOGIN = 'Đăng nhập'
 const LOGOUT = () =>{
-  'Đăng xuất';
   localStorage.clear();
   navigate("/");
 
