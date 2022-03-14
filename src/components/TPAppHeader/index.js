@@ -13,12 +13,7 @@ import { useNavigate } from "react-router-dom";
 import "./header.scss";
 
 const LOGIN = 'Đăng nhập'
-const LOGOUT = () =>{
-  'Đăng xuất';
-  localStorage.clear();
-  navigate("/");
-
-};
+const LOGOUT = 'Đăng xuất'
 
 function TPAppHeader({ transparent, light, action, relative, center }) {
 
@@ -93,6 +88,11 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
     return null;
   }
 
+  const logout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
   return (
     <Container className='header__wrapper'>
       <MKBox
@@ -136,7 +136,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
             display={{ xs: "none", lg: "flex" }}
             ml='auto'
             mr={center ? "auto" : 0}
-          > 
+          >
             {renderNavbarItems}
           </MKBox>
           <MKBox ml={{ xs: "auto", lg: 0 }}>
@@ -149,9 +149,9 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
                 }
                 color={action.color ? action.color : "info"}
                 size='small'
-                onClick={LOGOUT}
+                onClick={logout}
               >
-                Đăng xuất
+                {LOGOUT}
               </MKButton>
             </Link>
           </MKBox>

@@ -89,13 +89,12 @@ function SignInBasic(props) {
       };
 
       await loginAPI.login(data).then((res) => {
-        console.log({ res });
         localStorage.setItem("accessToken", res.data.access_token);
         localStorage.setItem("emailUser", data.email);
         navigate("/");
       });
     } catch (error) {
-      console.log("api login error: ", error);
+      console.log(error);
     }
   };
 

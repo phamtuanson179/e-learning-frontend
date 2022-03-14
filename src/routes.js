@@ -1,9 +1,9 @@
 import CurCourses from "pages/CurCourses";
-import ManagerInfo from "./pages/ManagerInfo";
-import { default as AllCourses, default as Course } from "./pages/AllCourses";
-import SignInBasic from "./pages/SignIn";
 import Exam from "pages/Exam";
 import ListExams from "pages/ListExams";
+import { default as AllCourses } from "./pages/AllCourses";
+import Setting from "./pages/Setting";
+import SignInBasic from "./pages/SignIn";
 
 // const Home = React.lazy(() => import('./pages/Home'))
 // const Course = React.lazy(() => import('./pages/Course'))
@@ -40,10 +40,10 @@ const routes = [
     component: <SignInBasic />,
   },
   {
-    path: "manager-info",
+    path: "setting",
     exact: true,
-    name: "ManagerInfo",
-    component: <ManagerInfo />,
+    name: "Setting",
+    component: <Setting />,
   },
   {
     path: "exam",
