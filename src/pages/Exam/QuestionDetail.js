@@ -7,24 +7,32 @@ import {
   Modal,
   Radio,
   RadioGroup,
-  Typography
+  Typography,
+  Container,
 } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Slide from "@mui/material/Slide";
+import MKBox from "components/MKBox";
+import MKTypography from "components/MKTypography";
+import MKButton from "components/MKButton";
+import CloseIcon from "@mui/icons-material/Close";
 import { padding } from "@mui/system";
 import { useEffect, useState } from "react";
 import { STATUS } from "./constant";
+import { useNavigate } from "react-router-dom";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+  position:'relative',
+  width:'500px',
+  display:'flex',
+  flexDirection:'column',
+  borderRadius:'12px',
+  bgColor:'white',
+  shadow:'xl',
+  border:'12px',
 
+};
 const QuestionDetail = ({
   curQuestion,
   setCurQuestion,
@@ -32,7 +40,7 @@ const QuestionDetail = ({
   questions,
   duration,
   minPointToPass,
-  questionAmount,
+  questionAmount, 
   loading
 }) => {
 
@@ -40,7 +48,6 @@ const QuestionDetail = ({
   const [showModalResult, setShowModalResult] = useState(false);
   const [countDown, setCountDown] = useState(duration * 1000);
   const [time, setTime] = useState('00:00')
-
   useEffect(() => {
     setValueRadio(curQuestion?.curAnswer + 1 ? curQuestion?.curAnswer : -1)
   }, [curQuestion])
@@ -158,22 +165,42 @@ const QuestionDetail = ({
         {renderAnwserQuestion(curQuestion.answers)}
       </Box>
 
-      <Modal
-        open={showModalResult}
-        onClose={onCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Điểm của bạn là
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {showModalResult ? `${excutePointOfExam()}/${10 * questionAmount}` : ''}
-          </Typography>
-        </Box>
-      </Modal>
-    </Box>
+    <MKBox component="section" py={6}> 
+    <Container>
+    <Modal 
+      open={showModalResult} 
+      onClose={onCloseModal} 
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      sx={{ display: "grid", placeItems: "center" }}>
+    <MKBox sx={style}>
+      <MKBox display="flex" alginItems="center" justifyContent="space-between" p={2}>
+        <MKTypography variant="h5">Kết quả thi</MKTypography>
+        <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={onCloseModal} />
+      </MKBox>
+      <MKBox p={2}>
+        <MKTypography 
+          variant="body2" 
+          color="secondary" 
+          fontWeight="regular" 
+          mt='2' 
+          mb={3}>
+          Điểm: {showModalResult ? `${excutePointOfExam()}/${10 * questionAmount}` : ''}
+        </MKTypography>
+        <MKTypography variant="h6" sx={{ fontStyle: 'italic'}}>
+          Chúc mừng bạn đã vuợt qua bài thi!
+        </MKTypography>
+      </MKBox>
+      <MKBox display="flex" justifyContent="space-between" p={1.5}>
+        <MKButton ariant="gradient" color="info" onClick={onCloseModal}>
+          Xác nhận
+        </MKButton>
+      </MKBox>
+    </MKBox>
+  </Modal>
+  </Container>
+  </MKBox>
+  </Box>
   );
 };
 
