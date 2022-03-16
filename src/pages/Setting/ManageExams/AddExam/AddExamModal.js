@@ -7,7 +7,6 @@ import AddQuestionModal from './AddQuestionModal';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-
 const style = {
     position: 'absolute',
     top: '50%',
@@ -189,7 +188,6 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                             return (<Input sx={{ flex: 2 }} {...field} defaultValue='' />)
                                         }}
                                     />
-
                                 </Box>
                                 <Typography variant='body2' textAlign={'right'}>{errors.name?.message}</Typography>
                                 <Box sx={{ display: 'flex' }}>
@@ -202,15 +200,11 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                     <Controller
                                         name='duration'
                                         control={control}
-                                        rules={{
-                                            required: true
-                                        }}
                                         render={({ field }) => {
                                             return (<Input sx={{ flex: 2 }} type='number'
                                                 defaultValue='0' {...field} />)
                                         }}
                                     />
-
                                 </Box>
                                 <Typography variant='body2' textAlign={'right'}>{errors.duration?.message}</Typography>
                                 <Box sx={{ display: 'flex' }}>
@@ -223,9 +217,6 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                     <Controller
                                         name='minCorrectAnswers'
                                         control={control}
-                                        rules={{
-                                            required: true
-                                        }}
                                         render={({ field }) => {
                                             return (<Input sx={{ flex: 2 }}
                                                 type='number'
@@ -273,3 +264,4 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
 }
 
 export default AddExamModal
+

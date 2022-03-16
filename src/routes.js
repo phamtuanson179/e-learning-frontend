@@ -1,20 +1,20 @@
 import CurCourses from "pages/CurCourses";
 import Exam from "pages/Exam";
-import ListExams from "pages/ListExams";
+import ForgotPassword from "pages/ForgotPassword";
+import ListExams from "pages/ListExams/ListExams";
 import { default as AllCourses } from "./pages/AllCourses";
 import Setting from "./pages/Setting";
-import SignInBasic from "./pages/SignIn";
 
 // const Home = React.lazy(() => import('./pages/Home'))
 // const Course = React.lazy(() => import('./pages/Course'))
 
 const routes = [
-  {
-    path: "/",
-    exact: true,
-    name: "Home",
-    component: <CurCourses />,
-  },
+  // {
+  //   path: "/",
+  //   exact: true,
+  //   name: "Home",
+  //   component: <CurCourses />,
+  // },
   {
     path: "current-courses",
     exact: true,
@@ -34,12 +34,6 @@ const routes = [
     component: <ListExams />,
   },
   {
-    path: "sign-in",
-    exact: true,
-    name: "Course",
-    component: <SignInBasic />,
-  },
-  {
     path: "setting",
     exact: true,
     name: "Setting",
@@ -49,8 +43,13 @@ const routes = [
     path: "exam",
     exact: true,
     name: "Exam",
-    // render: (props) => { < Exam  {...props} /> },
-    component: < Exam />,
+    component: <Exam />,
+  },
+  {
+    path: "forgot-password",
+    exact: true,
+    name: "ForgotPassword",
+    component: <ForgotPassword />,
   },
 ];
 

@@ -19,20 +19,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import { padding } from "@mui/system";
 import { useEffect, useState } from "react";
 import { STATUS } from "./constant";
+import ResultModal from "./ResultModal";
 import { useNavigate } from "react-router-dom";
 
-const style = {
-  bgcolor: 'background.paper',
-  position:'relative',
-  width:'500px',
-  display:'flex',
-  flexDirection:'column',
-  borderRadius:'12px',
-  bgColor:'white',
-  shadow:'xl',
-  border:'12px',
 
-};
 const QuestionDetail = ({
   curQuestion,
   setCurQuestion,
@@ -40,7 +30,7 @@ const QuestionDetail = ({
   questions,
   duration,
   minPointToPass,
-  questionAmount, 
+  questionAmount,
   loading
 }) => {
 
@@ -130,22 +120,16 @@ const QuestionDetail = ({
     setShowModalResult(true)
   }
 
-  const excutePointOfExam = () => {
-    let result = 0;
-    for (let question of questions) {
-      if (question.status === STATUS.CORRECT) {
-        result += duration
-      }
-    }
-    return result
-  }
+
 
   return (
     <Box >
       <Box className='detail__exam' >
         <Typography component={"div"} variant='subtitle1' className="name__test">{nameTest ? nameTest : ''}</Typography>
         <Typography component={"div"} variant='subtitle1' className="countdown__oclock">Thời gian: {time}</Typography>
-        <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button>
+        {/* <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button> */}
+        <ResultModal showModalResult={showModalResult} setShowModalResult={setShowModalResult} questions={questions} questionAmount={questionAmount} minPointToPass={minPointToPass} />
+
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -165,42 +149,8 @@ const QuestionDetail = ({
         {renderAnwserQuestion(curQuestion.answers)}
       </Box>
 
-    <MKBox component="section" py={6}> 
-    <Container>
-    <Modal 
-      open={showModalResult} 
-      onClose={onCloseModal} 
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      sx={{ display: "grid", placeItems: "center" }}>
-    <MKBox sx={style}>
-      <MKBox display="flex" alginItems="center" justifyContent="space-between" p={2}>
-        <MKTypography variant="h5">Kết quả thi</MKTypography>
-        <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={onCloseModal} />
-      </MKBox>
-      <MKBox p={2}>
-        <MKTypography 
-          variant="body2" 
-          color="secondary" 
-          fontWeight="regular" 
-          mt='2' 
-          mb={3}>
-          Điểm: {showModalResult ? `${excutePointOfExam()}/${10 * questionAmount}` : ''}
-        </MKTypography>
-        <MKTypography variant="h6" sx={{ fontStyle: 'italic'}}>
-          Chúc mừng bạn đã vuợt qua bài thi!
-        </MKTypography>
-      </MKBox>
-      <MKBox display="flex" justifyContent="space-between" p={1.5}>
-        <MKButton ariant="gradient" color="info" onClick={onCloseModal}>
-          Xác nhận
-        </MKButton>
-      </MKBox>
-    </MKBox>
-  </Modal>
-  </Container>
-  </MKBox>
-  </Box>
+
+    </Box>
   );
 };
 
