@@ -110,7 +110,7 @@ const ModalUpdatePersonalInfo = ({
                 </Typography>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Upload
+                    {/* <Upload
                         name="avatar"
                         listType="picture-card"
                         className="avatar-uploader"
@@ -120,8 +120,8 @@ const ModalUpdatePersonalInfo = ({
                         onChange={handleChange}
                     >
                         {/* {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton} */}
-                        {uploadButton}
-                    </Upload>
+                    {/* {uploadButton} */}
+                    {/* </Upload> */}
                     <Grid
                         className='detail-personal-info__box'
                         container

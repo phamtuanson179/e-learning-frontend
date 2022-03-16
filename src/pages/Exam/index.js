@@ -1,22 +1,14 @@
 import {
-  Box,
-  Tabs,
-  Tab,
-  Typography,
-  CircularProgress,
-  Modal,
+  Box, CircularProgress
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { MENUBAR } from "./constant";
-import QuestionNavbar from "./QuestionNavbar.js";
+import examAPI from "api/examAPI";
+import { useEffect, useState } from "react";
+import { useLocation } from 'react-router-dom';
+import { STATUS } from "./constant";
 import "./exam.scss";
 import QuestionDetail from "./QuestionDetail.js";
-import examAPI from "api/examAPI";
-import { STATUS } from "./constant";
-import { SettingsCellRounded } from "@mui/icons-material";
-import Countdown from "react-countdown";
+import QuestionNavbar from "./QuestionNavbar.js";
 
-import { useLocation } from 'react-router-dom'
 
 const convertDatas = (datas) => {
   const result = datas?.map((data, idx) => {
@@ -31,7 +23,6 @@ const convertDatas = (datas) => {
 };
 
 const Exam = (props) => {
-
   const location = useLocation();
   const [questions, setQuestions] = useState();
   const [questionAmount, setQuestionAmount] = useState(0);

@@ -1,6 +1,8 @@
-const checkLogin = () => {
+
+export const checkLogin = () => {
   if (localStorage.getItem("accessToken")) return true;
-  return false;
+  return false
 };
 
-export default checkLogin;
+
+

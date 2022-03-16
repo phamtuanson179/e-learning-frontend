@@ -51,11 +51,10 @@ const BlockExams = () => {
   }, []);
 
   const renderListExams = () => {
-
     return (
-      <Grid container spacing={4}>
+      <Grid container spacing={6} maxWidth={1000}>
         {listExams?.map(({ image, name, questionAmount, route, idExam }, idx) => (
-          <Grid item xs={12} md={4} sx={{ mb: 2 }} key={name} >
+          <Grid item md={4} sm={6} xs={12} key={idx} >
             <Link to={route} state={{ idExam: idExam }}>
               <TPCardItem image={image} name={name} type={'Câu hỏi'} count={questionAmount} />
             </Link>
@@ -77,7 +76,7 @@ const BlockExams = () => {
           lg={6}
           flexDirection='column'
           alignItems='center'
-          sx={{ textAlign: "center", my: 6, mx: "auto", px: 0.75 }}
+          sx={{ textAlign: "center", mx: "auto", px: 0.75 }}
         >
           <MKTypography variant='h2' fontWeight='bold'>
             Các bài thi
@@ -87,7 +86,7 @@ const BlockExams = () => {
           </MKTypography>
         </Grid>
       </Container>
-      <Container sx={{ mt: 6, textAlign: 'center' }} >{loading ? <CircularProgress size={80} /> : renderListExams()}</Container>
+      <Container sx={{ mt: 6, justifyContent: 'center', display: 'flex' }} >{loading ? <CircularProgress size={80} /> : renderListExams()}</Container>
     </MKBox>
   );
 }

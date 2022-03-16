@@ -12,6 +12,7 @@ import {
 import { padding } from "@mui/system";
 import { useEffect, useState } from "react";
 import { STATUS } from "./constant";
+import ResultModal from "./ResultModal";
 
 const style = {
   position: 'absolute',
@@ -127,7 +128,7 @@ const QuestionDetail = ({
     let result = 0;
     for (let question of questions) {
       if (question.status === STATUS.CORRECT) {
-        result += duration
+        result += 10
       }
     }
     return result
@@ -138,7 +139,9 @@ const QuestionDetail = ({
       <Box className='detail__exam' >
         <Typography component={"div"} variant='subtitle1' className="name__test">{nameTest ? nameTest : ''}</Typography>
         <Typography component={"div"} variant='subtitle1' className="countdown__oclock">Thời gian: {time}</Typography>
-        <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button>
+        {/* <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button> */}
+        <ResultModal />
+
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -157,22 +160,6 @@ const QuestionDetail = ({
       <Box className='answer__container'>
         {renderAnwserQuestion(curQuestion.answers)}
       </Box>
-
-      <Modal
-        open={showModalResult}
-        onClose={onCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Điểm của bạn là
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {showModalResult ? `${excutePointOfExam()}/${10 * questionAmount}` : ''}
-          </Typography>
-        </Box>
-      </Modal>
     </Box>
   );
 };
