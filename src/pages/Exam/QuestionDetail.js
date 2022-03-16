@@ -7,24 +7,21 @@ import {
   Modal,
   Radio,
   RadioGroup,
-  Typography
+  Typography,
+  Container,
 } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Slide from "@mui/material/Slide";
+import MKBox from "components/MKBox";
+import MKTypography from "components/MKTypography";
+import MKButton from "components/MKButton";
+import CloseIcon from "@mui/icons-material/Close";
 import { padding } from "@mui/system";
 import { useEffect, useState } from "react";
 import { STATUS } from "./constant";
 import ResultModal from "./ResultModal";
+import { useNavigate } from "react-router-dom";
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
 
 const QuestionDetail = ({
   curQuestion,
@@ -41,7 +38,6 @@ const QuestionDetail = ({
   const [showModalResult, setShowModalResult] = useState(false);
   const [countDown, setCountDown] = useState(duration * 1000);
   const [time, setTime] = useState('00:00')
-
   useEffect(() => {
     setValueRadio(curQuestion?.curAnswer + 1 ? curQuestion?.curAnswer : -1)
   }, [curQuestion])
@@ -124,15 +120,7 @@ const QuestionDetail = ({
     setShowModalResult(true)
   }
 
-  const excutePointOfExam = () => {
-    let result = 0;
-    for (let question of questions) {
-      if (question.status === STATUS.CORRECT) {
-        result += 10
-      }
-    }
-    return result
-  }
+
 
   return (
     <Box >
@@ -140,7 +128,7 @@ const QuestionDetail = ({
         <Typography component={"div"} variant='subtitle1' className="name__test">{nameTest ? nameTest : ''}</Typography>
         <Typography component={"div"} variant='subtitle1' className="countdown__oclock">Thời gian: {time}</Typography>
         {/* <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button> */}
-        <ResultModal />
+        <ResultModal showModalResult={showModalResult} setShowModalResult={setShowModalResult} questions={questions} questionAmount={questionAmount} minPointToPass={minPointToPass} />
 
       </Box>
 
@@ -160,6 +148,8 @@ const QuestionDetail = ({
       <Box className='answer__container'>
         {renderAnwserQuestion(curQuestion.answers)}
       </Box>
+
+
     </Box>
   );
 };
