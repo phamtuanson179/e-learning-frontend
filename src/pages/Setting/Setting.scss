@@ -41,19 +41,20 @@
             }
             .personal-info__container{
 
-                .title__box {
-                    padding: 16px;
-                    min-height: 72px; 
-                    display:flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    border-bottom: $border-bottom;
-                }
+              
             }
         }
         
 
         
+    }
+    .title__box {
+        padding: 16px;
+        min-height: 72px; 
+        display:flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: $border-bottom;
     }
 
     .tab--active {

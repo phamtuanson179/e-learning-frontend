@@ -19,3 +19,12 @@
         background-color: $main-blue;
     }
 }
+
+@mixin title-section {
+    padding: 16px;
+    min-height: 72px; 
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: $border-bottom;
+}

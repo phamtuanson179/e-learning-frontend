@@ -1,4 +1,4 @@
-import { ButtonBase, CircularProgress } from "@mui/material";
+import { ButtonBase, CircularProgress, Box, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import examAPI from "api/examAPI";
@@ -88,7 +88,9 @@ const ManageExams = () => {
 
     return (
         <MKBox >
-            <TPTitleSection title='Quản lý bài thi' />
+            <Box className="title__box" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant='h5' component={'div'}>Quản lý bài thi</Typography>
+            </Box>
             <Container sx={{ mt: 6, textAlign: 'center' }} >{loading ? <CircularProgress size={80} /> : renderListExams()}</Container>
             <AddExamModal loadingAgain={loadingAgain} setLoadingAgain={setLoadingAgain} />
             <DetailExamModal id={idExam} setIsOpenDetailExamModal={setIsOpenDetailExamModal} isOpenDetailExamModal={isOpenDetailExamModal} setLoadingAgain={setLoadingAgain} />

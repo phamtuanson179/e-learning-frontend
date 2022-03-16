@@ -125,8 +125,8 @@ const QuestionDetail = ({
   return (
     <Box >
       <Box className='detail__exam' >
-        <Typography component={"div"} variant='subtitle1' className="name__test">{nameTest ? nameTest : ''}</Typography>
-        <Typography component={"div"} variant='subtitle1' className="countdown__oclock">Thời gian: {time}</Typography>
+        <Typography component={"div"} variant='h5' className="name__test">{nameTest ? nameTest : ''}</Typography>
+        <Typography component={"div"} variant='h5' className="countdown__oclock">Thời gian: {time}</Typography>
         {/* <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button> */}
         <ResultModal showModalResult={showModalResult} setShowModalResult={setShowModalResult} questions={questions} questionAmount={questionAmount} minPointToPass={minPointToPass} />
 

@@ -40,7 +40,6 @@ const PersonalInfo = () => {
         <Box className="personal-info__container">
             <Box className="title__box" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant='h5' component={'div'}>Thông tin cá nhân</Typography>
-                <Button onClick={onShowModal}><Settings></Settings></Button>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'center', margin: 1.5 }}>
                 <Grid

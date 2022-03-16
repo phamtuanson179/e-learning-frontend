@@ -90,7 +90,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
 
   const logout = () => {
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('emailUser');
+    localStorage.removeItem('email');
     setUser({ loggedIn: false })
     navigate("/");
   };

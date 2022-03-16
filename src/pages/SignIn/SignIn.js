@@ -2,6 +2,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Switch from "@mui/material/Switch";
 import loginAPI from "api/loginAPI";
+import infoAPI from 'api/infoAPI'
 import { UserContext } from "App";
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
@@ -26,10 +27,7 @@ const yupSchema = yup.object().shape({
     password: yup.string().required('Trường này bắt buộc!'),
 })
 
-
-
-
-function SignIn(props) {
+function SignIn() {
     const { control, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(yupSchema) })
 
     const navigate = useNavigate();
@@ -38,7 +36,6 @@ function SignIn(props) {
     const [isShowPass, setIsShowPass] = useState(false);
     const { user, setUser } = useContext(UserContext);
 
-    // if (checkLogin()) navigate('/list-exams')
 
     const onChangeEmail = (event) => {
         const value = event.target.value;
@@ -65,12 +62,18 @@ function SignIn(props) {
 
             await loginAPI.login(data).then((res) => {
                 localStorage.setItem("accessToken", res.data.access_token);
-                localStorage.setItem("emailUser", data.email);
+                localStorage.setItem("email", data.email);
                 setUser({ loggedIn: true })
                 if (location.state?.from) {
                     navigate(location.state.from);
                 } else (navigate('/list-exams'))
             });
+
+            await infoAPI.getInfo().then((res) => {
+                const data = res?.data
+                localStorage.setItem('userId', data.user_id)
+                localStorage.setItem('role', data.role)
+            })
         } catch (error) {
             console.log(error);
         }

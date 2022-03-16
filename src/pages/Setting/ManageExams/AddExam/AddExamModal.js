@@ -140,7 +140,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                 require_rooms: [
                     data.requireRoom
                 ],
-                created_by: localStorage.getItem('emailUser'),
+                created_by: localStorage.getItem('email'),
                 questions: convertQuestionList
             }
         }
@@ -154,7 +154,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
         })
     }
     return (
-        <>
+        <Box className='add-exam__container'>
             <Button onClick={handleOpenAddExamModal}>Thêm bài thi</Button>
             <Modal
                 open={isOpenAddExamModal}
@@ -259,7 +259,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                     <Button type='submit' form='form-add-exam'>Lưu</Button>
                 </Box>
             </Modal >
-        </>
+        </Box>
     )
 }
 
