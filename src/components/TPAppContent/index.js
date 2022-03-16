@@ -9,20 +9,20 @@ const AppContent = () => {
   return (
     <>
       <Routes>
-        <Route element={<ProtectedRoutes />}>
-          {router.map((route, idx) => {
-            return (
-              route.component && (
-                <Route
-                  key={idx}
-                  path={route.path}
-                  exact={route.exact}
-                  element={route.component}
-                />
-              )
-            );
-          })}
-        </Route>
+        {/* <Route element={<ProtectedRoutes />}> */}
+        {router.map((route, idx) => {
+          return (
+            route.component && (
+              <Route
+                key={idx}
+                path={route.path}
+                exact={route.exact}
+                element={route.component}
+              />
+            )
+          );
+        })}
+        {/* </Route> */}
 
         <Route path='/' element={<SignIn />} />
         <Route path='*' element={<Error404 />} />

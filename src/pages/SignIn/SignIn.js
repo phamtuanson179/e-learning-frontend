@@ -37,8 +37,8 @@ function SignIn(props) {
     const [password, setPassword] = useState("");
     const [isShowPass, setIsShowPass] = useState(false);
     const { user, setUser } = useContext(UserContext);
-    if (checkLogin()) navigate('/list-exams')
 
+    // if (checkLogin()) navigate('/list-exams')
 
     const onChangeEmail = (event) => {
         const value = event.target.value;

@@ -12,6 +12,8 @@ import DefaultNavbarMobile from "./DefaultNavbarMobile";
 import { useNavigate } from "react-router-dom";
 import "./header.scss";
 import { UserContext } from "App";
+import LogoutIcon from '@mui/icons-material/Logout';
+import Avatar from '@mui/material/Avatar';
 
 const LOGIN = 'Đăng nhập'
 const LOGOUT = 'Đăng xuất'
@@ -139,7 +141,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
           >
             {renderNavbarItems}
           </MKBox>
-          <MKBox ml={{ xs: "auto", lg: 0 }}>
+          <MKBox ml={{ xs: "auto", lg: 0 }} sx={{ display: 'flex', alignItems: 'center' }}>
             <MKButton
               variant={
                 action.color === "white" || action.color === "default"
@@ -148,9 +150,24 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
               }
               color={action.color ? action.color : "info"}
               size='small'
+              sx={{ padding: 1, minWidth: 24, borderRadius: '50%' }}
+              onClick={() => navigate('/setting')}
+            >
+              <Avatar alt="Remy Sharp" sx={{ width: 24, height: 24 }} src="" />
+
+            </MKButton>
+            <MKButton
+              // variant={
+              //   action.color === "white" || action.color === "default"
+              //     ? "contained"
+              //     : "gradient"
+              // }
+              // color={action.color ? action.color : "info"}
+              // size='small'
+              sx={{ padding: 1, minWidth: 24, paddingLeft: 2 }}
               onClick={logout}
             >
-              {LOGOUT}
+              < LogoutIcon color="warning" />
             </MKButton>
           </MKBox>
           <MKBox

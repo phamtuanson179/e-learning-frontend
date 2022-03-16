@@ -12,9 +12,10 @@ const useAuth = () => {
 const ProtectedRoutes = () => {
     const location = useLocation();
     const isAuth = useAuth();
-    if (location.pathname === 'forgot-password')
-        return <ForgotPassword />
-    else return isAuth ? <Outlet /> : <Navigate to='/' replace state={{ from: location }} />
+    // if (location.pathname === 'forgot-password')
+    //     return <ForgotPassword />
+    // else 
+    return isAuth ? <Outlet /> : <Navigate to='/' replace state={{ from: location }} />
 }
 
 

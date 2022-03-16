@@ -59,9 +59,11 @@ const Setting = () => {
                                 key={idx}
                                 label={item.name}
                                 className={value === idx ? 'tab--active' : ''}
-                            />)
+                            />
+                        )
+
                     }
-                </Tabs>
+                </Tabs >
             )
     }
 
@@ -84,7 +86,7 @@ const Setting = () => {
             <Box className='left__container'>
                 {renderTabs()}
             </Box >
-            <Box className='right__container'>
+            <Box className='right__container' sx={{ height: '100%' }}>
                 {renderTabPanels()}
             </Box>
         </Box>

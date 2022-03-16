@@ -14,7 +14,12 @@ export const UserContext = createContext();
 
 export default function App() {
   const { pathname } = useLocation();
-  const [user, setUser] = useState({ loggedIn: false });
+  const [user, setUser] = useState({ loggedIn: null });
+  useEffect(() => {
+    setUser({ loggedIn: false })
+  }, [])
+
+  // const [user, setUser] = useState({ loggedIn: false });
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -28,5 +33,6 @@ export default function App() {
         <LocalizationProvider dateAdapter={DateAdapter}> <DefaultLayout /></LocalizationProvider>
       </ThemeProvider>
     </UserContext.Provider>
+
   );
 }
