@@ -1,20 +1,20 @@
 import CurCourses from "pages/CurCourses";
-import ManagerInfo from "./pages/ManagerInfo";
-import { default as AllCourses, default as Course } from "./pages/AllCourses";
-import SignInBasic from "./pages/SignIn";
 import Exam from "pages/Exam";
-import ListExams from "pages/ListExams";
+import ForgotPassword from "pages/ForgotPassword";
+import ListExams from "pages/ListExams/ListExams";
+import { default as AllCourses } from "./pages/AllCourses";
+import Setting from "./pages/Setting";
 
 // const Home = React.lazy(() => import('./pages/Home'))
 // const Course = React.lazy(() => import('./pages/Course'))
 
 const routes = [
-  {
-    path: "/",
-    exact: true,
-    name: "Home",
-    component: <CurCourses />,
-  },
+  // {
+  //   path: "/",
+  //   exact: true,
+  //   name: "Home",
+  //   component: <CurCourses />,
+  // },
   {
     path: "current-courses",
     exact: true,
@@ -34,23 +34,22 @@ const routes = [
     component: <ListExams />,
   },
   {
-    path: "sign-in",
+    path: "setting",
     exact: true,
-    name: "Course",
-    component: <SignInBasic />,
-  },
-  {
-    path: "manager-info",
-    exact: true,
-    name: "ManagerInfo",
-    component: <ManagerInfo />,
+    name: "Setting",
+    component: <Setting />,
   },
   {
     path: "exam",
     exact: true,
     name: "Exam",
-    // render: (props) => { < Exam  {...props} /> },
-    component: < Exam />,
+    component: <Exam />,
+  },
+  {
+    path: "forgot-password",
+    exact: true,
+    name: "ForgotPassword",
+    component: <ForgotPassword />,
   },
 ];
 

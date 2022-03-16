@@ -61,11 +61,11 @@ const QuestionNavbar = ({ questionAmount, curIndexQuestion, setCurIndexQuestion,
     return (
         <Box>
             <Typography className='title__box' component='div' variant='subtitle1'>Exam Navigator</Typography>
-            <div className='select-question__box'>
-                <div className='select-question'>
+            <Box className='select-question__box'>
+                <Box className='select-question'>
                     {renderQuestionContainer()}
-                </div>
-            </div>
+                </Box>
+            </Box>
         </Box>
     )
 }

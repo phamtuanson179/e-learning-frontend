@@ -7,23 +7,21 @@ import {
   Modal,
   Radio,
   RadioGroup,
-  Typography
+  Typography,
+  Container,
 } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Slide from "@mui/material/Slide";
+import MKBox from "components/MKBox";
+import MKTypography from "components/MKTypography";
+import MKButton from "components/MKButton";
+import CloseIcon from "@mui/icons-material/Close";
 import { padding } from "@mui/system";
 import { useEffect, useState } from "react";
 import { STATUS } from "./constant";
+import ResultModal from "./ResultModal";
+import { useNavigate } from "react-router-dom";
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
 
 const QuestionDetail = ({
   curQuestion,
@@ -35,13 +33,11 @@ const QuestionDetail = ({
   questionAmount,
   loading
 }) => {
-  console.log({ questions })
 
   const [valueRadio, setValueRadio] = useState(-1)
   const [showModalResult, setShowModalResult] = useState(false);
-  const [countDown, setCountDown] = useState(60000);
+  const [countDown, setCountDown] = useState(duration * 1000);
   const [time, setTime] = useState('00:00')
-
   useEffect(() => {
     setValueRadio(curQuestion?.curAnswer + 1 ? curQuestion?.curAnswer : -1)
   }, [curQuestion])
@@ -72,18 +68,15 @@ const QuestionDetail = ({
   const progressWhenChangeAnswer = (answer, question) => {
     let curQuestion = JSON.parse(JSON.stringify(question));
     curQuestion.curAnswer = parseInt(answer);
-    console.log(curQuestion.curAnswer)
     if (curQuestion?.curAnswer !== -1) {
       const indexAnswerCorrect = curQuestion?.answers?.findIndex(
         (answer) => answer?.is_correct == true
       );
-      console.log({ indexAnswerCorrect })
       if (curQuestion?.curAnswer === indexAnswerCorrect) {
         curQuestion.status = STATUS.CORRECT;
       } else {
         curQuestion.status = STATUS.INCORRECT;
       }
-      console.log({ curQuestion })
       setCurQuestion(curQuestion);
     }
   };
@@ -127,23 +120,16 @@ const QuestionDetail = ({
     setShowModalResult(true)
   }
 
-  const excutePointOfExam = () => {
-    let result = 0;
-    for (let question of questions) {
-      if (question.status === STATUS.CORRECT) {
-        result += duration
-      }
-    }
-    console.log({ result })
-    return result
-  }
+
 
   return (
     <Box >
       <Box className='detail__exam' >
         <Typography component={"div"} variant='subtitle1' className="name__test">{nameTest ? nameTest : ''}</Typography>
         <Typography component={"div"} variant='subtitle1' className="countdown__oclock">Thời gian: {time}</Typography>
-        <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button>
+        {/* <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button> */}
+        <ResultModal showModalResult={showModalResult} setShowModalResult={setShowModalResult} questions={questions} questionAmount={questionAmount} minPointToPass={minPointToPass} />
+
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -163,21 +149,7 @@ const QuestionDetail = ({
         {renderAnwserQuestion(curQuestion.answers)}
       </Box>
 
-      <Modal
-        open={showModalResult}
-        onClose={onCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Điểm của bạn là
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {showModalResult ? `${excutePointOfExam()}/${duration * questionAmount}` : ''}
-          </Typography>
-        </Box>
-      </Modal>
+
     </Box>
   );
 };

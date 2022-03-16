@@ -3,7 +3,7 @@ import Icon from "@mui/material/Icon";
 import breakpoints from "assets/theme/base/breakpoints";
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import checkLogin from "utils/checkLogin";
 import brandLogoTechpro from "../../assets/images/techpro-images/brand.png";
@@ -11,6 +11,9 @@ import DefaultNavbarDropdown from "./DefaultNavbarDropdown";
 import DefaultNavbarMobile from "./DefaultNavbarMobile";
 import { useNavigate } from "react-router-dom";
 import "./header.scss";
+import { UserContext } from "App";
+import LogoutIcon from '@mui/icons-material/Logout';
+import Avatar from '@mui/material/Avatar';
 
 const LOGIN = 'Đăng nhập'
 const LOGOUT = () =>{
@@ -24,6 +27,8 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext)
 
   const menuNavbar = [
     {
@@ -63,13 +68,8 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
       }
     }
 
-    /** 
-     The event listener that's calling the displayMobileNavbar function when 
-     resizing the window.
-    */
     window.addEventListener("resize", displayMobileNavbar);
 
-    // Call the displayMobileNavbar function to set the state with the initial value.
     displayMobileNavbar();
 
     // Remove event listener on cleanup
@@ -87,10 +87,17 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
       />
     )
   );
-
-  if (location.pathname.match("/sign-in")) {
+  console.log({ location })
+  if (location.pathname === '/') {
     return null;
   }
+
+  const logout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('emailUser');
+    setUser({ loggedIn: false })
+    navigate("/");
+  };
 
   return (
     <Container className='header__wrapper'>
@@ -138,21 +145,34 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
           > 
             {renderNavbarItems}
           </MKBox>
-          <MKBox ml={{ xs: "auto", lg: 0 }}>
-            <Link to='/sign-in'>
-              <MKButton
-                variant={
-                  action.color === "white" || action.color === "default"
-                    ? "contained"
-                    : "gradient"
-                }
-                color={action.color ? action.color : "info"}
-                size='small'
-                onClick={LOGOUT}
-              >
-                Đăng xuất
-              </MKButton>
-            </Link>
+          <MKBox ml={{ xs: "auto", lg: 0 }} sx={{ display: 'flex', alignItems: 'center' }}>
+            <MKButton
+              variant={
+                action.color === "white" || action.color === "default"
+                  ? "contained"
+                  : "gradient"
+              }
+              color={action.color ? action.color : "info"}
+              size='small'
+              sx={{ padding: 1, minWidth: 24, borderRadius: '50%' }}
+              onClick={() => navigate('/setting')}
+            >
+              <Avatar alt="Remy Sharp" sx={{ width: 24, height: 24 }} src="" />
+
+            </MKButton>
+            <MKButton
+              // variant={
+              //   action.color === "white" || action.color === "default"
+              //     ? "contained"
+              //     : "gradient"
+              // }
+              // color={action.color ? action.color : "info"}
+              // size='small'
+              sx={{ padding: 1, minWidth: 24, paddingLeft: 2 }}
+              onClick={logout}
+            >
+              < LogoutIcon color="warning" />
+            </MKButton>
           </MKBox>
           <MKBox
             display={{ xs: "inline-block", lg: "none" }}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import isEmpty from "validator/lib/isEmpty";
 import { useNavigate } from "react-router-dom";
@@ -227,3 +228,8 @@ function SignInBasic(props) {
 }
 
 export default SignInBasic;
+=======
+import SignIn from './SignIn';
+
+export default SignIn
+>>>>>>> 9cfc7825900c240de417d9db5d1902e2bb06c510
