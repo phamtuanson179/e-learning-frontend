@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, Input, Modal, Radio, RadioGroup, Typography } from '@mui/material';
+import { Box, Grid, Slide, Container, Button, FormControl, FormControlLabel, Input, Modal, Radio, RadioGroup, Typography, Divider } from '@mui/material';
 import examAPI from 'api/examAPI';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -6,18 +6,23 @@ import './AddExamModal.scss';
 import AddQuestionModal from './AddQuestionModal';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import MKButton from "components/MKButton";
+import CloseIcon from "@mui/icons-material/Close";
+import MKTypography from 'components/MKTypography';
+import MKInput from "components/MKInput";
+import MKBox from "components/MKBox";
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    maxWidth: 1000,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
+    position: 'relative',
+    width: '348px',
+    display: 'flex',
+    flexDirection: 'column',
+    borderRadius: '12px',
+    bgColor: 'white',
+    shadow: 'xl',
 };
+
 
 const initExam =
 {
@@ -62,7 +67,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
 
     const renderAnwserQuestion = (question) => {
         return (
-            <FormControl>
+            <Box>
                 <RadioGroup
                     aria-labelledby='demo-radio-buttons-group-label'
                     name='radio-buttons-group'
@@ -77,7 +82,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                         />
                     ))}
                 </RadioGroup>
-            </FormControl>
+            </Box>
         );
     };
 
@@ -89,16 +94,8 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
     const renderQuestions = (questions) => {
         const result = questions.map((question, idx) => {
             return (
-                <Box key={idx}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            maxHeight: '30vh',
-                            overflowY: 'scroll'
-                        }}
-                    >
+                <Box key={idx} sx={{ bgcolor: '#F2F3F5', borderRadius: '12px', marginBottom: '12px' }}>
+                    <Box>
                         <Typography
                             component={"div"}
                             className='title__question'
@@ -106,14 +103,15 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                         >
                             {question.content}
                         </Typography>
-                        <Button onClick={() => handleDeleteQuestion(question)}>
+                        <Box className='answer__container'>
+                            {renderAnwserQuestion(question)}
+                        </Box>
+                        <Button onClick={() => handleDeleteQuestion(question)} size='small' sx={{ marginLeft: '190px' }}>
                             Xoá câu hỏi
                         </Button>
                     </Box>
 
-                    <Box className='answer__container'>
-                        {renderAnwserQuestion(question)}
-                    </Box>
+
                 </Box>
             )
         })
@@ -154,6 +152,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
         })
     }
     return (
+<<<<<<< HEAD
         <Box className='add-exam__container'>
             <Button onClick={handleOpenAddExamModal}>Thêm bài thi</Button>
             <Modal
@@ -260,8 +259,134 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                 </Box>
             </Modal >
         </Box>
+=======
+        <>
+            {/* <Button onClick={handleOpenAddExamModal}>Thêm bài thi</Button> */}
+            <Grid container item xs={12} lg={10} justifyContent="center" mx="auto">
+                <MKButton variant="gradient" color="info" onClick={handleOpenAddExamModal}>
+                    Thêm bài thi
+                </MKButton>
+            </Grid>
+            <Box>
+                <Modal
+                    sx={{
+                        overflowY: 'auto',
+                        display: "flex",
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                    open={isOpenAddExamModal}
+                    onClose={handleCloseAddExamModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <MKBox sx={style} >
+                        <Box display="flex" alginItems="center" justifyContent="space-between" sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}>
+                            <Typography id="modal-modal-title" variant="h5">
+                                Thêm bài thi mới
+                            </Typography>
+                            <CloseIcon fontSize="medium" sx={{ cursor: "pointer" }} onClick={handleCloseAddExamModal} />
+                        </Box>
+                        <Divider />
+                        <MKBox p={2}>
+                            <form onSubmit={handleSubmit(onSubmit)} id='form-add-exam'>
+                                <MKTypography sx={{
+                                }} variant="body2" color="secondary" fontWeight="regular">
+                                    <Box>
+                                        <Box >
+                                            <Controller
+                                                name='name'
+                                                control={control}
+                                                render={({ field }) => {
+                                                    return (<MKInput
+                                                        sx={{ width: '100%', marginBottom: 1 }}
+                                                        variant="standard"
+                                                        label="Tên bài thi"
+                                                        display='flex'
+                                                        alignItems='center' mb={2}
+                                                        fullWidth {...field} defaultValue='' />)
+                                                }}
+                                            />
+
+                                            <Controller
+                                                name='duration'
+                                                control={control}
+                                                render={({ field }) => {
+                                                    return (<MKInput
+                                                        sx={{ width: '100%', marginBottom: 1 }}
+
+                                                        variant="standard"
+                                                        label="Thời gian"
+                                                        display='flex'
+                                                        alignItems='center' mb={2}
+                                                        fullWidth
+                                                        // type='number'
+                                                        defaultValue='' {...field} />)
+                                                }}
+                                            />
+
+                                            <Controller
+                                                name='minCorrectAnswers'
+                                                control={control}
+                                                render={({ field }) => {
+                                                    return (<MKInput
+                                                        sx={{ width: '100%', marginBottom: 1 }}
+
+                                                        variant="standard"
+                                                        label="Số câu đúng tối thiểu"
+                                                        display='flex'
+                                                        alignItems='center' mb={2}
+                                                        // fullWidth 
+                                                        // type='number'
+                                                        defaultValue='' {...field} />)
+                                                }}
+                                            />
+
+                                            <Controller
+                                                name='requireRoom'
+                                                rules={{
+                                                    required: true
+                                                }}
+                                                control={control}
+                                                defaultValue="AI"
+                                                render={({ field }) => {
+                                                    return (<MKInput
+                                                        sx={{ width: '100%', marginBottom: 1 }}
+
+                                                        variant="standard"
+                                                        label="Thuộc phòng"
+                                                        display='flex'
+                                                        alignItems='center' mb={2}
+                                                        // fullWidth 
+                                                        // disabled
+                                                        defaultValue='AI'
+                                                        {...field} />)
+                                                }}
+                                            />
+                                        </Box>
+                                    </Box>
+                                    <Box className='right__section' fullWidth={true}>
+                                        {renderQuestions(questionList)}
+                                    </Box>
+                                </MKTypography>
+                            </form>
+                        </MKBox>
+
+                        <AddQuestionModal setQuestionList={setQuestionList} questionList={questionList} />
+                        <MKBox display="flex" justifyContent="right" sx={{ margin: 2, marginTop: 4 }}>
+                            <MKButton variant="gradient" color="dark" onClick={handleCloseAddExamModal} sx={{ marginRight: 2 }} >
+                                Đóng
+                            </MKButton>
+                            <MKButton type='submit' form='form-add-exam' color="info" sx={{}}>
+                                Lưu
+                            </MKButton>
+                        </MKBox>
+                    </MKBox>
+                </Modal >
+            </Box>
+        </>
+>>>>>>> 2cdf29e26b49aec9aa7880af4708c6d64a436aac
     )
 }
 
 export default AddExamModal
-
