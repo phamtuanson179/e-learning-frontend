@@ -24,10 +24,8 @@ const style = {
 };
 
 const styleModal={
-    // minheight: '150px',
-    maxheight:'800px',
-    // height: '930px',
-    height: 'fit-content',
+    maxheight:'100%',
+    height: '930px',
     overflowY: 'auto',
 }
 const styleInput={
@@ -56,8 +54,6 @@ const yupSchema = yup.object().shape({
 const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
     const [isOpenAddExamModal, setIsOpenAddExamModal] = useState(false);
     const [exam, setExam] = useState(initExam)
-    // const [show, setShow] = useState(false);
-    // const toggleModal = () => setShow(!show);
     const [questionList, setQuestionList] = useState([])
 
     const handleCloseAddExamModal = () => {
@@ -108,15 +104,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
         const result = questions.map((question, idx) => {
             return (
                 <Box key={idx} sx={{bgcolor:'#F2F3F5', borderRadius:'12px', marginBottom:'12px'}}>
-                    <Box
-                        // sx={{
-                        //     display: 'flex',
-                        //     justifyContent: 'space-between',
-                        //     alignItems: 'center',
-                        //     maxHeight: '30vh',
-                        //     overflowY: 'auto'
-                        // }}
-                    >
+                    <Box>
                         <Typography
                             component={"div"}
                             className='title__question'
