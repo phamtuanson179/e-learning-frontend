@@ -1,6 +1,7 @@
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { MENUBAR_ADMIN, MENUBAR_MEMBER } from './constant';
+import { useLocation } from 'react-router-dom'
 import './Setting.scss';
 
 const TabPanel = (props) => {
@@ -25,6 +26,19 @@ const TabPanel = (props) => {
 const Setting = () => {
     const [value, setValue] = useState(0);
     const [menubar, setMenubar] = useState();
+    // const [isRedirectFromExam, setIsRedirectFromExam] = useState(true)
+    const location = useLocation()
+
+    // useEffect(() => {
+    //     if (isRedirectFromExam) {
+    //         if (location.state?.from === 'exam') {
+    //             setValue(1);
+    //             setIsRedirectFromExam(false)
+    //         }
+    //     }
+    //     else setValue(0)
+    // }, [isRedirectFromExam])
+
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

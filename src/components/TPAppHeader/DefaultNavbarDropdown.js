@@ -10,14 +10,17 @@ function DefaultNavbarDropdown({
   name,
   icon,
   children,
-  collapseStatus,
-  light,
   href,
   route,
+  curTabs,
+  setCurTabs,
   ...rest
 }) {
 
-
+  const onClick = () => {
+    console.log('first')
+    setCurTabs(route)
+  }
   return (
     <>
       <Link to={route}>
@@ -27,14 +30,14 @@ function DefaultNavbarDropdown({
           p={1}
           display='flex'
           alignItems='baseline'
-          color={light ? "white" : "dark"}
-          opacity={light ? 1 : 0.6}
+          onClick={onClick}
           sx={{ cursor: "pointer", userSelect: "none" }}
         >
           <MKTypography
             variant='body2'
             lineHeight={1}
-            color='inherit'
+            color={curTabs === route ? 'info' : 'inherit'}
+            // color='info'
             sx={{ alignSelf: "center", "& *": { verticalAlign: "middle" } }}
           >
             {icon}
@@ -43,7 +46,7 @@ function DefaultNavbarDropdown({
             variant='button'
             fontWeight='regular'
             textTransform='capitalize'
-            color={light ? "white" : "dark"}
+            color={curTabs === route ? 'info' : 'inherit'}
             sx={{ fontWeight: "100%", ml: 1, mr: 0.25 }}
           >
             {name}

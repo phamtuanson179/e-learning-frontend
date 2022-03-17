@@ -5,7 +5,7 @@ import loginAPI from "api/loginAPI";
 import infoAPI from 'api/infoAPI'
 import { UserContext } from "App";
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/techpro-images/backgroundSignIn.jpeg";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
@@ -53,27 +53,34 @@ function SignIn() {
 
     const onSubmitLogin = async () => {
 
-        // console.log({ data })
         try {
             const data = {
                 email: email,
                 password: password,
             };
+            console.log({ data })
 
             await loginAPI.login(data).then((res) => {
-                localStorage.setItem("accessToken", res.data.access_token);
+                console.log({ res })
+                localStorage.setItem("accessToken", res?.data.access_token);
                 localStorage.setItem("email", data.email);
-                setUser({ loggedIn: true })
-                if (location.state?.from) {
-                    navigate(location.state.from);
-                } else (navigate('/list-exams'))
-            });
 
+                // setUser({ loggedIn: true })
+                // if (location.state?.from) {
+                //     navigate(location.state.from);
+                // } else (navigate('/list-exams'))
+            });
             await infoAPI.getInfo().then((res) => {
+                console.log({ res })
                 const data = res?.data
-                localStorage.setItem('userId', data.user_id)
-                localStorage.setItem('role', data.role)
+                localStorage.setItem('userId', data?.user_id)
+                localStorage.setItem('role', data?.role)
+                navigate('/list-exams')
             })
+
+
+
+
         } catch (error) {
             console.log(error);
         }

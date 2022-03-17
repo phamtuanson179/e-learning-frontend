@@ -8,6 +8,8 @@ import DefaultLayout from "layouts/DefaultLayout";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import './assets/scss/index.scss';
+import 'antd/dist/antd.css';
+
 
 
 export const UserContext = createContext();

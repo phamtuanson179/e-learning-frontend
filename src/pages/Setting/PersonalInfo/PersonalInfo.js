@@ -120,7 +120,6 @@ const PersonalInfo = () => {
                                     />)
                                 }}
                             />
-                            {/* <Typography variant='body2' >{ }</Typography> */}
                         </Grid>
 
                         <Grid item xs={6} className='dob'>

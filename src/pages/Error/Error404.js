@@ -1,10 +1,21 @@
-import { Box } from "@mui/material"
-
+import { Box, Container, Icon, ImageListItem, Typography } from "@mui/material"
+import { useLocation } from "react-router-dom"
+import Image from '../../assets/images/techpro-images/404Image.svg'
 const Error404 = () => {
+
     return (
-        <>
-            <Box>404</Box>
-        </>
+        <Container sx={{ display: 'flex', marginTop: 15, marginBottom: 5, justifyContent: 'space-between', alignItems: 'center' }}>
+            <Box sx={{ flex: 1 }}>
+                <Typography variant='h1' fontSize={86}>404</Typography>
+                <Typography variant='h5' fontWeight={400}>Oops! Looks like you followed a bad link.
+
+                </Typography>
+
+            </Box>
+            <Box sx={{ flex: 1 }}>
+                <img src={Image} />
+            </Box>
+        </Container >
     )
 }
 

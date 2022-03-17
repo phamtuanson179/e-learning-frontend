@@ -7,59 +7,78 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import examAPI from "api/examAPI";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import DoneIcon from '@mui/icons-material/Done';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
+import { isEmpty } from 'lodash'
+import { convertSecondToTime } from 'utils/convert'
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+function createData(id, duration, point, isPass) {
+    return { id, duration, point, isPass };
 }
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
-const TableHistoryExam = ({ id }) => {
 
-    const [historyExamList, setHistoryExamList] = useState();
-    const getHistoryExamList = async () => {
-        await examAPI.getExamHistory().then((res) => {
+const TableHistoryExam = ({ historyExamList }) => {
+    console.log({ historyExamList })
+    const [rows, setRows] = useState();
 
+    const convertDataToRowTable = (datas) => {
+        const rows = []
+        datas.map((data, idx) => {
+            rows.push(createData(data?.exam_id, data?.duration, data?.point, data?.is_pass))
         })
+        setRows(rows)
     }
 
+    useEffect(() => {
+        if (historyExamList)
+            convertDataToRowTable(historyExamList)
+    }, [])
+
+    const showTime = (duration) => {
+        const time = convertSecondToTime(duration);
+        return `${time.minutes}:${time.seconds}`
+    }
+
+
+
     return (
-        <>
-            < TableContainer component={Paper} >
-                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                    <TableHead sx={{ display: 'table-header-group' }}>
-                        <TableRow>
-                            <TableCell>Id</TableCell>
-                            <TableCell align="right">Kết quả</TableCell>
-                            <TableCell align="right">Thời gian</TableCell>
-                            <TableCell align="right">Đánh giá</TableCell>
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }
+            } size="small" aria-label="a dense table" >
+                <TableHead sx={{ display: 'table-header-group' }}>
+                    <TableRow>
+                        <TableCell align='center'>Stt</TableCell>
+                        <TableCell>Id</TableCell>
+                        <TableCell align="right">Điểm</TableCell>
+                        <TableCell align="right">Thời gian</TableCell>
+                        <TableCell align="center">Kết quả</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows && rows.map((row, idx) => (
+                        <TableRow
+                            key={row.id}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                            <TableCell align='center'>
+                                {idx + 1}
+                            </TableCell>
+                            <TableCell component="th" scope="row">
+                                {row.id}
+                            </TableCell>
+                            <TableCell align="right">{row.point}</TableCell>
+                            <TableCell align="right">{showTime(row.duration)}</TableCell>
+                            <TableCell align="center" >{row.isPass ? <CheckCircleIcon color="success" /> : <ErrorIcon color='error' />}</TableCell>
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map((row) => (
-                            <TableRow
-                                key={row.name}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="right">{row.calories}</TableCell>
-                                <TableCell align="right">{row.fat}</TableCell>
-                                <TableCell align="right">{row.carbs}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </ TableContainer >
-        </>)
+                    ))}
+                </TableBody>
+            </Table>
+        </ TableContainer >
+    )
 
 }
 
