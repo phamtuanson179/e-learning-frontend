@@ -9,7 +9,7 @@ import * as yup from 'yup'
 
 const style = {
     bgcolor: 'background.paper',
-    position: 'absolute',
+    position: 'relative',
     display: 'flex',
     right: 0,
     width: '348px',
@@ -175,14 +175,14 @@ const AddQuestionModal = ({ setQuestionList, questionList }) => {
                         </Box>
 
                     </form>
-                    <MKBox display="flex" justifyContent="right" sx={{ margin: 2 }}>
+                    <Box display="flex" justifyContent="right" sx={{ margin: 2 }}>
                         <MKButton variant="gradient" color="dark" onClick={handleCloseAddQuestionModal} sx={{ marginRight: 2 }} >
                             Đóng
                         </MKButton>
                         <MKButton type='submit' form='form-add-exam' color="info" >
                             Lưu
                         </MKButton>
-                    </MKBox>
+                    </Box>
                 </MKBox>
             </Modal >
         </>

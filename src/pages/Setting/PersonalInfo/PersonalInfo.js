@@ -1,7 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, CircularProgress, TextField, Typography, InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { message } from "antd";
 import infoAPI from "api/infoAPI";
 import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
@@ -22,8 +21,7 @@ const PersonalInfo = () => {
     const [personalInfo, setPersonalInfo] = useState('');
     const [notification, setNotification] = useState({ type: '', message: '' });
     const [openNoti, setOpenNoti] = useState(false)
-    const [isChange, setIsChange] = useState(false);
-    const [form, setForm] = useState('');
+
     const { control, handleSubmit, formState: {
         errors
     } } = useForm({ resolver: yupResolver(yupSchema) });
