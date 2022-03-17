@@ -1,3 +1,0 @@
-// export default {
-//     USER_TOKEN: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRydW9uZy5waG9uZ0B0ZWNocHJvLmNvbS52biIsImV4cCI6MTY0NjMzMDM2MX0.ygznzjqIpJ2XFA93PJuLB-OcfKk1ul9MQhhKCAv8T8g'
-// }

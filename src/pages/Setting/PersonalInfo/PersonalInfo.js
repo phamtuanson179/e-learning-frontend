@@ -1,15 +1,17 @@
-import { Schema, Settings } from "@mui/icons-material";
-import { Box, Button, Typography, TextField } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import infoAPI from "api/infoAPI";
-import { useEffect, useState } from "react";
-import ModalUpdatePersonalInfo from "./UpdatePersonalInfoModal";
-import './PersonalInfo.scss'
-import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Box, Button, CircularProgress, TextField, Typography, InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import { message } from "antd";
+import infoAPI from "api/infoAPI";
+import TPNotification from "components/TPNotification";
+import { NOTIFICATION } from "constants/notification";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import './PersonalInfo.scss';
+
+
+
 
 const yupSchema = yup.object().shape({
     fullname: yup.string().required('Trường này bắt buộc!'),
@@ -18,14 +20,16 @@ const yupSchema = yup.object().shape({
 
 const PersonalInfo = () => {
     const [personalInfo, setPersonalInfo] = useState('');
-    const [showModalUpdatePersonalInfo, setShowModalUpdatePersonalInfo] = useState(false);
+    const [notification, setNotification] = useState({ type: '', message: '' });
+    const [openNoti, setOpenNoti] = useState(false)
     const [isChange, setIsChange] = useState(false);
+    const [form, setForm] = useState('');
     const { control, handleSubmit, formState: {
         errors
     } } = useForm({ resolver: yupResolver(yupSchema) });
 
     const onSubmit = async (data) => {
-        console.log({data})
+        console.log({ data })
         const convertData = (data) => {
             return {
                 ...data,
@@ -36,9 +40,17 @@ const PersonalInfo = () => {
             }
         }
         const newData = convertData(data)
-        await infoAPI.putUpdateUser(newData).then(() => {
+        await infoAPI.putUpdateUser(newData).then((res) => {
+            console.log({ res })
+            if (res?.status == 200) {
+                console.log('dsfadsf')
+                setNotification({
+                    message: res.data,
+                    type: NOTIFICATION.SUCCESS
+                })
+                setOpenNoti(true)
+            }
             setPersonalInfo(newData)
-            setShowModalUpdatePersonalInfo(false)
         })
     }
 
@@ -60,6 +72,7 @@ const PersonalInfo = () => {
 
     const getPersonalInfo = async () => {
         await infoAPI.getInfo().then((res) => {
+            console.log({ res })
             setPersonalInfo(res?.data)
         })
     }
@@ -69,25 +82,16 @@ const PersonalInfo = () => {
     }, [])
 
 
-    const onShowModal = () => {
-        setShowModalUpdatePersonalInfo(true)
-    }
 
-    // const [age, setAge] = React.useState('');
-
-    // const handleChange = (event) => {
-    //     setAge(event.target.value);
-    // };
-    return ( personalInfo ?
+    return (personalInfo ?
         <Box className="personal-info__container">
             <Box className="title__box" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant='h5' component={'div'}>Thông tin cá nhân</Typography>
-                <Button onClick={onShowModal}><Settings></Settings></Button>
             </Box>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', margin: 1.5 }}>
                     <Grid
-                        className='detail-personal-info__box' 
+                        className='detail-personal-info__box'
                         container
                         sx={{
                             marginTop: 2,
@@ -99,60 +103,130 @@ const PersonalInfo = () => {
                         rowSpacing={3}
                     >
 
-                        <Grid item xs={6} className='name'> 
+                        <Grid item xs={6} className='name'>
                             <Controller
                                 name='fullname'
                                 control={control}
+                                defaultValue={personalInfo?.fullname}
                                 render={({ field }) => {
                                     return (<TextField
                                         sx={{
                                             width: '100%',
                                         }}
+                                        helperText={errors.fullname?.message}
                                         {...field}
                                         label="Họ và tên"
                                         variant="outlined"
-                                        defaultValue={personalInfo?.fullname}
                                     />)
                                 }}
                             />
-                            <Typography variant='body2' >{errors.fullname?.message}</Typography>
+                            {/* <Typography variant='body2' >{ }</Typography> */}
                         </Grid>
 
                         <Grid item xs={6} className='dob'>
-                            < TextField
-                                id="date"
-                                label="Birthday"
-                                type="date"
-                                sx={{
-                                    width: '100%',
-                                }}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
+                            <Controller
+                                name='date_of_birth'
+                                control={control}
                                 defaultValue={personalInfo?.date_of_birth}
-                            >
-                            </TextField>
+                                render={({ field }) => {
+                                    return (< TextField
+                                        id="date"
+                                        label="Birthday"
+                                        type="date"
+                                        helperText={errors.date_of_birth?.message}
+
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        {...field}
+
+                                    />)
+                                }}
+                            />
+
                         </Grid>
                         <Grid item xs={6} className='email'>
-                            <TextField sx={{
-                                width: '100%',
-                            }} label="Email" variant="outlined" defaultValue={personalInfo?.email} />
+                            <Controller
+                                name='email'
+                                control={control}
+                                defaultValue={personalInfo?.email}
+
+                                render={({ field }) => {
+                                    return (< TextField
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        helperText={errors.email?.message}
+
+                                        {...field}
+                                        label="Email" variant="outlined" />)
+                                }}
+                            />
+
                         </Grid>
                         <Grid item xs={6} className='position'>
-                            <TextField sx={{
-                                width: '100%',
-                            }} label="Vị trí" variant="outlined" defaultValue={personalInfo?.position} />
+                            <Controller
+                                name='position'
+                                control={control}
+                                defaultValue={personalInfo?.position}
+                                render={({ field }) => {
+                                    return (<TextField
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        label="Vị trí"
+                                        variant="outlined"
+                                        {...field}
+                                    />)
+                                }}
+                            />
+
                         </Grid>
                         <Grid item xs={6} className='role'>
-                            <TextField sx={{
-                                width: '100%',
-                            }} label="Quyền" variant="outlined" defaultValue={personalInfo?.role}>
-                            </TextField>
+                            <Controller
+                                name='role'
+                                control={control}
+                                defaultValue={personalInfo?.role}
+                                render={({ field }) => {
+                                    return (
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                label="ewrqewrqwerqew"
+                                                sx={{ height: 44 }}
+                                                {...field}
+                                            >
+                                                <MenuItem value={0}>Superadmin</MenuItem>
+                                                <MenuItem value={1}>Admin</MenuItem>
+                                                <MenuItem value={2}>Member</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    )
+                                }}
+                            />
                         </Grid>
                         <Grid item xs={6} className='room'>
-                            <TextField sx={{
-                                width: '100%',
-                            }} label="Phòng" variant="outlined" defaultValue={personalInfo?.room} />
+                            <Controller
+                                name='room'
+                                control={control}
+                                defaultValue={personalInfo?.room}
+                                render={({ field }) => {
+                                    return (<TextField
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        label="Phòng"
+                                        variant="outlined"
+                                        {...field}
+                                    />)
+                                }}
+                            />
+
                         </Grid>
                     </Grid>
                 </Box>
@@ -160,18 +234,13 @@ const PersonalInfo = () => {
                     className='confirm__button'
                     sx={{ marginLeft: 'auto', display: 'flex', marginRight: 2, marginBottom: 4, }}
                     type='submit'
-                    >
+                >
                     Lưu thay đổi
                 </Button>
-            </form>
-           
-            <ModalUpdatePersonalInfo
-                setShowModalUpdatePersonalInfo={setShowModalUpdatePersonalInfo}
-                showModalUpdatePersonalInfo={showModalUpdatePersonalInfo}
-                personalInfo={personalInfo}
-                setPersonalInfo={setPersonalInfo}
-            />
-        </Box> : <></>
+            </form >
+            <TPNotification type={notification.type} message={notification.message} open={openNoti
+            } setOpen={setOpenNoti} />
+        </Box > : <CircularProgress />
     );
 }
 
