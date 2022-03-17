@@ -16,7 +16,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Avatar from '@mui/material/Avatar';
 
 const LOGIN = 'Đăng nhập'
-const LOGOUT = 'Đăng xuất'
+const LOGOUT = () =>{
+  localStorage.clear();
+  navigate("/");
+
+};
 
 function TPAppHeader({ transparent, light, action, relative, center }) {
 
@@ -138,7 +142,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
             display={{ xs: "none", lg: "flex" }}
             ml='auto'
             mr={center ? "auto" : 0}
-          >
+          > 
             {renderNavbarItems}
           </MKBox>
           <MKBox ml={{ xs: "auto", lg: 0 }} sx={{ display: 'flex', alignItems: 'center' }}>

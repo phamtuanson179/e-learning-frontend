@@ -1,13 +1,17 @@
-import { Schema, Settings } from "@mui/icons-material";
-import { Box, Button, Typography, TextField } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import infoAPI from "api/infoAPI";
-import { useEffect, useState } from "react";
-import ModalUpdatePersonalInfo from "./UpdatePersonalInfoModal";
-import './PersonalInfo.scss'
-import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup'
+import { Box, Button, CircularProgress, TextField, Typography, InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import { message } from "antd";
+import infoAPI from "api/infoAPI";
+import TPNotification from "components/TPNotification";
+import { NOTIFICATION } from "constants/notification";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import './PersonalInfo.scss';
+
+
+
 
 const yupSchema = yup.object().shape({
     fullname: yup.string().required('Trường này bắt buộc!'),
@@ -16,14 +20,59 @@ const yupSchema = yup.object().shape({
 
 const PersonalInfo = () => {
     const [personalInfo, setPersonalInfo] = useState('');
-    const [showModalUpdatePersonalInfo, setShowModalUpdatePersonalInfo] = useState(false);
+    const [notification, setNotification] = useState({ type: '', message: '' });
+    const [openNoti, setOpenNoti] = useState(false)
     const [isChange, setIsChange] = useState(false);
+    const [form, setForm] = useState('');
     const { control, handleSubmit, formState: {
         errors
-    } } = useForm({ resolver: yupResolver(yupSchema) })
+    } } = useForm({ resolver: yupResolver(yupSchema) });
+
+    const onSubmit = async (data) => {
+        console.log({ data })
+        const convertData = (data) => {
+            return {
+                ...data,
+                password: null,
+                token: null,
+                url_avatar: "",
+                user_id: personalInfo?.user_id
+            }
+        }
+        const newData = convertData(data)
+        await infoAPI.putUpdateUser(newData).then((res) => {
+            console.log({ res })
+            if (res?.status == 200) {
+                console.log('dsfadsf')
+                setNotification({
+                    message: res.data,
+                    type: NOTIFICATION.SUCCESS
+                })
+                setOpenNoti(true)
+            }
+            setPersonalInfo(newData)
+        })
+    }
+
+    // const handleChange = info => {
+    //     console.log({ info })
+    //     if (info.file.status === 'uploading') {
+    //         setLoading(true);
+    //         return;
+    //     }
+    //     if (info.file.status === 'done') {
+    //         // Get this url from response in real world.
+    //         getBase64(info.file.originFileObj, imageUrl => {
+    //             console.log({ imageUrl })
+    //             setImageUrl(imageUrl)
+    //         }
+    //         );
+    //     }
+    // };
 
     const getPersonalInfo = async () => {
         await infoAPI.getInfo().then((res) => {
+            console.log({ res })
             setPersonalInfo(res?.data)
         })
     }
@@ -33,88 +82,165 @@ const PersonalInfo = () => {
     }, [])
 
 
-    const onShowModal = () => {
-        setShowModalUpdatePersonalInfo(true)
-    }
+
     return (personalInfo ?
         <Box className="personal-info__container">
             <Box className="title__box" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Typography variant='h5' component={'div'}>Thông tin cá nhân</Typography>
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center', margin: 1.5 }}>
-                <Grid
-                    className='detail-personal-info__box'
-                    container
-                    sx={{
-                        marginTop: 2,
-                        marginBottom: 2,
-                        marginLeft: -2,
-                        width: '100%',
-                    }}
-                    spacing={2}
-                    rowSpacing={3}
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Box sx={{ display: 'flex', justifyContent: 'center', margin: 1.5 }}>
+                    <Grid
+                        className='detail-personal-info__box'
+                        container
+                        sx={{
+                            marginTop: 2,
+                            marginBottom: 2,
+                            marginLeft: -2,
+                            width: '100%',
+                        }}
+                        spacing={2}
+                        rowSpacing={3}
+                    >
+
+                        <Grid item xs={6} className='name'>
+                            <Controller
+                                name='fullname'
+                                control={control}
+                                defaultValue={personalInfo?.fullname}
+                                render={({ field }) => {
+                                    return (<TextField
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        helperText={errors.fullname?.message}
+                                        {...field}
+                                        label="Họ và tên"
+                                        variant="outlined"
+                                    />)
+                                }}
+                            />
+                            {/* <Typography variant='body2' >{ }</Typography> */}
+                        </Grid>
+
+                        <Grid item xs={6} className='dob'>
+                            <Controller
+                                name='date_of_birth'
+                                control={control}
+                                defaultValue={personalInfo?.date_of_birth}
+                                render={({ field }) => {
+                                    return (< TextField
+                                        id="date"
+                                        label="Birthday"
+                                        type="date"
+                                        helperText={errors.date_of_birth?.message}
+
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        {...field}
+
+                                    />)
+                                }}
+                            />
+
+                        </Grid>
+                        <Grid item xs={6} className='email'>
+                            <Controller
+                                name='email'
+                                control={control}
+                                defaultValue={personalInfo?.email}
+
+                                render={({ field }) => {
+                                    return (< TextField
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        helperText={errors.email?.message}
+
+                                        {...field}
+                                        label="Email" variant="outlined" />)
+                                }}
+                            />
+
+                        </Grid>
+                        <Grid item xs={6} className='position'>
+                            <Controller
+                                name='position'
+                                control={control}
+                                defaultValue={personalInfo?.position}
+                                render={({ field }) => {
+                                    return (<TextField
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        label="Vị trí"
+                                        variant="outlined"
+                                        {...field}
+                                    />)
+                                }}
+                            />
+
+                        </Grid>
+                        <Grid item xs={6} className='role'>
+                            <Controller
+                                name='role'
+                                control={control}
+                                defaultValue={personalInfo?.role}
+                                render={({ field }) => {
+                                    return (
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                label="ewrqewrqwerqew"
+                                                sx={{ height: 44 }}
+                                                {...field}
+                                            >
+                                                <MenuItem value={0}>Superadmin</MenuItem>
+                                                <MenuItem value={1}>Admin</MenuItem>
+                                                <MenuItem value={2}>Member</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    )
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={6} className='room'>
+                            <Controller
+                                name='room'
+                                control={control}
+                                defaultValue={personalInfo?.room}
+                                render={({ field }) => {
+                                    return (<TextField
+                                        sx={{
+                                            width: '100%',
+                                        }}
+                                        label="Phòng"
+                                        variant="outlined"
+                                        {...field}
+                                    />)
+                                }}
+                            />
+
+                        </Grid>
+                    </Grid>
+                </Box>
+                <Button
+                    className='confirm__button'
+                    sx={{ marginLeft: 'auto', display: 'flex', marginRight: 2, marginBottom: 4, }}
+                    type='submit'
                 >
-
-                    <Grid item xs={6} className='name'>
-                        <TextField
-                            sx={{
-                                width: '100%',
-                            }}
-                            label="Họ và tên"
-                            variant="outlined"
-                            defaultValue={personalInfo?.fullname}
-                        />
-                    </Grid>
-                    <Grid item xs={6} className='dob'>
-                        < TextField
-                            id="date"
-                            label="Birthday"
-                            type="date"
-                            sx={{
-                                width: '100%',
-                            }}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            defaultValue={personalInfo?.date_of_birth}
-                        />
-                    </Grid>
-                    <Grid item xs={6} className='email'>
-                        <TextField sx={{
-                            width: '100%',
-                        }} label="Email" variant="outlined" defaultValue={personalInfo?.email} />
-                    </Grid>
-                    <Grid item xs={6} className='position'>
-                        <TextField sx={{
-                            width: '100%',
-                        }} label="Vị trí" variant="outlined" defaultValue={personalInfo?.position} />
-                    </Grid>
-                    <Grid item xs={6} className='role'>
-                        <TextField sx={{
-                            width: '100%',
-                        }} label="Quyền" variant="outlined" defaultValue={personalInfo?.role} />
-                    </Grid>
-                    <Grid item xs={6} className='room'>
-                        <TextField sx={{
-                            width: '100%',
-                        }} label="Phòng" variant="outlined" defaultValue={personalInfo?.room} />
-                    </Grid>
-                </Grid>
-            </Box>
-            <Button
-                className='confirm__button'
-                sx={{ marginLeft: 'auto', display: 'flex', marginRight: 2, marginBottom: 4, }}
-            >
-                Lưu thay đổi
-            </Button>
-            <ModalUpdatePersonalInfo
-                setShowModalUpdatePersonalInfo={setShowModalUpdatePersonalInfo}
-                showModalUpdatePersonalInfo={showModalUpdatePersonalInfo}
-                personalInfo={personalInfo}
-                setPersonalInfo={setPersonalInfo}
-            />
-        </Box> : <></>
-
+                    Lưu thay đổi
+                </Button>
+            </form >
+            <TPNotification type={notification.type} message={notification.message} open={openNoti
+            } setOpen={setOpenNoti} />
+        </Box > : <CircularProgress />
     );
 }
 
