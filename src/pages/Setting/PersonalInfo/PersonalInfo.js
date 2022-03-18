@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, FormControl, InputLabel, MenuItem, Modal, Select, TextField, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import infoAPI from "api/infoAPI";
 import TPNotification from "components/TPNotification";
@@ -8,8 +8,8 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import './PersonalInfo.scss';
-
-
+import { Upload, message } from 'antd';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 
 const yupSchema = yup.object().shape({
@@ -26,6 +26,7 @@ const PersonalInfo = () => {
         errors
     } } = useForm({ resolver: yupResolver(yupSchema) });
 
+
     const onSubmit = async (data) => {
         console.log({ data })
         const convertData = (data) => {
@@ -41,32 +42,24 @@ const PersonalInfo = () => {
         await infoAPI.putUpdateUser(newData).then((res) => {
             console.log({ res })
             if (res?.status == 200) {
-                console.log('dsfadsf')
                 setNotification({
-                    message: res.data,
+                    message: 'Thay đổi thông tin thành công!',
                     type: NOTIFICATION.SUCCESS
                 })
                 setOpenNoti(true)
+            }
+            else {
+                setNotification({
+                    message: 'Thay đổi thông tin thất bại',
+                    type: NOTIFICATION.ERROR
+                })
+                setOpenNoti(true)
+
             }
             setPersonalInfo(newData)
         })
     }
 
-    // const handleChange = info => {
-    //     console.log({ info })
-    //     if (info.file.status === 'uploading') {
-    //         setLoading(true);
-    //         return;
-    //     }
-    //     if (info.file.status === 'done') {
-    //         // Get this url from response in real world.
-    //         getBase64(info.file.originFileObj, imageUrl => {
-    //             console.log({ imageUrl })
-    //             setImageUrl(imageUrl)
-    //         }
-    //         );
-    //     }
-    // };
 
     const getPersonalInfo = async () => {
         await infoAPI.getInfo().then((res) => {
@@ -78,6 +71,8 @@ const PersonalInfo = () => {
     useEffect(() => {
         getPersonalInfo()
     }, [])
+
+
 
 
 
@@ -111,7 +106,8 @@ const PersonalInfo = () => {
                                         sx={{
                                             width: '100%',
                                         }}
-                                        helperText={errors.fullname?.message}
+                                        helperText={<Typography variant='caption' color='error'> {errors.fullname?.message}</Typography>
+                                        }
                                         {...field}
                                         label="Họ và tên"
                                         variant="outlined"
@@ -130,7 +126,8 @@ const PersonalInfo = () => {
                                         id="date"
                                         label="Birthday"
                                         type="date"
-                                        helperText={errors.date_of_birth?.message}
+                                        helperText={<Typography variant='caption' color='error'> {errors.date_of_birth?.message}</Typography>
+                                        }
 
                                         sx={{
                                             width: '100%',
@@ -156,7 +153,8 @@ const PersonalInfo = () => {
                                         sx={{
                                             width: '100%',
                                         }}
-                                        helperText={errors.email?.message}
+                                        helperText={<Typography variant='caption' color='error'> {errors.email?.message}</Typography>
+                                        }
 
                                         {...field}
                                         label="Email" variant="outlined" />)

@@ -7,7 +7,9 @@ import Modal from "@mui/material/Modal";
 import Divider from "@mui/material/Divider";
 import Slide from "@mui/material/Slide";
 
-// @mui icons
+// @mui iconsimport TPNotification from "components/TPNotification";
+import TPNotification from "components/TPNotification";
+import { NOTIFICATION } from "constants/notification";
 import CloseIcon from "@mui/icons-material/Close";
 
 // Material Kit 2 PRO React components
@@ -33,6 +35,8 @@ const style = {
 };
 const ResultModal = ({ showModalResult, setShowModalResult, questions, questionAmount, minPointToPass, isFinish, setIsFinish, idExam, countDown, duration }) => {
     const navigate = useNavigate()
+    const [notification, setNotification] = useState({ type: '', message: '' });
+    const [openNoti, setOpenNoti] = useState(false)
 
     const [point, setPoint] = useState(0)
     const [isPass, setIsPass] = useState()
@@ -64,8 +68,22 @@ const ResultModal = ({ showModalResult, setShowModalResult, questions, questionA
         }
         await examAPI.postSaveExam(body).then((res) => {
             if (res?.status === 200) {
-                setShowModalResult(false)
-                navigate('/setting')
+                setNotification({
+                    message: 'Lưu kết quả thành công!',
+                    type: NOTIFICATION.SUCCESS
+                })
+                setOpenNoti(true)
+                setTimeout(() => {
+                    setShowModalResult(false)
+                    navigate('/setting')
+                }, 3000)
+
+            } else {
+                setNotification({
+                    message: 'Lưu kết quả thất bại!',
+                    type: NOTIFICATION.ERROR
+                })
+                setOpenNoti(true)
             }
         })
     }
@@ -110,6 +128,8 @@ const ResultModal = ({ showModalResult, setShowModalResult, questions, questionA
                     </MKBox>
                 </Modal>
             </Box >
+            <TPNotification type={notification.type} message={notification.message} open={openNoti
+            } setOpen={setOpenNoti} />
         </MKBox >
     )
 

@@ -220,7 +220,7 @@ const DetailExamModal = ({
           </Box>
           <Box
             className='questions__section'
-            sx={{ maxHeight: "50vh", overflowY: "scroll", marginBottom: 2 }}
+            sx={{ maxHeight: "30vh", overflowY: "scroll", marginBottom: 2 }}
           >
             {renderQuestions(exam?.questions)}
           </Box>

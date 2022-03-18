@@ -21,6 +21,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { string } from "prop-types";
 import { Typography } from "antd";
 import { checkLogin } from "../../utils/checkLogin";
+import TPNotification from "components/TPNotification";
+import { NOTIFICATION } from "constants/notification";
 
 const yupSchema = yup.object().shape({
     email: yup.string().required('Trường này bắt buộc!').email('Chưa đúng định dạng!'),
@@ -35,6 +37,8 @@ function SignIn() {
     const [password, setPassword] = useState("");
     const [isShowPass, setIsShowPass] = useState(false);
     const { user, setUser } = useContext(UserContext);
+    const [notification, setNotification] = useState({ type: '', message: '' });
+    const [openNoti, setOpenNoti] = useState(false)
 
 
     const onChangeEmail = (event) => {
@@ -71,11 +75,24 @@ function SignIn() {
                 // } else (navigate('/list-exams'))
             });
             await infoAPI.getInfo().then((res) => {
-                console.log({ res })
-                const data = res?.data
-                localStorage.setItem('userId', data?.user_id)
-                localStorage.setItem('role', data?.role)
-                navigate('/list-exams')
+                if (res?.status === 200) {
+                    setNotification({
+                        message: 'Đăng nhập thành công!',
+                        type: NOTIFICATION.SUCCESS
+                    })
+                    setOpenNoti(true)
+                    const data = res?.data
+                    localStorage.setItem('userId', data?.user_id)
+                    localStorage.setItem('role', data?.role)
+                    setTimeout(() => navigate('/list-exams'), 2000)
+
+                } else {
+                    setNotification({
+                        message: 'Đăng nhập thất bại',
+                        type: NOTIFICATION.ERROR
+                    })
+                    setOpenNoti(true)
+                }
             })
 
 
@@ -238,6 +255,8 @@ function SignIn() {
                     </Grid>
                 </Grid>
             </MKBox>
+            <TPNotification type={notification.type} message={notification.message} open={openNoti
+            } setOpen={setOpenNoti} />
         </>
     );
 }
