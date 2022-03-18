@@ -1,27 +1,14 @@
 import {
   Box,
-  Button,
-  CircularProgress,
-  FormControl,
-  FormControlLabel,
-  Modal,
-  Radio,
+  Button, FormControl,
+  FormControlLabel, Radio,
   RadioGroup,
-  Typography,
-  Container,
+  Typography
 } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import Slide from "@mui/material/Slide";
-import MKBox from "components/MKBox";
-import MKTypography from "components/MKTypography";
-import MKButton from "components/MKButton";
-import CloseIcon from "@mui/icons-material/Close";
-import { padding } from "@mui/system";
 import { useEffect, useState } from "react";
 import { STATUS } from "./constant";
 import ResultModal from "./ResultModal";
-import { useNavigate } from "react-router-dom";
-
+import { convertSecondToTime } from '../../utils/convert';
 
 const QuestionDetail = ({
   curQuestion,
@@ -31,39 +18,39 @@ const QuestionDetail = ({
   duration,
   minPointToPass,
   questionAmount,
+  idExam,
   loading
 }) => {
 
   const [valueRadio, setValueRadio] = useState(-1)
   const [showModalResult, setShowModalResult] = useState(false);
-  const [countDown, setCountDown] = useState(duration * 1000);
-  const [time, setTime] = useState('00:00')
+  const [countDown, setCountDown] = useState(duration);
+  const [time, setTime] = useState('00:00');
+  const [isFinish, setIsFinish] = useState(false);
   useEffect(() => {
     setValueRadio(curQuestion?.curAnswer + 1 ? curQuestion?.curAnswer : -1)
   }, [curQuestion])
 
   useEffect(() => {
-    if (curQuestion) {
-      if (countDown < 0) {
-        setTime('00:00')
-        setShowModalResult(true)
-      }
-      else {
-        setTimeout(() => {
-          setCountDown(countDown - 1000)
-          let minutes = Math.floor(countDown / (60 * 1000));
-          let seconds = Math.floor(countDown % (60 * 1000) / 1000);
-          setTime(`${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`)
-        }, 1000)
-        return
+    if (!isFinish) {
+      if (curQuestion) {
+        if (countDown < 0) {
+          setTime('00:00')
+          setIsFinish(true)
+          setShowModalResult(true)
+        }
+        else {
+          setTimeout(() => {
+            setCountDown(countDown - 1)
+            const time = convertSecondToTime(countDown)
+            setTime(`${time.minutes}:${time.seconds}`)
+          }, 1000)
+          return
+        }
       }
     }
-
   }, [countDown, loading])
 
-  const onCloseModal = () => {
-    setShowModalResult(false)
-  }
 
   const progressWhenChangeAnswer = (answer, question) => {
     let curQuestion = JSON.parse(JSON.stringify(question));
@@ -125,11 +112,20 @@ const QuestionDetail = ({
   return (
     <Box >
       <Box className='detail__exam' >
-        <Typography component={"div"} variant='subtitle1' className="name__test">{nameTest ? nameTest : ''}</Typography>
-        <Typography component={"div"} variant='subtitle1' className="countdown__oclock">Thời gian: {time}</Typography>
-        {/* <Button className="btn__submit" onClick={onSubmitExam}>Nộp bài</Button> */}
-        <ResultModal showModalResult={showModalResult} setShowModalResult={setShowModalResult} questions={questions} questionAmount={questionAmount} minPointToPass={minPointToPass} />
-
+        <Typography component={"div"} variant='h5' className="name__test">{nameTest ? nameTest : ''}</Typography>
+        <Typography component={"div"} variant='h5' className="countdown__oclock">Thời gian: {time}</Typography>
+        <ResultModal
+          showModalResult={showModalResult}
+          setShowModalResult={setShowModalResult}
+          questions={questions}
+          questionAmount={questionAmount}
+          minPointToPass={minPointToPass}
+          isFinish={isFinish}
+          setIsFinish={setIsFinish}
+          idExam={idExam}
+          countDown={countDown}
+          duration={duration}
+        />
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

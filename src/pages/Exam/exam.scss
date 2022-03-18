@@ -7,7 +7,9 @@
     margin: 124px 16px 32px 16px;
     // min-height: 500px;
     min-height: calc(100vh - 170px - 124px - 32px);
-    
+
+   
+
     .exam__container--left {
         @include main-section;
         margin-right: 16px;
@@ -15,14 +17,10 @@
         flex: 1;
 
         .title__box {
-            background: $sub-blue;
-            border-radius: 0.75rem;
-            padding: 16px;
-            min-height: 72px; 
-            display:flex;
-            align-items: center;
-            justify-content: center;
+            @include title-section;
+
         }
+        
 
         .question_answered__amount{
             color: $main-blue;
@@ -31,6 +29,10 @@
         .select-question__box{
             margin-top: 12px;
             text-align: center;
+            .select-question{
+                margin-bottom: 16px;
+            }
+
             button {
                 padding: 0;
                 border-radius: 4px;
@@ -66,13 +68,14 @@
         flex: 3;
 
         .detail__exam {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: $sub-blue;
-            border-radius: 0.75rem;
-            padding: 16px;
-            min-height: 64;
+            // display: flex;
+            // justify-content: space-between;
+            // align-items: center;
+            // background: $sub-blue;
+            // border-radius: 0.75rem;
+            // padding: 16px;
+            // min-height: 64;
+            @include title-section;
             
             button {
                 background: $main-blue;

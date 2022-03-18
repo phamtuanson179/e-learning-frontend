@@ -2,9 +2,10 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Switch from "@mui/material/Switch";
 import loginAPI from "api/loginAPI";
+import infoAPI from 'api/infoAPI'
 import { UserContext } from "App";
 // Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/techpro-images/backgroundSignIn.jpeg";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
@@ -20,16 +21,15 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { string } from "prop-types";
 import { Typography } from "antd";
 import { checkLogin } from "../../utils/checkLogin";
+import TPNotification from "components/TPNotification";
+import { NOTIFICATION } from "constants/notification";
 
 const yupSchema = yup.object().shape({
     email: yup.string().required('Trường này bắt buộc!').email('Chưa đúng định dạng!'),
     password: yup.string().required('Trường này bắt buộc!'),
 })
 
-
-
-
-function SignIn(props) {
+function SignIn() {
     const { control, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(yupSchema) })
 
     const navigate = useNavigate();
@@ -37,8 +37,9 @@ function SignIn(props) {
     const [password, setPassword] = useState("");
     const [isShowPass, setIsShowPass] = useState(false);
     const { user, setUser } = useContext(UserContext);
+    const [notification, setNotification] = useState({ type: '', message: '' });
+    const [openNoti, setOpenNoti] = useState(false)
 
-    // if (checkLogin()) navigate('/list-exams')
 
     const onChangeEmail = (event) => {
         const value = event.target.value;
@@ -56,21 +57,47 @@ function SignIn(props) {
 
     const onSubmitLogin = async () => {
 
-        // console.log({ data })
         try {
             const data = {
                 email: email,
                 password: password,
             };
+            console.log({ data })
 
             await loginAPI.login(data).then((res) => {
-                localStorage.setItem("accessToken", res.data.access_token);
-                localStorage.setItem("emailUser", data.email);
-                setUser({ loggedIn: true })
-                if (location.state?.from) {
-                    navigate(location.state.from);
-                } else (navigate('/list-exams'))
+                console.log({ res })
+                localStorage.setItem("accessToken", res?.data.access_token);
+                localStorage.setItem("email", data.email);
+
+                // setUser({ loggedIn: true })
+                // if (location.state?.from) {
+                //     navigate(location.state.from);
+                // } else (navigate('/list-exams'))
             });
+            await infoAPI.getInfo().then((res) => {
+                if (res?.status === 200) {
+                    setNotification({
+                        message: 'Đăng nhập thành công!',
+                        type: NOTIFICATION.SUCCESS
+                    })
+                    setOpenNoti(true)
+                    const data = res?.data
+                    localStorage.setItem('userId', data?.user_id)
+                    localStorage.setItem('role', data?.role)
+                    setTimeout(() => navigate('/list-exams'), 2000)
+
+                } else {
+                    setNotification({
+                        message: 'Đăng nhập thất bại',
+                        type: NOTIFICATION.ERROR
+                    })
+                    setOpenNoti(true)
+                }
+            })
+
+
+
+
         } catch (error) {
             console.log(error);
         }
@@ -228,6 +255,8 @@ function SignIn(props) {
                     </Grid>
                 </Grid>
             </MKBox>
+            <TPNotification type={notification.type} message={notification.message} open={openNoti
+            } setOpen={setOpenNoti} />
         </>
     );
 }

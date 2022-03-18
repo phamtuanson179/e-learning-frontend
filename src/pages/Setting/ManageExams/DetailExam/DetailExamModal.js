@@ -1,226 +1,240 @@
-import { Box, Button, ButtonBase, FormControl, FormControlLabel, Input, Modal, Radio, RadioGroup, Typography } from '@mui/material';
-import { useEffect, useState } from 'react'
-import examAPI from '../../../../api/examAPI'
+import {
+  Box,
+  Button,
+  ButtonBase,
+  FormControl,
+  FormControlLabel,
+  Input,
+  Modal,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import CircularProgress from "@mui/material/CircularProgress";
+import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+import MKButton from "components/MKButton";
+
+import TPNotification from "components/TPNotification";
+import { NOTIFICATION } from "constants/notification";
+import { useEffect, useState } from "react";
+import examAPI from "../../../../api/examAPI";
 
 const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 1000,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
+  bgcolor: "background.paper",
+  position: "absolute",
+  display: "flex",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%,-50%)",
+  maxWidth: "500px",
+  flexDirection: "column",
+  borderRadius: "12px",
+  bgColor: "white",
+  border: "1px solid #0000003d",
 };
 
 const checkCorrectAnswer = (answers) => {
-    for (let i in answers) {
-        if (answers[i]?.is_correct)
-            return i
-    }
-}
+  for (let i in answers) {
+    if (answers[i]?.is_correct) return i;
+  }
+};
 const convertDatas = (data) => {
-    return {
-        ...data,
-        questions: data?.questions.map((question, idx) => {
-            return {
-                ...question,
-                correctAnswerIndex: checkCorrectAnswer(question?.answers)
-            }
-        })
+  return {
+    ...data,
+    questions: data?.questions.map((question, idx) => {
+      return {
+        ...question,
+        correctAnswerIndex: checkCorrectAnswer(question?.answers),
+      };
+    }),
+  };
+};
+
+const DetailExamModal = ({
+  id,
+  setIsOpenDetailExamModal,
+  isOpenDetailExamModal,
+  setLoadingAgain,
+}) => {
+  const [exam, setExam] = useState("");
+  const [loading, setLoading] = useState(true);
+  const getExam = async (id) => {
+    if (id) {
+      const params = {
+        id: id,
+      };
+      await examAPI.getExam(params).then((res) => {
+        const data = convertDatas(res?.data);
+        setExam(data);
+        setLoading(false);
+      });
     }
-}
+  };
 
-const DetailExamModal = ({ id, setIsOpenDetailExamModal, isOpenDetailExamModal, setLoadingAgain }) => {
+  useEffect(() => {
+    getExam(id);
+  }, [id]);
 
-    const [exam, setExam] = useState('')
-    const [loading, setLoading] = useState(true)
-    const getExam = async (id) => {
-        if (id) {
-            const params = {
-                id: id
-            }
-            await examAPI.getExam(params).then(res => {
-                const data = convertDatas(res?.data)
-                setExam(data)
-                setLoading(false)
-            })
-        }
-    }
-
-    useEffect(() => {
-        getExam(id)
-    }, [id])
-
-    const renderAnwserQuestion = (question) => {
-        return (
-            <FormControl>
-                <RadioGroup
-                    aria-labelledby='demo-radio-buttons-group-label'
-                    name='radio-buttons-group'
-                    value={question?.correctAnswerIndex ?? ''}
-                >
-                    {question?.answers?.map((anwser, idx) => (
-                        <FormControlLabel
-                            value={idx}
-                            key={idx}
-                            label={anwser.content}
-                            control={<Radio />}
-                        />
-                    ))}
-                </RadioGroup>
-            </FormControl>
-        );
-    };
-
-    const handleCloseDetailExamModal = () => {
-        setIsOpenDetailExamModal(false)
-    }
-
-    const renderQuestions = (questions) => {
-        const result = questions.map((question, idx) => {
-            return (
-                <Box key={idx}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            maxHeight: '30vh',
-                            overflowY: 'scroll'
-                        }}
-                    >
-                        <Typography
-                            component={"div"}
-                            className='title__question'
-                            variant="h5"
-                        >
-                            {question.content}
-                        </Typography>
-                    </Box>
-
-                    <Box className='answer__container'>
-                        {renderAnwserQuestion(question)}
-                    </Box>
-                </Box>
-            )
-        })
-        return result
-    }
-
-    const handleDeleteExam = async () => {
-        const params = {
-            id: id
-        }
-        await examAPI.deleteExamById(params).then(() => {
-            setLoadingAgain(true)
-            setIsOpenDetailExamModal(false)
-        })
-    }
+  const renderAnwserQuestion = (question) => {
     return (
-        <Modal
-            open={isOpenDetailExamModal}
-            onClose={handleCloseDetailExamModal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
+      <Box>
+        <RadioGroup
+          aria-labelledby='demo-radio-buttons-group-label'
+          name='radio-buttons-group'
+          value={question?.correctAnswerIndex ?? ""}
+          sx={{ marginLeft: 1 }}
         >
-            {!loading
-                ? <Box sx={style} >
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Chi tiết bài thi
-                    </Typography>
+          {question?.answers?.map((anwser, idx) => (
+            <FormControlLabel
+              value={idx}
+              key={idx}
+              label={
+                <Typography
+                  sx={{ display: "inline" }}
+                  variant='body2'
+                  fontWeight={400}
+                >
+                  {anwser.content}
+                </Typography>
+              }
+              control={<Radio />}
+            />
+          ))}
+        </RadioGroup>
+      </Box>
+    );
+  };
 
-                    <Box
-                        className='detail-personal-info__box'
-                        sx={{
-                            margin: '32px auto',
-                            maxHeight: '60vh',
-                            overflowY: 'scroll'
-                        }}
-                    >
-                        <Box className='left__section'>
-                            <Box sx={{
-                                display: 'flex',
-                            }}>
-                                <Typography
-                                    variant='body1'
-                                    sx={{
-                                        flex: 1,
-                                    }}
-                                >
-                                    Tên bài thi
-                                </Typography>
-                                <Input
-                                    sx={{
-                                        flex: 2,
-                                    }}
-                                    value={exam?.name}
-                                />
-                            </Box>
-                            <Box sx={{
-                                display: 'flex',
-                            }}>
-                                <Typography
-                                    variant='body1'
-                                    sx={{
-                                        flex: 1,
-                                    }}
-                                >
-                                    Thời gian
-                                </Typography>
-                                <Input
-                                    sx={{
-                                        flex: 2,
-                                    }}
-                                    value={exam?.duration}
-                                />
+  const handleCloseDetailExamModal = () => {
+    setIsOpenDetailExamModal(false);
+  };
 
-                            </Box>
-                            <Box sx={{
-                                display: 'flex',
-                            }}>
-                                <Typography
-                                    variant='body1'
-                                    sx={{
-                                        flex: 1,
-                                    }}
-                                >
-                                    Số câu đúng tối thiểu
-                                </Typography>
-                                <Input
-                                    sx={{
-                                        flex: 2,
-                                    }}
-                                    value={exam?.min_point_to_pass / 10}
-                                />
-                            </Box>
-                            <Box sx={{
-                                display: 'flex',
-                            }}>
-                                <Typography
-                                    variant='body1'
-                                    sx={{
-                                        flex: 1,
-                                    }}
-                                >
-                                    Thuộc phòng
-                                </Typography>
-                                <Input
-                                    sx={{ flex: 2, }}
-                                    value={exam?.require_rooms}
-                                />
-                            </Box>
-                        </Box>
-                        <Box className='right__section'>
-                            {renderQuestions(exam?.questions)}
-                        </Box>
-                        <ButtonBase onClick={handleDeleteExam}>Xoá bài thi</ButtonBase>
-                    </Box>
-                </Box> : <></>}
+  const renderQuestions = (questions) => {
+    const result = questions.map((question, idx) => {
+      return (
+        <Box
+          key={idx}
+          sx={{
+            bgcolor: "#F2F3F5",
+            borderRadius: "12px",
+            margin: 2,
+            padding: 1.5,
+          }}
+        >
+          <Box>
+            <Typography
+              component={"div"}
+              className='title__question'
+              variant='h5'
+              fontWeight={700}
+              marginBottom={1}
+            >
+              {question.content}
+            </Typography>
 
-        </Modal>
-    )
-}
+            <Box className='answer__container'>
+              {renderAnwserQuestion(question)}
+            </Box>
+          </Box>
+        </Box>
+      );
+    });
+    return result;
+  };
 
-export default DetailExamModal
+  const handleDeleteExam = async () => {
+    const params = {
+      id: id,
+    };
+    await examAPI.deleteExamById(params).then(() => {
+      setLoadingAgain(true);
+      setIsOpenDetailExamModal(false);
+    });
+  };
+  return (
+    <Modal
+      sx={{
+        overflowY: "auto",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+      open={isOpenDetailExamModal}
+      onClose={handleCloseDetailExamModal}
+      aria-labelledby='modal-modal-title'
+      aria-describedby='modal-modal-description'
+    >
+      {!loading ? (
+        <Box sx={style}>
+          <Box
+            display='flex'
+            alginItems='center'
+            justifyContent='space-between'
+            sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
+          >
+            <Typography id='modal-modal-title' variant='h5'>
+              Chi tiết bài thi
+            </Typography>
+            <CloseIcon
+              fontSize='medium'
+              sx={{ cursor: "pointer" }}
+              onClick={handleCloseDetailExamModal}
+            />
+          </Box>
+          <Divider />
+
+          <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
+            <TextField
+              sx={{
+                width: "100%",
+                marginBottom: 2,
+              }}
+              size='normal'
+              variant='standard'
+              label='Tên bài thi'
+              value={exam?.name}
+            />
+
+            <TextField
+              sx={{ width: "100%", marginBottom: 2 }}
+              variant='standard'
+              label='Thời gian'
+              value={exam?.duration}
+            />
+
+            <TextField
+              sx={{ width: "100%", marginBottom: 2 }}
+              variant='standard'
+              label='Số câu đúng tối thiểu'
+              value={exam?.min_point_to_pass / 10}
+            />
+
+            <TextField
+              sx={{ width: "100%", marginBottom: 2 }}
+              variant='standard'
+              label='Thuộc phòng'
+              value={exam?.require_rooms}
+            />
+          </Box>
+          <Box
+            className='questions__section'
+            sx={{ maxHeight: "30vh", overflowY: "scroll", marginBottom: 2 }}
+          >
+            {renderQuestions(exam?.questions)}
+          </Box>
+          <Box sx={{ textAlign: "right", margin: 2 }}>
+            <MKButton onClick={handleDeleteExam} color='error'>
+              Xoá bài thi
+            </MKButton>
+          </Box>
+        </Box>
+      ) : (
+        <CircularProgress />
+      )}
+    </Modal>
+  );
+};
+
+export default DetailExamModal;

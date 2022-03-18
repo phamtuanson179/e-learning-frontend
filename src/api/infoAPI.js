@@ -4,7 +4,7 @@ const infoAPI = {
   getInfo: () => {
     const url = "/get_user";
     const params = {
-      email: localStorage.getItem("emailUser"),
+      email: localStorage.getItem("email"),
     };
     return axiosClient.get(url, { params });
   },

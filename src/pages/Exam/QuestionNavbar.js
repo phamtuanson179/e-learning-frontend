@@ -60,7 +60,7 @@ const QuestionNavbar = ({ questionAmount, curIndexQuestion, setCurIndexQuestion,
 
     return (
         <Box>
-            <Typography className='title__box' component='div' variant='subtitle1'>Exam Navigator</Typography>
+            <Typography className='title__box' component='div' variant='h5'>Exam Navigator</Typography>
             <Box className='select-question__box'>
                 <Box className='select-question'>
                     {renderQuestionContainer()}
