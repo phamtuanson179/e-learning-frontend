@@ -8,9 +8,9 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import './PersonalInfo.scss';
-import { Upload, message } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
+
+import TPUploadImage from 'components/TPUploadImage';
 
 const yupSchema = yup.object().shape({
     fullname: yup.string().required('Trường này bắt buộc!'),
@@ -21,10 +21,30 @@ const PersonalInfo = () => {
     const [personalInfo, setPersonalInfo] = useState('');
     const [notification, setNotification] = useState({ type: '', message: '' });
     const [openNoti, setOpenNoti] = useState(false)
+    const [avatar, setAvatar] = useState()
 
     const { control, handleSubmit, formState: {
         errors
     } } = useForm({ resolver: yupResolver(yupSchema) });
+
+
+
+
+
+    const getPersonalInfo = async () => {
+        await infoAPI.getInfo().then((res) => {
+            console.log({ res })
+            const data = res?.data
+            setPersonalInfo(data)
+            setAvatar(data.url_avatar)
+        })
+    }
+
+    useEffect(() => {
+        getPersonalInfo()
+    }, [])
+
+
 
 
     const onSubmit = async (data) => {
@@ -34,7 +54,7 @@ const PersonalInfo = () => {
                 ...data,
                 password: null,
                 token: null,
-                url_avatar: "",
+                url_avatar: avatar,
                 user_id: personalInfo?.user_id
             }
         }
@@ -50,7 +70,7 @@ const PersonalInfo = () => {
             }
             else {
                 setNotification({
-                    message: 'Thay đổi thông tin thất bại',
+                    message: 'Thay đổi thông tin thất bại!',
                     type: NOTIFICATION.ERROR
                 })
                 setOpenNoti(true)
@@ -59,21 +79,6 @@ const PersonalInfo = () => {
             setPersonalInfo(newData)
         })
     }
-
-
-    const getPersonalInfo = async () => {
-        await infoAPI.getInfo().then((res) => {
-            console.log({ res })
-            setPersonalInfo(res?.data)
-        })
-    }
-
-    useEffect(() => {
-        getPersonalInfo()
-    }, [])
-
-
-
 
 
     return (personalInfo ?
@@ -95,7 +100,9 @@ const PersonalInfo = () => {
                         spacing={2}
                         rowSpacing={3}
                     >
-
+                        <Box width={'100%'} marginBottom={2}>
+                            <TPUploadImage img={avatar} setImg={setAvatar} type={'avatar'} />
+                        </Box>
                         <Grid item xs={6} className='name'>
                             <Controller
                                 name='fullname'
@@ -196,9 +203,9 @@ const PersonalInfo = () => {
                                                 sx={{ height: 44 }}
                                                 {...field}
                                             >
-                                                <MenuItem value={0}>Superadmin</MenuItem>
+                                                <MenuItem value={0}>Member</MenuItem>
                                                 <MenuItem value={1}>Admin</MenuItem>
-                                                <MenuItem value={2}>Member</MenuItem>
+                                                <MenuItem value={2}>Super Admin</MenuItem>
                                             </Select>
                                         </FormControl>
                                     )

@@ -24,6 +24,7 @@ import "./AddExamModal.scss";
 import AddQuestionModal from "./AddQuestionModal";
 import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
+import TPUploadImage from "components/TPUploadImage";
 
 const style = {
     bgcolor: "background.paper",
@@ -68,6 +69,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
     const [questionList, setQuestionList] = useState([]);
     const [notification, setNotification] = useState({ type: '', message: '' });
     const [openNoti, setOpenNoti] = useState(false)
+    const [img, setImg] = useState()
 
     const handleCloseAddExamModal = () => {
         setIsOpenAddExamModal(false);
@@ -176,7 +178,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
             const convertQuestion = {
                 content: question.content,
                 type: 1,
-                url_file: "",
+                url_file: '',
                 answers: question.answers,
             };
             return convertQuestion;
@@ -190,6 +192,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                 require_rooms: [data.requireRoom],
                 created_by: localStorage.getItem("email"),
                 questions: convertQuestionList,
+                image: img
             };
         };
         const newData = convertData(data);
@@ -216,9 +219,9 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
         });
     };
     return (
-        <Box sx={{ marginBottom: 2 }}>
+        <Box >
             {/* <Button onClick={handleOpenAddExamModal}>Thêm bài thi</Button> */}
-            <Grid container item xs={12} lg={10} justifyContent='center' mx='auto'>
+            <Box textAlign={'right'} margin={2}>
                 <MKButton
                     variant='gradient'
                     color='info'
@@ -226,7 +229,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                 >
                     Thêm bài thi
                 </MKButton>
-            </Grid>
+            </Box>
             <Box>
                 <Modal
                     sx={{
@@ -257,6 +260,8 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                             />
                         </Box>
                         <Divider />
+                        <Box></Box>
+                        <TPUploadImage setImg={setImg} img={img} />
                         <form onSubmit={handleSubmit(onSubmit)} id='form-add-exam'>
                             <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
                                 <Controller

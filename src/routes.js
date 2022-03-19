@@ -1,4 +1,5 @@
 import CurCourses from "pages/CurCourses";
+import Error404 from "pages/Error/Error404";
 import Exam from "pages/Exam";
 import ForgotPassword from "pages/ForgotPassword";
 import ListExams from "pages/ListExams/ListExams";
@@ -50,6 +51,12 @@ const routes = [
     exact: true,
     name: "ForgotPassword",
     component: <ForgotPassword />,
+  },
+  {
+    path: "error-404",
+    exact: true,
+    name: "error404",
+    component: <Error404 />,
   },
 ];
 
