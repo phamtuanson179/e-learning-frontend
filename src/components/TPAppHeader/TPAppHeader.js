@@ -91,7 +91,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
     )
   );
   console.log({ location });
-  if (location.pathname === "/") {
+  if (location.pathname === "/" || location.pathname === "/forgot-password") {
     return null;
   }
 
@@ -152,16 +152,10 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
             sx={{ display: "flex", alignItems: "center" }}
           >
             <MKButton
-              // variant={
-              //     action.color === "white" || action.color === "default"
-              //         ? "contained"
-              //         : "gradient"
-              // }
-              // color={action.color ? action.color : "info"}
               sx={{ padding: 0, minWidth: 32 }}
               onClick={() => navigate("/setting")}
             >
-              <Avatar alt='Remy Sharp' sx={{ width: 24, height: 24 }} src='' />
+              <Avatar alt='Remy Sharp' sx={{ width: 24, height: 24 }} src={localStorage.getItem('avatar')} />
             </MKButton>
             <MKButton
               sx={{ padding: 1, minWidth: 24, paddingLeft: 2 }}

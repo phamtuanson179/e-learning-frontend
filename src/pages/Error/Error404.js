@@ -2,7 +2,6 @@ import { Box, Container, Icon, ImageListItem, Typography } from "@mui/material"
 import { useLocation } from "react-router-dom"
 import Image from '../../assets/images/techpro-images/404Image.svg'
 const Error404 = () => {
-
     return (
         <Container sx={{ display: 'flex', marginTop: 15, marginBottom: 5, justifyContent: 'space-between', alignItems: 'center' }}>
             <Box sx={{ flex: 1 }}>

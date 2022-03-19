@@ -20,6 +20,8 @@ import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
 import { useEffect, useState } from "react";
 import examAPI from "../../../../api/examAPI";
+import unknowExam from 'assets/images/techpro-images/unknowExam.png'
+
 
 const style = {
   bgcolor: "background.paper",
@@ -60,6 +62,8 @@ const DetailExamModal = ({
 }) => {
   const [exam, setExam] = useState("");
   const [loading, setLoading] = useState(true);
+  const [notification, setNotification] = useState({ type: '', message: '' });
+  const [openNoti, setOpenNoti] = useState(false)
   const getExam = async (id) => {
     if (id) {
       const params = {
@@ -109,6 +113,7 @@ const DetailExamModal = ({
 
   const handleCloseDetailExamModal = () => {
     setIsOpenDetailExamModal(false);
+    setLoading(true)
   };
 
   const renderQuestions = (questions) => {
@@ -148,12 +153,28 @@ const DetailExamModal = ({
     const params = {
       id: id,
     };
-    await examAPI.deleteExamById(params).then(() => {
-      setLoadingAgain(true);
-      setIsOpenDetailExamModal(false);
+    await examAPI.deleteExamById(params).then((res) => {
+      if (res?.status == 200) {
+        setNotification({
+          message: 'Xoá bài thi thành công!',
+          type: NOTIFICATION.SUCCESS
+        })
+        setOpenNoti(true)
+        setLoadingAgain(true);
+        setIsOpenDetailExamModal(false);
+      } else {
+        setNotification({
+          message: 'Xoá bài thi thất bại!',
+          type: NOTIFICATION.ERROR
+        })
+        setOpenNoti(true)
+      }
+
     });
+
   };
   return (
+
     <Modal
       sx={{
         overflowY: "auto",
@@ -184,7 +205,10 @@ const DetailExamModal = ({
             />
           </Box>
           <Divider />
+          <Box margin={'auto'} overflow='hidden' borderRadius={1.5} width={180} height={180} border={'1px solid rgba(0,0,0,0.2)'} display='flex' justifyContent={'center'} alignItems={'center'}>
+            <img src={exam?.image ? exam?.image : unknowExam} width={180} height={180} />
 
+          </Box>
           <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
             <TextField
               sx={{
@@ -234,6 +258,7 @@ const DetailExamModal = ({
         <CircularProgress />
       )}
     </Modal>
+
   );
 };
 

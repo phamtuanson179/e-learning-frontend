@@ -8,7 +8,7 @@ import MKTypography from "components/MKTypography";
 import TPCardItem from "components/TPCardItem";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import image2 from '../../assets/images/team-2.jpg';
+import unknowExam from '../../assets/images/techpro-images/unknowExam.png';
 
 
 
@@ -17,7 +17,7 @@ import image2 from '../../assets/images/team-2.jpg';
 const convertDatas = (datas) => datas.map((data, idx) => {
   return {
     idExam: data?.id,
-    image: image2,
+    image: data?.image ? data?.image : unknowExam,
     name: data?.name,
     questionAmount: data?.questions.length,
     route: '/exam'

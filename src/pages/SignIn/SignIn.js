@@ -23,6 +23,7 @@ import { Typography } from "antd";
 import { checkLogin } from "../../utils/checkLogin";
 import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
+import { TextField } from "@mui/material";
 
 const yupSchema = yup.object().shape({
     email: yup.string().required('Trường này bắt buộc!').email('Chưa đúng định dạng!'),
@@ -56,7 +57,7 @@ function SignIn() {
     }
 
     const onSubmitLogin = async () => {
-
+        console.log('first')
         try {
             const data = {
                 email: email,
@@ -84,6 +85,7 @@ function SignIn() {
                     const data = res?.data
                     localStorage.setItem('userId', data?.user_id)
                     localStorage.setItem('role', data?.role)
+                    localStorage.setItem('avatar', data?.url_avatar)
                     setTimeout(() => navigate('/list-exams'), 2000)
 
                 } else {
@@ -163,29 +165,9 @@ function SignIn() {
                                     Đăng nhập
                                 </MKTypography>
                             </MKBox>
-                            {/* <form onSubmit={handleSubmit(onSubmitLogin)} method='post'> */}
                             <MKBox pt={4} pb={3} px={3}>
                                 <MKBox component='form' role='form'>
                                     <MKBox mb={2}>
-                                        {/* <Controller
-                        name="email"
-                        control={control}
-                        render={(({ field }) => {
-                          return (
-                            <MKInput
-                              type='email'
-                              label='Email'
-                              id='email'
-                              placeholder='your email@.com'
-                              autoComplete='email'
-                              onChange={onChangeEmail}
-                              fullWidth
-                              {...field}
-                            />
-                          )
-                        })}
-                      /> */}
-
                                         <MKInput
                                             type='email'
                                             label='Email'
@@ -194,30 +176,10 @@ function SignIn() {
                                             autoComplete='email'
                                             onChange={onChangeEmail}
                                             fullWidth
-                                        // {...field}
                                         />
-                                        {/* <Typography variant='subtitle2' color='warning'>{errors.email?.message}</Typography> */}
+                                        <Typography variant='subtitle2' color='warning'>{errors.email?.message}</Typography>
                                     </MKBox>
                                     <MKBox display='flex' alignItems='center' sx={{ position: 'relative' }} mb={2}>
-
-                                        {/* <Controller
-                        name="password"
-                        control={control}
-                        render={(({ field }) => {
-                          return (
-                            <MKInput
-                              type={isShowPass ? "text" : "password"}
-                              label='Password'
-                              id='password'
-                              placeholder='******'
-                              onChange={onChangePassword}
-                              fullWidth
-                              {...field}
-                            />
-                          )
-                        })}
-                      /> */}
-
                                         <MKInput
                                             type={isShowPass ? "text" : "password"}
                                             label='Password'
@@ -225,10 +187,7 @@ function SignIn() {
                                             placeholder='******'
                                             onChange={onChangePassword}
                                             fullWidth
-                                        // {...field}
                                         />
-
-
                                         {isShowPass ?
                                             <VisibilityOffIcon sx={{ position: 'absolute', right: 8 }} onClick={showPass} /> :
                                             <VisibilityIcon sx={{ position: 'absolute', right: 8 }} onClick={showPass} />}
@@ -239,18 +198,16 @@ function SignIn() {
                                             variant='gradient'
                                             color='info'
                                             fullWidth
-                                            // type='submit'
                                             onClick={onSubmitLogin}
                                         >
                                             Đăng nhập
                                         </MKButton>
                                     </MKBox>
-                                    <MKBox mt={3} mb={1} textAlign='center'>
+                                    <MKBox mt={3} mb={1} textAlign='center' onClick={() => navigate('/forgot-password', { state: { email: email } })}>
                                         <MKButton>Bạn quên mật khẩu?</MKButton>
                                     </MKBox>
                                 </MKBox>
                             </MKBox>
-                            {/* </form> */}
                         </Card>
                     </Grid>
                 </Grid>
