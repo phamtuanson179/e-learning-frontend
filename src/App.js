@@ -9,6 +9,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import './assets/scss/index.scss';
 import 'antd/dist/antd.css';
+import { Suspense } from 'react';
 
 
 
@@ -32,7 +33,9 @@ export default function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <LocalizationProvider dateAdapter={DateAdapter}> <DefaultLayout /></LocalizationProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+
+          <LocalizationProvider dateAdapter={DateAdapter}> <DefaultLayout /></LocalizationProvider></Suspense>
       </ThemeProvider>
     </UserContext.Provider>
 

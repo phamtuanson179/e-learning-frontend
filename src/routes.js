@@ -3,8 +3,10 @@ import Error404 from "pages/Error/Error404";
 import Exam from "pages/Exam";
 import ForgotPassword from "pages/ForgotPassword";
 import ListExams from "pages/ListExams/ListExams";
+import React, { lazy } from "react";
 import { default as AllCourses } from "./pages/AllCourses";
-import Setting from "./pages/Setting";
+import Setting from 'pages/Setting';
+// const Setting = lazy(() => import('pages/Setting'))
 
 // const Home = React.lazy(() => import('./pages/Home'))
 // const Course = React.lazy(() => import('./pages/Course'))

@@ -75,7 +75,7 @@ const ResultModal = ({ showModalResult, setShowModalResult, questions, questionA
                 setOpenNoti(true)
                 setTimeout(() => {
                     setShowModalResult(false)
-                    navigate('/setting')
+                    navigate('/setting', { state: { idExam: idExam } })
                 }, 3000)
 
             } else {
