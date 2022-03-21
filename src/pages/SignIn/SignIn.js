@@ -69,7 +69,10 @@ function SignIn() {
                 console.log({ res })
                 localStorage.setItem("accessToken", res?.data.access_token);
                 localStorage.setItem("email", data.email);
-
+                setNotification({
+                    message: 'Đăng nhập thành công!',
+                    type: NOTIFICATION.SUCCESS
+                })
                 // setUser({ loggedIn: true })
                 // if (location.state?.from) {
                 //     navigate(location.state.from);
@@ -77,17 +80,13 @@ function SignIn() {
             });
             await infoAPI.getInfo().then((res) => {
                 if (res?.status === 200) {
-                    setNotification({
-                        message: 'Đăng nhập thành công!',
-                        type: NOTIFICATION.SUCCESS
-                    })
+
                     setOpenNoti(true)
                     const data = res?.data
                     localStorage.setItem('userId', data?.user_id)
                     localStorage.setItem('role', data?.role)
                     localStorage.setItem('avatar', data?.url_avatar)
                     setTimeout(() => navigate('/list-exams'), 2000)
-
                 } else {
                     setNotification({
                         message: 'Đăng nhập thất bại',

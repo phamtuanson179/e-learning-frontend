@@ -5,11 +5,13 @@ import { checkLogin } from '../../utils/checkLogin'
 import SignIn from '../../pages/SignIn';
 import ProtectedRoutes from "ProtectedRoutes";
 import { check } from "express-validator";
+import { Suspense } from 'react'
 const AppContent = () => {
     const navigate = useNavigate()
     return (
         <>
             <Routes>
+
                 {/* <Route element={<ProtectedRoutes />}> */}
                 {router.map((route, idx) => {
                     return (
@@ -27,6 +29,7 @@ const AppContent = () => {
 
                 <Route path='/' element={<SignIn />} />
                 <Route path='*' element={checkLogin() ? <Navigate to='/error-404' /> : <Navigate to='/' />} />
+
             </Routes>
         </>
     );
