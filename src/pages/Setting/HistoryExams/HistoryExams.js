@@ -9,14 +9,16 @@ import { isEmpty } from 'lodash'
 import { convertSecondToTime } from 'utils/convert'
 import LastestResult from './LastestResult';
 import RankExam from './RankExam';
+import { useLocation } from 'react-router-dom';
 
 
 
 const HistoryExam = () => {
 
+    const [idExam, setIdExam] = useState();
     const [historyExamList, setHistoryExamList] = useState();
     const [lastestResultExam, setLastestResultExam] = useState();
-
+    const location = useLocation()
     const getHistoryExamList = async (examId, userId) => {
         const params = {
             exam_id: examId,
@@ -31,7 +33,10 @@ const HistoryExam = () => {
 
 
     useEffect(() => {
-        getHistoryExamList('TEL1647318825.950605', localStorage.getItem('userId'))
+        if (location.state?.idExam) {
+            getHistoryExamList(location.state?.idExam, localStorage.getItem('userId'))
+        } else
+            getHistoryExamList('TEL1647318825.950605', localStorage.getItem('userId'))
     }, [])
 
 
