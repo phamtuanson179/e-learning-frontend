@@ -16,11 +16,11 @@ import unknowExam from '../../assets/images/techpro-images/unknowExam.png';
 
 const convertDatas = (datas) => datas.map((data, idx) => {
   return {
-    idExam: data?.id,
+    ...data,
+    // idExam: data?.id,
     image: data?.image ? data?.image : unknowExam,
     name: data?.name,
     questionAmount: data?.questions.length,
-    route: '/exam'
   }
 })
 
@@ -37,6 +37,7 @@ const BlockExams = () => {
 
     await examAPI.getListExamForRoom(params).then((res) => {
       if (res?.data) {
+        console.log('res?.data', res?.data)
         const listExams = convertDatas(res?.data)
         setListExams(listExams)
         setLoading(false)
@@ -53,10 +54,10 @@ const BlockExams = () => {
   const renderListExams = () => {
     return (
       <Grid container spacing={6} maxWidth={1000}>
-        {listExams?.map(({ image, name, questionAmount, route, idExam }, idx) => (
+        {listExams?.map((exam, idx) => (
           <Grid item md={4} sm={6} xs={12} key={idx} >
-            <Link to={route} state={{ idExam: idExam }}>
-              <TPCardItem image={image} name={name} type={'Câu hỏi'} count={questionAmount} />
+            <Link to={'/detail-exam'} state={{ exam: exam }}>
+              <TPCardItem image={exam.image} name={exam.name} type={'Câu hỏi'} count={exam.questionAmount} />
             </Link>
           </Grid>
         ))

@@ -29,7 +29,18 @@ const examAPI = {
   deleteExamById: (params) => {
     const url = '/admin/delete_exam';
     return axiosClient.delete(url, { params })
+  },
+
+  getFullExamRanking: (params) => {
+    const url = '/get-full-exam-ranking';
+    return axiosClient.get(url, { params })
+  },
+
+  getShortcutExamRanking: (params) => {
+    const url = '/get-shortcut-exam-ranking';
+    return axiosClient.get(url, { params })
   }
+
 };
 
 export default examAPI;

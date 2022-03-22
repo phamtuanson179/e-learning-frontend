@@ -6,18 +6,13 @@ import ListExams from "pages/ListExams/ListExams";
 import React, { lazy } from "react";
 import { default as AllCourses } from "./pages/AllCourses";
 import Setting from 'pages/Setting';
+import DetailExam from "pages/DetailExam";
 // const Setting = lazy(() => import('pages/Setting'))
 
 // const Home = React.lazy(() => import('./pages/Home'))
 // const Course = React.lazy(() => import('./pages/Course'))
 
 const routes = [
-  // {
-  //   path: "/",
-  //   exact: true,
-  //   name: "Home",
-  //   component: <CurCourses />,
-  // },
   {
     path: "current-courses",
     exact: true,
@@ -59,6 +54,12 @@ const routes = [
     exact: true,
     name: "error404",
     component: <Error404 />,
+  },
+  {
+    path: "detail-exam",
+    exact: true,
+    name: "DetailExam",
+    component: <DetailExam />,
   },
 ];
 

@@ -1,9 +1,0 @@
-
-@import '../../../assets/scss/variables/colorVariables';
-@import '../../../assets/scss/variables/mixin';
-
-.history-exam__container {
-    .lastest__result {
-        @include sub-section;
-    }
-}

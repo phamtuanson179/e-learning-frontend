@@ -19,8 +19,8 @@ function createData(id, duration, point, isPass) {
   return { id, duration, point, isPass };
 }
 
-const TableHistoryExam = ({ historyExamList }) => {
-  console.log({ historyExamList });
+const HistoryExamTable = ({ historyExam }) => {
+  console.log({ historyExam });
   const [rows, setRows] = useState();
 
   const convertDataToRowTable = (datas) => {
@@ -34,7 +34,7 @@ const TableHistoryExam = ({ historyExamList }) => {
   };
 
   useEffect(() => {
-    if (historyExamList) convertDataToRowTable(historyExamList);
+    if (historyExam) convertDataToRowTable(historyExam);
   }, []);
 
   const showTime = (duration) => {
@@ -43,8 +43,8 @@ const TableHistoryExam = ({ historyExamList }) => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
+    <TableContainer component={Paper} sx={{ maxHeight: '50vh' }}>
+      <Table stickyHeader sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
         <TableHead sx={{ display: "table-header-group" }}>
           <TableRow>
             <TableCell align='center'>Stt</TableCell>
@@ -82,4 +82,4 @@ const TableHistoryExam = ({ historyExamList }) => {
   );
 };
 
-export default TableHistoryExam;
+export default HistoryExamTable;

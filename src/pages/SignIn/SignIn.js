@@ -73,6 +73,7 @@ function SignIn() {
                     message: 'Đăng nhập thành công!',
                     type: NOTIFICATION.SUCCESS
                 })
+                navigate('/list-exams')
                 // setUser({ loggedIn: true })
                 // if (location.state?.from) {
                 //     navigate(location.state.from);
@@ -86,7 +87,6 @@ function SignIn() {
                     localStorage.setItem('userId', data?.user_id)
                     localStorage.setItem('role', data?.role)
                     localStorage.setItem('avatar', data?.url_avatar)
-                    setTimeout(() => navigate('/list-exams'), 2000)
                 } else {
                     setNotification({
                         message: 'Đăng nhập thất bại',

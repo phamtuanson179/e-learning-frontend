@@ -45,7 +45,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
       route: "/all-courses",
     },
     {
-      name: "Vào thi",
+      name: "Bài thi",
       icon: <Icon>article</Icon>,
       route: "/list-exams",
     },

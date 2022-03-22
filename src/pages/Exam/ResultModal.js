@@ -1,25 +1,19 @@
-import { useEffect, useState } from "react";
-
-// @mui material components
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
+import { Box } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import Divider from "@mui/material/Divider";
-import Slide from "@mui/material/Slide";
-
-// @mui iconsimport TPNotification from "components/TPNotification";
-import TPNotification from "components/TPNotification";
-import { NOTIFICATION } from "constants/notification";
-import CloseIcon from "@mui/icons-material/Close";
-
+import examAPI from "api/examAPI";
 // Material Kit 2 PRO React components
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import MKTypography from "components/MKTypography";
-import { STATUS } from './constant'
-import { Box } from "@mui/material";
+// @mui iconsimport TPNotification from "components/TPNotification";
+import TPNotification from "components/TPNotification";
+import { NOTIFICATION } from "constants/notification";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import examAPI from "api/examAPI";
+import { STATUS } from './constant';
+
+
+
 
 const style = {
     bgcolor: 'background.paper',
@@ -33,11 +27,10 @@ const style = {
     border: '12px',
 
 };
-const ResultModal = ({ showModalResult, setShowModalResult, questions, questionAmount, minPointToPass, isFinish, setIsFinish, idExam, countDown, duration }) => {
+const ResultModal = ({ showModalResult, setShowModalResult, questions, questionAmount, minPointToPass, setIsFinish, countDown, duration, exam }) => {
     const navigate = useNavigate()
     const [notification, setNotification] = useState({ type: '', message: '' });
     const [openNoti, setOpenNoti] = useState(false)
-
     const [point, setPoint] = useState(0)
     const [isPass, setIsPass] = useState()
     const excutePointOfExam = () => {
@@ -58,9 +51,9 @@ const ResultModal = ({ showModalResult, setShowModalResult, questions, questionA
         point >= minPointToPass ? setIsPass(true) : setIsPass(false)
     }, [point])
     const handleCloseModal = async () => {
+        console.log({ exam })
         const body = {
-            user_id: localStorage.getItem('userId'),
-            exam_id: idExam,
+            exam_id: exam?.id,
             point: point,
             max_point: questionAmount * 10,
             is_pass: isPass,
@@ -73,11 +66,8 @@ const ResultModal = ({ showModalResult, setShowModalResult, questions, questionA
                     type: NOTIFICATION.SUCCESS
                 })
                 setOpenNoti(true)
-                setTimeout(() => {
-                    setShowModalResult(false)
-                    navigate('/setting', { state: { idExam: idExam } })
-                }, 3000)
-
+                setShowModalResult(false)
+                navigate('/detail-exam', { state: { exam: exam } })
             } else {
                 setNotification({
                     message: 'Lưu kết quả thất bại!',
