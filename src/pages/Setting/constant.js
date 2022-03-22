@@ -1,12 +1,8 @@
 import PersonalInfo from "./PersonalInfo";
 import ManageExams from './ManageExams'
-import HistoryExams from "./HistoryExams";
 
 export const MENUBAR_ADMIN = [
-    {
-        name: 'Lịch sử thi',
-        component: <HistoryExams />,
-    },
+
     {
         name: 'Thông tin cá nhân',
         component: <PersonalInfo />,
@@ -24,10 +20,7 @@ export const MENUBAR_ADMIN = [
 ]
 
 export const MENUBAR_MEMBER = [
-    {
-        name: 'Lịch sử thi',
-        component: <HistoryExams />,
-    },
+
     {
         name: 'Thông tin cá nhân',
         component: <PersonalInfo />,

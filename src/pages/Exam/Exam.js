@@ -30,29 +30,8 @@ const Exam = (props) => {
   const [minPointToPass, setMinPointToPass] = useState();
   const [startCountDown, setStartCountDown] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const getExam = async (id) => {
-    try {
-      const params = {
-        id: id,
-      };
-      await examAPI.getExam(params).then((res) => {
-        if (res) {
-          const data = res?.data;
-          const questions = convertDatas(data.questions);
-          setNameTest(data?.name);
-          setDuration(data?.duration);
-          setMinPointToPass(data?.min_point_to_pass);
-          setQuestions(questions);
-          setQuestionAmount(questions.length);
-          setCurQuestion(questions[0]);
-          setLoading(false);
-        }
-      });
-    } catch (error) {
-      console.log({ error });
-    }
-  };
+  const [idExam, setIdExam] = useState('');
+  const [exam, setExam] = useState()
 
   const searchQuestionByIdx = (id, questions) => {
     if (questions) {
@@ -76,7 +55,18 @@ const Exam = (props) => {
 
   // call API
   useEffect(() => {
-    getExam(location?.state?.idExam);
+    // getExam(location?.state?.exam);
+    const exam = location.state?.exam;
+    setExam(exam)
+    const questions = convertDatas(exam.questions);
+    setNameTest(exam?.name);
+    setDuration(exam?.duration);
+    setMinPointToPass(exam?.min_point_to_pass);
+    setQuestions(questions);
+    setQuestionAmount(questions.length);
+    setCurQuestion(questions[0]);
+    setIdExam(exam?.id)
+    setLoading(false);
     // startCountDown(countDown);
   }, []);
 
@@ -125,7 +115,7 @@ const Exam = (props) => {
             duration={duration}
             minPointToPass={minPointToPass}
             questionAmount={questionAmount}
-            idExam={location?.state?.idExam}
+            exam={exam}
           />
         )}
       </Box>

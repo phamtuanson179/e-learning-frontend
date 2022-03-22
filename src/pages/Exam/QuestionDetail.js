@@ -18,7 +18,7 @@ const QuestionDetail = ({
   duration,
   minPointToPass,
   questionAmount,
-  idExam,
+  exam,
   loading
 }) => {
 
@@ -122,7 +122,7 @@ const QuestionDetail = ({
           minPointToPass={minPointToPass}
           isFinish={isFinish}
           setIsFinish={setIsFinish}
-          idExam={idExam}
+          exam={exam}
           countDown={countDown}
           duration={duration}
         />

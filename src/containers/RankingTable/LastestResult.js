@@ -4,7 +4,7 @@ import { Progress } from "antd";
 import examAPI from "api/examAPI";
 import { useEffect, useState } from "react";
 import "./HistoryExams.scss";
-import TableHistoryExam from "./TableHistoryExam";
+import TableHistoryExam from "../HistoryExamTable/HistoryExamTable";
 import { isEmpty } from "lodash";
 import { convertSecondToTime } from "utils/convert";
 
@@ -28,7 +28,7 @@ const LastestResult = ({ lastestResultExam }) => {
           padding: 4,
           marginRight: 1,
         }}
-        className='lastest__result'
+        className='lastest-result__container'
       >
         <Typography
           variant='h5'
