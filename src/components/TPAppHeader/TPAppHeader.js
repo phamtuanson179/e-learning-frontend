@@ -1,32 +1,25 @@
+import LogoutIcon from "@mui/icons-material/Logout";
+import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
 import breakpoints from "assets/theme/base/breakpoints";
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
-import { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import checkLogin from "utils/checkLogin";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import brandLogoTechpro from "../../assets/images/techpro-images/brand.png";
 import DefaultNavbarDropdown from "./DefaultNavbarDropdown";
 import DefaultNavbarMobile from "./DefaultNavbarMobile";
-import { useNavigate } from "react-router-dom";
 import "./header.scss";
-import { UserContext } from "App";
-import LogoutIcon from "@mui/icons-material/Logout";
-import Avatar from "@mui/material/Avatar";
 
-const LOGIN = "Đăng nhập";
-const LOGOUT = () => {
-  localStorage.clear();
-  navigate("/");
-};
+
 
 function TPAppHeader({ transparent, light, action, relative, center }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
   const [curTabs, setCurTabs] = useState("");
 
   useEffect(() => {
@@ -90,15 +83,14 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
       />
     )
   );
-  console.log({ location });
-  if (location.pathname === "/" || location.pathname === "/forgot-password") {
+  // console.log({ location });
+  if (location.pathname === "/sign-in" || location.pathname === "/forgot-password") {
     return null;
   }
 
   const logout = () => {
     localStorage.clear();
-    setUser({ loggedIn: false });
-    navigate("/");
+    navigate("/sign-in");
   };
 
   return (

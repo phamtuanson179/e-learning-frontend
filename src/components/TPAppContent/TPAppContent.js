@@ -1,35 +1,33 @@
-import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import router from "../../routes";
-import Error404 from '../../pages/Error/Error404';
-import { checkLogin } from '../../utils/checkLogin'
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import checkLogin from "utils/checkLogin";
 import SignIn from '../../pages/SignIn';
-import ProtectedRoutes from "ProtectedRoutes";
-import { check } from "express-validator";
-import { Suspense } from 'react'
+import router from "../../routes";
+
+
+
+const ProtectedRoutes = ({ children }) => {
+    const location = useLocation();
+    return checkLogin() ? <Outlet /> : <Navigate to='/sign-in' state={{ from: location }} />
+}
+
 const AppContent = () => {
-    const navigate = useNavigate()
     return (
         <>
             <Routes>
-
-                {/* <Route element={<ProtectedRoutes />}> */}
-                {router.map((route, idx) => {
-                    return (
-                        route.component && (
-                            <Route
-                                key={idx}
-                                path={route.path}
-                                exact={route.exact}
-                                element={route.component}
-                            />
-                        )
-                    );
-                })}
-                {/* </Route> */}
-
-                <Route path='/' element={<SignIn />} />
-                <Route path='*' element={checkLogin() ? <Navigate to='/error-404' /> : <Navigate to='/' />} />
-
+                <Route element={<ProtectedRoutes />}>
+                    {router.map((route, idx) => {
+                        return (
+                            route.component && (
+                                <Route
+                                    key={idx}
+                                    path={route.path}
+                                    element={route.component}
+                                />
+                            )
+                        );
+                    })}
+                </Route>
+                <Route path='/sign-in' element={<SignIn />} />
             </Routes>
         </>
     );

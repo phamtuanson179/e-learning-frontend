@@ -1,14 +1,11 @@
-import { ButtonBase, CircularProgress, Box, Typography } from "@mui/material";
+import { Box, ButtonBase, CircularProgress, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import examAPI from "api/examAPI";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import checkLogin from "utils/checkLogin";
 import unknowExam from "../../../assets/images/techpro-images/unknowExam.png";
 import MKBox from "../../../components/MKBox";
 import TPCardItem from "../../../components/TPCardItem";
-import TPTitleSection from "../../../components/TPTitleSection";
 import AddExamModal from "./AddExam";
 import DetailExamModal from "./DetailExam";
 

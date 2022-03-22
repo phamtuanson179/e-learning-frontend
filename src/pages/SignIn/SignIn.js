@@ -1,9 +1,11 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Switch from "@mui/material/Switch";
+import { Typography } from "antd";
+import infoAPI from 'api/infoAPI';
 import loginAPI from "api/loginAPI";
-import infoAPI from 'api/infoAPI'
-import { UserContext } from "App";
 // Images
 import bgImage from "assets/images/techpro-images/backgroundSignIn.jpeg";
 // Material Kit 2 React components
@@ -11,19 +13,13 @@ import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import MKInput from "components/MKInput";
 import MKTypography from "components/MKTypography";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Controller, useForm } from 'react-hook-form'
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup'
-import { string } from "prop-types";
-import { Typography } from "antd";
-import { checkLogin } from "../../utils/checkLogin";
 import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
-import { TextField } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { useForm } from 'react-hook-form';
+import { useNavigate } from "react-router-dom";
+import checkLogin from "utils/checkLogin";
+import * as yup from 'yup';
 
 const yupSchema = yup.object().shape({
     email: yup.string().required('Trường này bắt buộc!').email('Chưa đúng định dạng!'),
@@ -37,9 +33,12 @@ function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isShowPass, setIsShowPass] = useState(false);
-    const { user, setUser } = useContext(UserContext);
     const [notification, setNotification] = useState({ type: '', message: '' });
     const [openNoti, setOpenNoti] = useState(false)
+
+    useEffect(() => {
+        checkLogin() ? navigate('/list-exams') : ''
+    }, [])
 
 
     const onChangeEmail = (event) => {
@@ -67,26 +66,30 @@ function SignIn() {
 
             await loginAPI.login(data).then((res) => {
                 console.log({ res })
-                localStorage.setItem("accessToken", res?.data.access_token);
-                localStorage.setItem("email", data.email);
-                setNotification({
-                    message: 'Đăng nhập thành công!',
-                    type: NOTIFICATION.SUCCESS
-                })
-                navigate('/list-exams')
-                // setUser({ loggedIn: true })
-                // if (location.state?.from) {
-                //     navigate(location.state.from);
-                // } else (navigate('/list-exams'))
+                if (res?.status === 200) {
+                    localStorage.setItem("accessToken", res?.data.access_token);
+                    localStorage.setItem("email", data.email);
+                }
+                else {
+                    setNotification({
+                        message: 'Đăng nhập thất bại',
+                        type: NOTIFICATION.ERROR
+                    })
+                    setOpenNoti(true)
+                }
+
+
             });
             await infoAPI.getInfo().then((res) => {
                 if (res?.status === 200) {
-
                     setOpenNoti(true)
                     const data = res?.data
                     localStorage.setItem('userId', data?.user_id)
                     localStorage.setItem('role', data?.role)
                     localStorage.setItem('avatar', data?.url_avatar)
+                    if (location.state?.from) {
+                        navigate(location.state.from);
+                    } else (navigate('/list-exams'))
                 } else {
                     setNotification({
                         message: 'Đăng nhập thất bại',
