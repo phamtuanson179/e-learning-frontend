@@ -1,5 +1,4 @@
-import { Box, Container, Icon, ImageListItem, Typography } from "@mui/material"
-import { useLocation } from "react-router-dom"
+import { Box, Container, Typography } from "@mui/material"
 import Image from '../../assets/images/techpro-images/404Image.svg'
 const Error404 = () => {
     return (

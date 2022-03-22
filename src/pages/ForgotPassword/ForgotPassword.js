@@ -1,8 +1,8 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
-import Switch from "@mui/material/Switch";
+import infoAPI from 'api/infoAPI';
 import loginAPI from "api/loginAPI";
-import infoAPI from 'api/infoAPI'
 import { UserContext } from "App";
 // Images
 import bgImage from "assets/images/techpro-images/backgroundSignIn.jpeg";
@@ -11,18 +11,12 @@ import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import MKInput from "components/MKInput";
 import MKTypography from "components/MKTypography";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Controller, useForm } from 'react-hook-form'
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup'
-import { string } from "prop-types";
-import { Typography } from "antd";
-import { checkLogin } from "../../utils/checkLogin";
 import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
+import { useContext, useEffect, useState } from "react";
+import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from "react-router-dom";
+import * as yup from 'yup';
 
 const yupSchema = yup.object().shape({
     email: yup.string().required('Trường này bắt buộc!').email('Chưa đúng định dạng!'),
@@ -47,7 +41,6 @@ function ForgotPassword() {
 
 
     useEffect(() => {
-        console.log('first', location.state?.email)
         setEmail(location.state?.email)
     }, [])
 
@@ -65,11 +58,6 @@ function ForgotPassword() {
                 console.log({ res })
                 localStorage.setItem("accessToken", res?.data.access_token);
                 localStorage.setItem("email", data.email);
-
-                // setUser({ loggedIn: true })
-                // if (location.state?.from) {
-                //     navigate(location.state.from);
-                // } else (navigate('/list-exams'))
             });
             await infoAPI.getInfo().then((res) => {
                 if (res?.status === 200) {

@@ -8,8 +8,8 @@ const apiCallStack = [];
 // const URL
 
 const axiosClient = axiosInstance.create({
-  // baseURL: process.env.REACT_APP_API_URL_LOCALHOST,
-  baseURL: process.env.REACT_APP_API_URL_DUONG_COMPUTER,
+  baseURL: process.env.REACT_APP_API_URL_LOCALHOST,
+  // baseURL: process.env.REACT_APP_API_URL_DUONG_COMPUTER,
   // headers: {
   //     'content-type': 'application/json',
   //     'accept': 'application/json',
@@ -65,3 +65,4 @@ axiosClient.interceptors.response.use(
 );
 
 export default axiosClient;
+

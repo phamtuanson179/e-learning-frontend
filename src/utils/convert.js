@@ -5,5 +5,4 @@ export const convertSecondToTime = (secondsInit) => {
         minutes: minutesProcess < 10 ? '0' + minutesProcess : minutesProcess,
         seconds: secondsProcess < 10 ? '0' + secondsProcess : secondsProcess
     }
-
 }

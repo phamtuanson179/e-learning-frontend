@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Container, Typography } from '@mui/material'
 import Card from '@mui/material/Card'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -104,7 +104,7 @@ const DetailExam = () => {
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Box sx={{ flex: 1 }}>
-                            {lastestResultExam ? <LastestResult lastestResultExam={lastestResultExam} historyExam={historyExam} /> : ''}
+                            {lastestResultExam ? <LastestResult lastestResultExam={lastestResultExam} historyExam={historyExam} /> : <CircularProgress />}
                         </Box>
 
                         <Box sx={{ flex: 1, height: 'initial' }} >

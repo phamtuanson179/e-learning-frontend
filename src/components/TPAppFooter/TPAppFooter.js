@@ -19,7 +19,7 @@ function TPAppFooter({ content }) {
     const { brand, socials, menus, copyright } = content;
     const location = useLocation()
 
-    if (location.pathname === '/' || location.pathname === '/forgot-password') {
+    if (location.pathname === '/sign-in' || location.pathname === '/forgot-password') {
         return null
     }
 

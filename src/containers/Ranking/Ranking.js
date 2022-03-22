@@ -62,7 +62,6 @@ const Ranking = ({ lastestResultExam }) => {
               <Typography variant="h5">1</Typography>
               <Typography variant="subtitle2" >Sonpt</Typography>
             </Box>
-
           </Box>
         </Box>
       </Box>

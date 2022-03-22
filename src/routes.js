@@ -7,6 +7,8 @@ import React, { lazy } from "react";
 import { default as AllCourses } from "./pages/AllCourses";
 import Setting from 'pages/Setting';
 import DetailExam from "pages/DetailExam";
+import SignIn from "pages/SignIn";
+import { Navigate } from "react-router-dom";
 // const Setting = lazy(() => import('pages/Setting'))
 
 // const Home = React.lazy(() => import('./pages/Home'))
@@ -14,53 +16,43 @@ import DetailExam from "pages/DetailExam";
 
 const routes = [
   {
+    path: "*",
+    component: <Error404 />,
+  },
+  {
+    path: "/",
+    component: <Navigate to='/list-exams' />,
+  },
+  {
     path: "current-courses",
-    exact: true,
-    name: "CurCourses",
     component: <CurCourses />,
   },
   {
     path: "all-courses",
-    exact: true,
-    name: "AllCourses",
     component: <AllCourses />,
   },
   {
     path: "list-exams",
-    exact: true,
-    name: "ListExams",
     component: <ListExams />,
   },
+
   {
     path: "setting",
-    exact: true,
-    name: "Setting",
     component: <Setting />,
   },
   {
     path: "exam",
-    exact: true,
-    name: "Exam",
     component: <Exam />,
   },
   {
     path: "forgot-password",
-    exact: true,
-    name: "ForgotPassword",
     component: <ForgotPassword />,
   },
   {
-    path: "error-404",
-    exact: true,
-    name: "error404",
-    component: <Error404 />,
-  },
-  {
     path: "detail-exam",
-    exact: true,
-    name: "DetailExam",
     component: <DetailExam />,
   },
+
 ];
 
 export default routes;

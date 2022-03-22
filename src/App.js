@@ -17,27 +17,21 @@ export const UserContext = createContext();
 
 export default function App() {
   const { pathname } = useLocation();
-  const [user, setUser] = useState({ loggedIn: null });
-  useEffect(() => {
-    setUser({ loggedIn: false })
-  }, [])
 
-  // const [user, setUser] = useState({ loggedIn: false });
-  // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Suspense fallback={<div>Loading...</div>}>
-
-          <LocalizationProvider dateAdapter={DateAdapter}> <DefaultLayout /></LocalizationProvider></Suspense>
-      </ThemeProvider>
-    </UserContext.Provider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Suspense fallback={<div>Loading...</div>}>
+        <LocalizationProvider dateAdapter={DateAdapter}>
+          <DefaultLayout />
+        </LocalizationProvider>
+      </Suspense>
+    </ThemeProvider>
 
   );
 }
