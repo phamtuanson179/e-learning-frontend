@@ -3,14 +3,23 @@ import { Box, Typography } from "@mui/material";
 import { Progress } from "antd";
 import examAPI from "api/examAPI";
 import { useState } from "react";
+import RankingTable from "containers/RankingTable";
 import { convertSecondToTime } from "utils/convert";
 import "./Ranking.scss";
+import HistoryExamTable from "containers/HistoryExamTable";
 
-const Ranking = ({ lastestResultExam }) => {
 
-  const caculatePercentResult = (point, maxPoint) => {
-    return (point / maxPoint) * 100;
-  };
+function createData(user_name, duration, point) {
+  return { user_name, duration, point};
+}
+
+const Ranking = ({ lastestResultExam, historyExam }) => {
+  console.log({ lastestResultExam });
+  // const [lists, setLists] = useState();
+
+  // const caculatePercentResult = (point, maxPoint) => {
+  //   return (point / maxPoint) * 100;
+  // };
 
   const showTime = (duration) => {
     const time = convertSecondToTime(duration);
@@ -37,7 +46,7 @@ const Ranking = ({ lastestResultExam }) => {
         >
           Xếp hạng
         </Typography>
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             justifyContent: "space-evenly",
@@ -60,9 +69,12 @@ const Ranking = ({ lastestResultExam }) => {
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="h5">1</Typography>
-              <Typography variant="subtitle2" >Sonpt</Typography>
+              <Typography variant="subtitle2" >{showTime(rank.duration)}</Typography>
             </Box>
           </Box>
+        </Box> */}
+        <Box >
+          <RankingTable historyExam={historyExam} />
         </Box>
       </Box>
     </>
