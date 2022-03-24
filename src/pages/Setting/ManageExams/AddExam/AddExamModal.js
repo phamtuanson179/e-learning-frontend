@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { yupResolver } from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
 import {
@@ -25,6 +26,10 @@ import AddQuestionModal from "./AddQuestionModal";
 import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
 import TPUploadImage from "components/TPUploadImage";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const style = {
     bgcolor: "background.paper",
@@ -218,6 +223,11 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
 
         });
     };
+    const [room, setRoom] = React.useState('');
+
+    const handleChange = (event) => {
+        setRoom(event.target.value);
+    };
     return (
         <Box >
             {/* <Button onClick={handleOpenAddExamModal}>Thêm bài thi</Button> */}
@@ -324,13 +334,25 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                     defaultValue='AI'
                                     render={({ field }) => {
                                         return (
-                                            <TextField
-                                                sx={{ width: "100%", marginBottom: 2 }}
-                                                variant='standard'
-                                                helperText={<Typography variant='caption' color='error'> {errors.requireRoom?.message}</Typography>}
-                                                label='Thuộc phòng'
-                                                {...field}
-                                            />
+                                            // <TextField
+                                            //     sx={{ width: "100%", marginBottom: 2 }}
+                                            //     variant='standard'
+                                            //     helperText={<Typography variant='caption' color='error'> {errors.requireRoom?.message}</Typography>}
+                                            //     label='Thuộc phòng'
+                                            //     {...field}
+                                            // />
+                                            <FormControl variant="standard" fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Thuộc phòng</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-standard-label"
+                                                id="demo-simple-select-standard"s
+                                                value={room}
+                                                onChange={handleChange}
+                                                >
+                                                <MenuItem value={10}>AI</MenuItem>
+                                                <MenuItem value={20}>Khác</MenuItem>
+                                            </Select>
+                                        </FormControl>
                                         );
                                     }}
                                 />

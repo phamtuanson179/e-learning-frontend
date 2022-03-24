@@ -195,7 +195,7 @@ const PersonalInfo = () => {
                                 render={({ field }) => {
                                     return (
                                         <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                                            <InputLabel id="demo-simple-select-label">Role</InputLabel>
                                             <Select
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
