@@ -12,6 +12,9 @@ const DetailExam = () => {
     const navigate = useNavigate()
     const [lastestResultExam, setLastestResultExam] = useState()
     const [historyExam, setHistoryExam] = useState()
+    const [rankingExam, setRankingExam] = useState()
+    const [historyRanking, setHistoryRankingExam] =useState()
+    const [shortRankingExam, setShortRankingExam]=useState()
 
     const getHistoryExam = async (params) => {
         await examAPI.getExamHistory(params).then((res) => {
@@ -32,6 +35,8 @@ const DetailExam = () => {
             if (res.status === 200) {
                 const data = res?.data
                 if (data) {
+                    setHistoryRankingExam(data)
+                    setRankingExam(data[data.length-1])
                 }
 
             }
@@ -43,6 +48,7 @@ const DetailExam = () => {
             if (res.status === 200) {
                 const data = res?.data
                 if (data) {
+                    setShortRankingExam(data[data.length-1])
                 }
 
             }
@@ -108,7 +114,7 @@ const DetailExam = () => {
                         </Box>
 
                         <Box sx={{ flex: 1, height: 'initial' }} >
-                            <Ranking/>
+                            <Ranking rankingExam={rankingExam} historyRanking={historyRanking}/>
                         </Box>
 
                     </Box>

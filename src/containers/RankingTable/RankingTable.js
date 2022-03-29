@@ -13,26 +13,26 @@ import { useEffect, useState } from "react";
 import { isEmpty } from "lodash";
 import { convertSecondToTime } from "utils/convert";
 
-function createData(user_name, duration, point) {
-  return { user_name, duration, point };
+function createData(user_name, point) {
+  return { user_name, point };
 }
 
-const RankingTable = ({ historyExam }) => {
-  console.log({ historyExam });
+const RankingTable = ({ historyRanking }) => {
+  console.log({ historyRanking });
   const [rows, setRows] = useState();
 
   const convertDataToRowTable = (datas  ) => {
     const rows = [];
     datas.map((data, idx) => {
       rows.push(
-        createData(data?.user_name, data?.duration, data?.point)
+        createData(data?.user_name, data?.point)
       );
     });
     setRows(rows);
   };
 
   useEffect(() => {
-    if (historyExam) convertDataToRowTable(historyExam);
+    if (historyRanking) convertDataToRowTable(historyRanking);
   }, []);
 
   const showTime = (duration) => {

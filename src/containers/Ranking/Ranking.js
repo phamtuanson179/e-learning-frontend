@@ -1,6 +1,4 @@
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Box, Typography } from "@mui/material";
-import { Progress } from "antd";
+import { Box, Button, Typography, Modal, Divider } from "@mui/material";
 import examAPI from "api/examAPI";
 import { useState } from "react";
 import RankingTable from "containers/RankingTable";
@@ -9,12 +7,12 @@ import "./Ranking.scss";
 import HistoryExamTable from "containers/HistoryExamTable";
 
 
-function createData(user_name, duration, point) {
-  return { user_name, duration, point};
-}
+// function createData(user_name, duration, point) {
+//   return { user_name, duration, point};
+// }
 
-const Ranking = ({ lastestResultExam, historyExam }) => {
-  console.log({ lastestResultExam });
+const Ranking = ({ rankingExam, historyRanking }) => {
+  console.log({ rankingExam });
   // const [lists, setLists] = useState();
 
   // const caculatePercentResult = (point, maxPoint) => {
@@ -74,7 +72,7 @@ const Ranking = ({ lastestResultExam, historyExam }) => {
           </Box>
         </Box> */}
         <Box >
-          <RankingTable historyExam={historyExam} />
+          <RankingTable historyRanking={historyRanking} />
         </Box>
       </Box>
     </>
