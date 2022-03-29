@@ -1,28 +1,46 @@
 import { Box, Button, Typography, Modal, Divider } from "@mui/material";
 import examAPI from "api/examAPI";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RankingTable from "containers/RankingTable";
 import { convertSecondToTime } from "utils/convert";
+import CloseIcon from "@mui/icons-material/Close";
 import "./Ranking.scss";
-import HistoryExamTable from "containers/HistoryExamTable";
 
+const style = {
+  bgcolor: "background.paper",
+  position: "absolute",
+  display: "flex",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%,-50%)",
+  flexDirection: "column",
+  borderRadius: "12px",
+  bgColor: "white",
+  border: "1px solid #0000003d",
+};
 
-// function createData(user_name, duration, point) {
-//   return { user_name, duration, point};
-// }
 
 const Ranking = ({ rankingExam, historyRanking }) => {
   console.log({ rankingExam });
-  // const [lists, setLists] = useState();
+  const [listShortcutRanking, setList] = useState();
+  const [openModal, setOpenModal] = useState()
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
-  // const caculatePercentResult = (point, maxPoint) => {
-  //   return (point / maxPoint) * 100;
-  // };
-
-  const showTime = (duration) => {
-    const time = convertSecondToTime(duration);
-    return `${time.minutes}:${time.seconds}`;
+  const convertDatatoShortRanking=(datas ) =>{
+    const listShortcutRanking=[];
+    datas.map((data, idx) => {
+      listShortcutRanking.push(
+        createData(data?.user_name)
+      );
+    });
+    setList(listShortcutRanking);
   };
+
+  useEffect(()=> {
+    if (historyRanking)  convertDatatoShortRanking(historyRanking);
+  }, []);
 
   return (
     <>
@@ -44,36 +62,55 @@ const Ranking = ({ rankingExam, historyRanking }) => {
         >
           Xếp hạng
         </Typography>
-        {/* <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-          }}
-        >
-          <Box flex={1} sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h1">1</Typography>
-            <Typography variant="body1" >Sonpt</Typography>
-          </Box>
-
-          <Box flex={1}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="h5">1</Typography>
-              <Typography variant="subtitle2" >Sonpt</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="h5">1</Typography>
-              <Typography variant="subtitle2" >Sonpt</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="h5">1</Typography>
-              <Typography variant="subtitle2" >{showTime(rank.duration)}</Typography>
-            </Box>
-          </Box>
-        </Box> */}
-        <Box >
-          <RankingTable historyRanking={historyRanking} />
+        <Box sx={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+          { listShortcutRanking &&
+          listShortcutRanking.map(list => (
+                <Typography variant='h5'>
+                  {list.user_name}
+                </Typography>
+              ))}
         </Box>
+        <Button 
+          sx={{ fontSize: 12, padding: 0 }} 
+          onClick={() => setOpenModal(true)}>
+            Xem chi tiết
+        </Button>
+        <Modal
+              sx={{
+                overflowY: "auto",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              open={openModal}
+              onClose={handleCloseModal}
+              aria-labelledby='modal-modal-title'
+              aria-describedby='modal-modal-description'
+            >
+              <Box >
+          <Box sx={style}>
+                <Box
+                  display='flex'
+                  alginItems='center'
+                  justifyContent='space-between'
+                  sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
+                >
+                  <Typography id='modal-modal-title' variant='h5'>
+                    Xếp hạng
+                  </Typography>
+                  <CloseIcon
+                    fontSize='medium'
+                    sx={{ cursor: "pointer" }}
+                    onClick={handleCloseModal}
+                  />
+                  </Box>
+                  <Divider/>
+                  <Box>
+                    <RankingTable historyRanking={historyRanking} />
+                  </Box>
+                </Box>
+          </Box>
+          </Modal>
       </Box>
     </>
   );

@@ -13,8 +13,8 @@ import { useEffect, useState } from "react";
 import { isEmpty } from "lodash";
 import { convertSecondToTime } from "utils/convert";
 
-function createData(user_name, point) {
-  return { user_name, point };
+function createData(user_name, point, duration) {
+  return { user_name, point, duration };
 }
 
 const RankingTable = ({ historyRanking }) => {
@@ -25,7 +25,7 @@ const RankingTable = ({ historyRanking }) => {
     const rows = [];
     datas.map((data, idx) => {
       rows.push(
-        createData(data?.user_name, data?.point)
+        createData(data?.user_name, data?.point, data?.duration)
       );
     });
     setRows(rows);
@@ -48,6 +48,7 @@ const RankingTable = ({ historyRanking }) => {
             <TableCell align='center'>Stt</TableCell>
             <TableCell>Tên</TableCell>
             <TableCell align='right'>Điểm</TableCell>
+            <TableCell align='right'>Thời gian</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -62,6 +63,7 @@ const RankingTable = ({ historyRanking }) => {
                   {row.user_name}
                 </TableCell>
                 <TableCell align='right'>{row.point}</TableCell>
+                <TableCell align='right'>{showTime(row.duration)}</TableCell>
               </TableRow>
             ))}
         </TableBody>

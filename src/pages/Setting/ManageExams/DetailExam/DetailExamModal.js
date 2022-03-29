@@ -231,7 +231,7 @@ const DetailExamModal = ({
             <TextField
               sx={{ width: "100%", marginBottom: 2 }}
               variant='standard'
-              label='Số câu đúng tối thiểu'
+              label='Số điểm tối thiểu'
               value={exam?.min_point_to_pass / 10}
             />
 

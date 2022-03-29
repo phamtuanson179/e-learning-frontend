@@ -321,7 +321,7 @@ const AddExamModal = ({ setLoadingAgain, loadingAgain }) => {
                                                 variant='standard'
                                                 helperText={<Typography variant='caption' color='error'> {errors.minCorrectAnswers?.message}</Typography>}
                                                 type='number'
-                                                label='Số câu đúng tối thiểu'
+                                                label='Số điểm tối thiểu'
                                                 {...field}
                                             />
                                         );
