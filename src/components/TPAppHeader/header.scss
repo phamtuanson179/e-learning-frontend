@@ -1,13 +1,21 @@
-@import '../../assets/scss/variables/zIndexVariables';
+@import "../../assets/scss/variables/zIndexVariables";
+@import "../../assets/scss/variables/mixin";
 
 .header__wrapper {
-    position: fixed !important;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: $header-index;
-    >div {
-        width: 100%;
-        margin: 0;
-    }
+  position: fixed !important;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: $header-index;
+  > div {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.header__popover {
+  .MuiPaper-root > .MuiBox-root {
+    @include sub-section;
+    background-color: #ffffff;
+  }
 }
