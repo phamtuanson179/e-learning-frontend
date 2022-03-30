@@ -36,7 +36,7 @@ const DetailExam = () => {
                 const data = res?.data
                 if (data) {
                     setHistoryRankingExam(data)
-                    setRankingExam(data[data.length-1])
+                    setRankingExam(data)
                 }
 
             }
@@ -48,7 +48,8 @@ const DetailExam = () => {
             if (res.status === 200) {
                 const data = res?.data
                 if (data) {
-                    setShortRankingExam(data[data.length-1])
+                    console.log({data});
+                    setShortRankingExam(data)
                 }
 
             }

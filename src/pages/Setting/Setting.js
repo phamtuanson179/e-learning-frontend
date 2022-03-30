@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { MENUBAR_ADMIN, MENUBAR_MEMBER } from "./constant";
+import { MENUBAR_ADMIN, MENUBAR_MEMBER, MENUBAR_SUPER_ADMIN } from "./constant";
 import { useLocation } from "react-router-dom";
 import "./Setting.scss";
 
@@ -46,14 +46,17 @@ const Setting = () => {
   useEffect(() => {
     const role = localStorage.getItem("role");
     switch (role) {
-      case 0:
-        setMenubar(MENUBAR_ADMIN);
-        break;
-      case 1:
+      case "0":
         setMenubar(MENUBAR_MEMBER);
         break;
-      default:
+      case "1":
         setMenubar(MENUBAR_ADMIN);
+        break;
+      case "2":
+        setMenubar(MENUBAR_SUPER_ADMIN);
+        break;
+      default:
+        setMenubar(MENUBAR_MEMBER);
     }
   }, []);
 

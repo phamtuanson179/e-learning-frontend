@@ -20,27 +20,27 @@ const style = {
 };
 
 
-const Ranking = ({ rankingExam, historyRanking }) => {
-  console.log({ rankingExam });
-  const [listShortcutRanking, setList] = useState();
+const Ranking = ({ rankingExam, historyRanking,shortRankingExam }) => {
+  console.log({rankingExam});
   const [openModal, setOpenModal] = useState()
   const handleCloseModal = () => {
     setOpenModal(false)
   }
 
+  // const listShortRanking = shortRankingExam.map(shortRankingExam)
   // const convertDatatoShortRanking=(datas ) =>{
-  //   const listShortcutRanking=[];
+  //   const shortRankingExam=[];
   //   datas.map((data, idx) => {
-  //     listShortcutRanking.push(
+  //     shortRankingExam.push(
   //       createData(data?.user_name)
   //     );
   //   });
-  //   setList(listShortcutRanking);
+  //   setList(shortRankingExam);
   // };
 
-  // useEffect(()=> {
-  //   if (historyRanking)  convertDatatoShortRanking(historyRanking);
-  // }, []);
+  useEffect(()=> {
+    if (historyRanking)  convertDatatoShortRanking(historyRanking);
+  }, []);
 
   return (
     <>
@@ -58,21 +58,28 @@ const Ranking = ({ rankingExam, historyRanking }) => {
         <Typography
           variant='h5'
           component={"div"}
-          sx={{ marginBottom: 4, textAlign: "center" }}
+          sx={{ marginBottom: 2, textAlign: "center" }}
         >
           Xếp hạng
         </Typography>
-        {/* <Box sx={{display:"flex", alignItems:"center", justifyContent:"center"}}>
-          { listShortcutRanking &&
-          listShortcutRanking.map(list => (
-                <Typography variant='h5'>
-                  {list.user_name}
-                </Typography>
-              ))}
-        </Box> */}
-        <Typography variant='h5'>
-          {/* {rankingExam.user_name} */}
-        </Typography>
+
+        <Box sx={{display:"block", alignItems:"center", justifyContent:"center", textAlign:"center"}}>
+          <Typography variant="h4" sx={{alignItems:"center", justifyContent:"center"}}>
+            {console.log({ shortRankingExam })}
+            {shortRankingExam?shortRankingExam[0].user_name:null}
+          </Typography>
+          <Typography variant="h5" sx={{display:"inline-block"}}>
+            {shortRankingExam?shortRankingExam[1].user_name:null}
+          </Typography>
+          <Typography variant="h6"> 
+            {shortRankingExam?shortRankingExam[2].user_name:null}
+          </Typography>
+          <Typography variant="h6" color="red">
+            Xếp hạng của bạn: {shortRankingExam?shortRankingExam[3].rank:null}
+            {/* {shortRankingExam?shortRankingExam[3].user_name:null} */}
+            
+          </Typography>
+        </Box>
         <Button 
           sx={{ fontSize: 12, padding: 0 }} 
           onClick={() => setOpenModal(true)}>

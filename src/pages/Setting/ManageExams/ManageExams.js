@@ -1,4 +1,10 @@
-import { Box, ButtonBase, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  ButtonBase,
+  CircularProgress,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import examAPI from "api/examAPI";
@@ -9,22 +15,32 @@ import TPCardItem from "../../../components/TPCardItem";
 import AddExamModal from "./AddExam";
 import DetailExamModal from "./DetailExam";
 
+const checkCorrectAnswer = (answers) => {
+  for (let i in answers) {
+    if (answers[i]?.is_correct) return i;
+  }
+};
+
 const convertDatas = (datas) =>
   datas.map((data, idx) => {
     return {
-      idExam: data?.id,
+      ...data,
       image: data?.image ? data?.image : unknowExam,
-      name: data?.name,
       questionAmount: data?.questions.length,
+      questions: data?.questions.map((question, idx) => {
+        return {
+          ...question,
+          correctAnswerIndex: checkCorrectAnswer(question?.answers),
+        };
+      }),
       route: "/exam",
     };
   });
 const ManageExams = () => {
   const [listExams, setListExams] = useState();
   const [loading, setLoading] = useState(true);
-  const [loadingAgain, setLoadingAgain] = useState(true);
   const [isOpenDetailExamModal, setIsOpenDetailExamModal] = useState(false);
-  const [idExam, setIdExam] = useState("");
+  const [exam, setExam] = useState("");
 
   const getListExams = async (room) => {
     const params = {
@@ -34,48 +50,74 @@ const ManageExams = () => {
     await examAPI.getListExamForRoom(params).then((res) => {
       if (res?.data) {
         const listExams = convertDatas(res?.data);
+        console.log({ listExams });
         setListExams(listExams);
+        if (listExams) setExam(listExams[0]);
         setLoading(false);
       }
     });
   };
 
   useEffect(() => {
-    if (loadingAgain) {
+    if (loading) {
       getListExams("AI");
-      setLoadingAgain(false);
     }
-  }, [loadingAgain]);
+  }, [loading]);
 
   const handleOpenDetailExamModal = () => {
     isOpenDetailExamModal(true);
   };
-  const onClickExam = (idExam) => {
-    setIdExam(idExam);
+  const onClickExam = (exam) => {
+    setExam(exam);
     setIsOpenDetailExamModal(true);
   };
 
   const renderListExams = () => {
     return (
       <Grid container spacing={6} maxWidth={800}>
-        {listExams?.map(
-          ({ image, name, questionAmount, route, idExam }, idx) => (
-            <Grid item xs={12} md={4} sx={{ mb: 2 }} key={name}>
-              <ButtonBase
-                onClick={() => {
-                  onClickExam(idExam);
-                }}
-              >
-                <TPCardItem
-                  image={image}
-                  name={name}
-                  type={"Câu hỏi"}
-                  count={questionAmount}
-                />
-              </ButtonBase>
-            </Grid>
-          )
-        )}
+        {listExams?.map((exam, idx) => (
+          <Grid item xs={12} md={4} sx={{ mb: 2 }} key={exam.name}>
+            <ButtonBase
+              onClick={() => {
+                onClickExam(exam);
+              }}
+            >
+              <TPCardItem
+                image={exam.image}
+                name={exam.name}
+                type={"Câu hỏi"}
+                count={exam.questionAmount}
+              />
+            </ButtonBase>
+          </Grid>
+        ))}
+      </Grid>
+    );
+  };
+
+  const renderSkeleton = () => {
+    console.log("first");
+    const arrayElement = [];
+    for (let i = 0; i < 3; i++) {
+      arrayElement.push(
+        <Grid item xs={12} md={4} sx={{ mb: 2 }}>
+          <Skeleton
+            variant='rectangular'
+            maxWidth
+            sx={{ minHeight: "10rem", aspectRatio: "1/1", margin: "auto" }}
+          />
+          <Typography variant='h6' textAlign={"center"}>
+            <Skeleton />
+          </Typography>
+          <Typography variant='button' textAlign={"center"}>
+            <Skeleton />
+          </Typography>
+        </Grid>
+      );
+    }
+    return (
+      <Grid container spacing={6} maxWidth={800}>
+        {arrayElement}
       </Grid>
     );
   };
@@ -95,18 +137,17 @@ const ManageExams = () => {
         </Typography>
       </Box>
       <Container sx={{ mt: 6, justifyContent: "center", display: "flex" }}>
-        {loading ? <CircularProgress size={80} /> : renderListExams()}
+        {loading ? renderSkeleton() : renderListExams()}
       </Container>
-      <AddExamModal
-        loadingAgain={loadingAgain}
-        setLoadingAgain={setLoadingAgain}
-      />
-      <DetailExamModal
-        id={idExam}
-        setIsOpenDetailExamModal={setIsOpenDetailExamModal}
-        isOpenDetailExamModal={isOpenDetailExamModal}
-        setLoadingAgain={setLoadingAgain}
-      />
+      <AddExamModal loading={loading} setLoading={setLoading} />
+      {loading ? null : (
+        <DetailExamModal
+          exam={exam}
+          setIsOpenDetailExamModal={setIsOpenDetailExamModal}
+          isOpenDetailExamModal={isOpenDetailExamModal}
+          setLoading={setLoading}
+        />
+      )}
     </MKBox>
   );
 };
