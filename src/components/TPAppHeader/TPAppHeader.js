@@ -1,5 +1,8 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+
 import Container from "@mui/material/Container";
 import Icon from "@mui/material/Icon";
 import breakpoints from "assets/theme/base/breakpoints";
@@ -11,14 +14,17 @@ import brandLogoTechpro from "../../assets/images/techpro-images/brand.png";
 import DefaultNavbarDropdown from "./DefaultNavbarDropdown";
 import DefaultNavbarMobile from "./DefaultNavbarMobile";
 import "./header.scss";
+import { Box, Button } from "@mui/material";
 
 function TPAppHeader({ transparent, light, action, relative, center }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  // const { user, setUser } = useContext(UserContext);
   const [curTabs, setCurTabs] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   useEffect(() => {
     setCurTabs(location.pathname);
@@ -89,6 +95,14 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
     return null;
   }
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const logout = () => {
     localStorage.clear();
     navigate("/sign-in");
@@ -146,7 +160,10 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
           >
             <MKButton
               sx={{ padding: 0, minWidth: 32 }}
-              onClick={() => navigate("/setting")}
+              aria-describedby={id}
+              variant='contained'
+              onClick={handleClick}
+              // onClick={() => navigate("/setting")}
             >
               <Avatar
                 alt='Remy Sharp'
@@ -154,12 +171,38 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
                 src={localStorage.getItem("avatar")}
               />
             </MKButton>
-            <MKButton
-              sx={{ padding: 1, minWidth: 24, paddingLeft: 2 }}
-              onClick={logout}
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              sx={{ zIndex: 101, marginRight: "7px" }}
+              className='header__popover'
             >
-              <LogoutIcon color='error' />
-            </MKButton>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography variant='subtitle2' fontWeight='bold'>
+                  <Button
+                    onClick={() => {
+                      navigate("/setting");
+                      setCurTabs("avt");
+                      handleClose();
+                    }}
+                  >
+                    Thông tin cá nhân{" "}
+                  </Button>
+                </Typography>
+
+                <Typography variant='subtitle2' fontWeight='bold' color='error'>
+                  <Button onClick={logout} color='error'>
+                    Đăng xuất
+                  </Button>
+                </Typography>
+              </Box>
+            </Popover>
           </MKBox>
           <MKBox
             display={{ xs: "inline-block", lg: "none" }}

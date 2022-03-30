@@ -123,11 +123,7 @@ const PersonalInfo = () => {
               marginBottom={2}
             >
               {isLoading ? (
-                <Skeleton
-                  variant='circular'
-                  width={180}
-                  height={180}
-                ></Skeleton>
+                <Skeleton variant='circular' width={180} height={180} />
               ) : (
                 <TPUploadImage
                   img={avatar}
@@ -137,149 +133,174 @@ const PersonalInfo = () => {
               )}
             </Box>
             <Grid item xs={6} className='name'>
-              <Controller
-                name='fullname'
-                control={control}
-                defaultValue={personalInfo?.fullname}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      sx={{
-                        width: "100%",
-                      }}
-                      helperText={
-                        <Typography variant='caption' color='error'>
-                          {" "}
-                          {errors.fullname?.message}
-                        </Typography>
-                      }
-                      {...field}
-                      label='Họ và tên'
-                      variant='outlined'
-                    />
-                  );
-                }}
-              />
+              {isLoading ? (
+                <Skeleton fullwidth height={44} variant='rectangular' />
+              ) : (
+                <Controller
+                  name='fullname'
+                  control={control}
+                  defaultValue={personalInfo?.fullname}
+                  render={({ field }) => {
+                    return (
+                      <TextField
+                        sx={{
+                          width: "100%",
+                        }}
+                        helperText={
+                          <Typography variant='caption' color='error'>
+                            {" "}
+                            {errors.fullname?.message}
+                          </Typography>
+                        }
+                        {...field}
+                        label='Họ và tên'
+                        variant='outlined'
+                      />
+                    );
+                  }}
+                />
+              )}
             </Grid>
 
             <Grid item xs={6} className='dob'>
-              <Controller
-                name='date_of_birth'
-                control={control}
-                defaultValue={personalInfo?.date_of_birth}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      id='date'
-                      label='Birthday'
-                      type='date'
-                      helperText={
-                        <Typography variant='caption' color='error'>
-                          {" "}
-                          {errors.date_of_birth?.message}
-                        </Typography>
-                      }
-                      sx={{
-                        width: "100%",
-                      }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      {...field}
-                    />
-                  );
-                }}
-              />
+              {isLoading ? (
+                <Skeleton fullwidth height={44} variant='rectangular' />
+              ) : (
+                <Controller
+                  name='date_of_birth'
+                  control={control}
+                  defaultValue={personalInfo?.date_of_birth}
+                  render={({ field }) => {
+                    return (
+                      <TextField
+                        id='date'
+                        label='Birthday'
+                        type='date'
+                        helperText={
+                          <Typography variant='caption' color='error'>
+                            {" "}
+                            {errors.date_of_birth?.message}
+                          </Typography>
+                        }
+                        sx={{
+                          width: "100%",
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        {...field}
+                      />
+                    );
+                  }}
+                />
+              )}
             </Grid>
             <Grid item xs={6} className='email'>
-              <Controller
-                name='email'
-                control={control}
-                defaultValue={personalInfo?.email}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      sx={{
-                        width: "100%",
-                      }}
-                      helperText={
-                        <Typography variant='caption' color='error'>
-                          {" "}
-                          {errors.email?.message}
-                        </Typography>
-                      }
-                      {...field}
-                      label='Email'
-                      variant='outlined'
-                    />
-                  );
-                }}
-              />
+              {isLoading ? (
+                <Skeleton fullwidth height={44} variant='rectangular' />
+              ) : (
+                <Controller
+                  name='email'
+                  control={control}
+                  defaultValue={personalInfo?.email}
+                  render={({ field }) => {
+                    return (
+                      <TextField
+                        sx={{
+                          width: "100%",
+                        }}
+                        helperText={
+                          <Typography variant='caption' color='error'>
+                            {" "}
+                            {errors.email?.message}
+                          </Typography>
+                        }
+                        {...field}
+                        label='Email'
+                        variant='outlined'
+                      />
+                    );
+                  }}
+                />
+              )}
             </Grid>
             <Grid item xs={6} className='position'>
-              <Controller
-                name='position'
-                control={control}
-                defaultValue={personalInfo?.position}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      sx={{
-                        width: "100%",
-                      }}
-                      label='Vị trí'
-                      variant='outlined'
-                      {...field}
-                    />
-                  );
-                }}
-              />
+              {isLoading ? (
+                <Skeleton fullwidth height={44} variant='rectangular' />
+              ) : (
+                <Controller
+                  name='position'
+                  control={control}
+                  defaultValue={personalInfo?.position}
+                  render={({ field }) => {
+                    return (
+                      <TextField
+                        sx={{
+                          width: "100%",
+                        }}
+                        label='Vị trí'
+                        variant='outlined'
+                        {...field}
+                      />
+                    );
+                  }}
+                />
+              )}
             </Grid>
             <Grid item xs={6} className='role'>
-              <Controller
-                name='role'
-                control={control}
-                defaultValue={personalInfo?.role}
-                render={({ field }) => {
-                  return (
-                    <FormControl fullWidth>
-                      <InputLabel id='demo-simple-select-label'>
-                        Quyền
-                      </InputLabel>
-                      <Select
-                        labelId='demo-simple-select-label'
-                        id='demo-simple-select'
-                        label='ewrqewrqwerqew'
-                        sx={{ height: 44 }}
-                        {...field}
-                      >
-                        <MenuItem value={0}>Member</MenuItem>
-                        <MenuItem value={1}>Admin</MenuItem>
-                        <MenuItem value={2}>Super Admin</MenuItem>
-                      </Select>
-                    </FormControl>
-                  );
-                }}
-              />
+              {isLoading ? (
+                <Skeleton fullwidth height={44} variant='rectangular' />
+              ) : (
+                <Controller
+                  name='role'
+                  control={control}
+                  defaultValue={personalInfo?.role}
+                  render={({ field }) => {
+                    return (
+                      <FormControl fullWidth>
+                        <InputLabel id='demo-simple-select-label'>
+                          Quyền
+                        </InputLabel>
+                        <Select
+                          labelId='demo-simple-select-label'
+                          id='demo-simple-select'
+                          label='ewrqewrqwerqew'
+                          sx={{ height: 44 }}
+                          disabled
+                          {...field}
+                        >
+                          <MenuItem value={0}>Member</MenuItem>
+                          <MenuItem value={1}>Admin</MenuItem>
+                          <MenuItem value={2}>Super Admin</MenuItem>
+                        </Select>
+                      </FormControl>
+                    );
+                  }}
+                />
+              )}
             </Grid>
             <Grid item xs={6} className='room'>
-              <Controller
-                name='room'
-                control={control}
-                defaultValue={personalInfo?.room}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      sx={{
-                        width: "100%",
-                      }}
-                      label='Phòng'
-                      variant='outlined'
-                      {...field}
-                    />
-                  );
-                }}
-              />
+              {isLoading ? (
+                <Skeleton fullwidth height={44} variant='rectangular' />
+              ) : (
+                <Controller
+                  name='room'
+                  control={control}
+                  defaultValue={personalInfo?.room}
+                  render={({ field }) => {
+                    return (
+                      <TextField
+                        sx={{
+                          width: "100%",
+                        }}
+                        label='Phòng'
+                        variant='outlined'
+                        {...field}
+                      />
+                    );
+                  }}
+                />
+              )}
             </Grid>
           </Grid>
         </Box>
