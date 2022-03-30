@@ -258,125 +258,128 @@ const AddExamModal = ({ loading, setLoading }) => {
                 onClick={handleCloseAddExamModal}
               />
             </Box>
-            <Divider />
-            <Box></Box>
-            <TPUploadImage setImg={setImg} img={img} />
-            <form onSubmit={handleSubmit(onSubmit)} id='form-add-exam'>
-              <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
-                <Controller
-                  name='name'
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <TextField
-                        sx={{
-                          width: "100%",
-                          marginBottom: 2,
-                        }}
-                        size='normal'
-                        variant='standard'
-                        label='Tên bài thi'
-                        helperText={
-                          <Typography variant='caption' color='error'>
-                            {" "}
-                            {errors.name?.message}
-                          </Typography>
-                        }
-                        {...field}
-                      />
-                    );
-                  }}
-                />
+            <Divider sx={{ marginBottom: 0 }} />
+            <Box sx={{ paddingTop: 2, maxHeight: "80vh", overflowY: "auto" }}>
+              <TPUploadImage setImg={setImg} img={img} />
+              <form onSubmit={handleSubmit(onSubmit)} id='form-add-exam'>
+                <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
+                  <Controller
+                    name='name'
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <TextField
+                          sx={{
+                            width: "100%",
+                            marginBottom: 2,
+                          }}
+                          size='normal'
+                          variant='standard'
+                          label='Tên bài thi'
+                          helperText={
+                            <Typography variant='caption' color='error'>
+                              {" "}
+                              {errors.name?.message}
+                            </Typography>
+                          }
+                          {...field}
+                        />
+                      );
+                    }}
+                  />
 
-                <Controller
-                  name='duration'
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <TextField
-                        sx={{ width: "100%", marginBottom: 2 }}
-                        variant='standard'
-                        helperText={
-                          <Typography variant='caption' color='error'>
-                            {" "}
-                            {errors.duration?.message}
-                          </Typography>
-                        }
-                        label='Thời gian'
-                        type='number'
-                        {...field}
-                      />
-                    );
-                  }}
-                />
+                  <Controller
+                    name='duration'
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <TextField
+                          sx={{ width: "100%", marginBottom: 2 }}
+                          variant='standard'
+                          helperText={
+                            <Typography variant='caption' color='error'>
+                              {" "}
+                              {errors.duration?.message}
+                            </Typography>
+                          }
+                          label='Thời gian (s)'
+                          type='number'
+                          {...field}
+                        />
+                      );
+                    }}
+                  />
 
-                <Controller
-                  name='minCorrectAnswers'
-                  control={control}
-                  render={({ field }) => {
-                    return (
-                      <TextField
-                        sx={{ width: "100%", marginBottom: 2 }}
-                        variant='standard'
-                        helperText={
-                          <Typography variant='caption' color='error'>
-                            {" "}
-                            {errors.minCorrectAnswers?.message}
-                          </Typography>
-                        }
-                        type='number'
-                        label='Số câu đúng tối thiểu'
-                        {...field}
-                      />
-                    );
-                  }}
-                />
+                  <Controller
+                    name='minCorrectAnswers'
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <TextField
+                          sx={{ width: "100%", marginBottom: 2 }}
+                          variant='standard'
+                          helperText={
+                            <Typography variant='caption' color='error'>
+                              {" "}
+                              {errors.minCorrectAnswers?.message}
+                            </Typography>
+                          }
+                          type='number'
+                          label='Số câu đúng tối thiểu'
+                          {...field}
+                        />
+                      );
+                    }}
+                  />
 
-                <Controller
-                  name='requireRoom'
-                  control={control}
-                  defaultValue='AI'
-                  render={({ field }) => {
-                    return (
-                      <TextField
-                        sx={{ width: "100%", marginBottom: 2 }}
-                        variant='standard'
-                        helperText={
-                          <Typography variant='caption' color='error'>
-                            {" "}
-                            {errors.requireRoom?.message}
-                          </Typography>
-                        }
-                        label='Thuộc phòng'
-                        {...field}
-                      />
-                    );
+                  <Controller
+                    name='requireRoom'
+                    control={control}
+                    defaultValue='AI'
+                    render={({ field }) => {
+                      return (
+                        <TextField
+                          sx={{ width: "100%", marginBottom: 2 }}
+                          variant='standard'
+                          helperText={
+                            <Typography variant='caption' color='error'>
+                              {" "}
+                              {errors.requireRoom?.message}
+                            </Typography>
+                          }
+                          label='Thuộc phòng'
+                          {...field}
+                        />
+                      );
+                    }}
+                  />
+                </Box>
+                <Box
+                  className='questions__section'
+                  sx={{
+                    marginBottom: 2,
                   }}
-                />
+                >
+                  {renderQuestions(questionList)}
+                </Box>
+              </form>
+              <AddQuestionModal
+                setQuestionList={setQuestionList}
+                questionList={questionList}
+              />
+              <Box display='flex' justifyContent='right' sx={{ margin: 2 }}>
+                <MKButton
+                  variant='gradient'
+                  color='dark'
+                  onClick={handleCloseAddExamModal}
+                  sx={{ marginRight: 2 }}
+                >
+                  Đóng
+                </MKButton>
+                <MKButton type='submit' color='info' form='form-add-exam'>
+                  Lưu
+                </MKButton>
               </Box>
-              <Box
-                className='questions__section'
-                sx={{ maxHeight: "30vh", overflowY: "scroll", marginBottom: 2 }}
-              >
-                {renderQuestions(questionList)}
-              </Box>
-            </form>
-            <AddQuestionModal
-              setQuestionList={setQuestionList}
-              questionList={questionList}
-            />
-            <Box display='flex' justifyContent='right' sx={{ margin: 2 }}>
-              <MKButton
-                variant='gradient'
-                color='dark'
-                onClick={handleCloseAddExamModal}
-                sx={{ marginRight: 2 }}
-              >
-                Đóng
-              </MKButton>
-              <MKButton type='submit' color='info' form='form-add-exam'>
-                Lưu
-              </MKButton>
             </Box>
           </Box>
         </Modal>

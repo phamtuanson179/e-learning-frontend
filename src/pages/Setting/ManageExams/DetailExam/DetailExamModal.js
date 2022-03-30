@@ -138,7 +138,7 @@ const DetailExamModal = ({
   return (
     <Modal
       sx={{
-        overflowY: "auto",
+        // overflowY: "auto",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -164,67 +164,65 @@ const DetailExamModal = ({
             onClick={handleCloseDetailExamModal}
           />
         </Box>
-        <Divider />
-        <Box
-          margin={"auto"}
-          overflow='hidden'
-          borderRadius={1.5}
-          width={120}
-          height={120}
-          border={"1px solid rgba(0,0,0,0.2)"}
-          display='flex'
-          justifyContent={"center"}
-          alignItems={"center"}
-        >
-          <img
-            src={exam?.image ? exam?.image : unknowExam}
-            width={120}
-            height={120}
-          />
-        </Box>
-        <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
-          <TextField
-            sx={{
-              width: "100%",
-              marginBottom: 2,
-            }}
-            size='normal'
-            variant='standard'
-            label='Tên bài thi'
-            value={exam?.name}
-          />
+        <Divider sx={{ marginBottom: 0 }} />
+        <Box sx={{ maxHeight: "80vh", overflowY: "auto", paddingTop: 2 }}>
+          <Box
+            margin={"auto"}
+            borderRadius={1.5}
+            width={180}
+            height={180}
+            border={"1px solid rgba(0,0,0,0.2)"}
+            display='flex'
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <img
+              src={exam?.image ? exam?.image : unknowExam}
+              width={180}
+              height={180}
+            />
+          </Box>
+          <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
+            <TextField
+              sx={{
+                width: "100%",
+                marginBottom: 2,
+              }}
+              size='normal'
+              variant='standard'
+              label='Tên bài thi'
+              value={exam?.name}
+            />
 
-          <TextField
-            sx={{ width: "100%", marginBottom: 2 }}
-            variant='standard'
-            label='Thời gian'
-            value={exam?.duration}
-          />
+            <TextField
+              sx={{ width: "100%", marginBottom: 2 }}
+              variant='standard'
+              label='Thời gian (s)'
+              value={exam?.duration}
+            />
 
-          <TextField
-            sx={{ width: "100%", marginBottom: 2 }}
-            variant='standard'
-            label='Số câu đúng tối thiểu'
-            value={exam?.min_point_to_pass / 10}
-          />
+            <TextField
+              sx={{ width: "100%", marginBottom: 2 }}
+              variant='standard'
+              label='Số câu đúng tối thiểu'
+              value={exam?.min_point_to_pass / 10}
+            />
 
-          <TextField
-            sx={{ width: "100%", marginBottom: 2 }}
-            variant='standard'
-            label='Thuộc phòng'
-            value={exam?.require_rooms}
-          />
-        </Box>
-        <Box
-          className='questions__section'
-          sx={{ maxHeight: "30vh", overflowY: "scroll", marginBottom: 2 }}
-        >
-          {renderQuestions(exam?.questions)}
-        </Box>
-        <Box sx={{ textAlign: "right", margin: 2 }}>
-          <MKButton onClick={handleDeleteExam} color='error'>
-            Xoá bài thi
-          </MKButton>
+            <TextField
+              sx={{ width: "100%", marginBottom: 2 }}
+              variant='standard'
+              label='Thuộc phòng'
+              value={exam?.require_rooms}
+            />
+          </Box>
+          <Box className='questions__section' sx={{ marginBottom: 2 }}>
+            {renderQuestions(exam?.questions)}
+          </Box>
+          <Box sx={{ textAlign: "right", margin: 2 }}>
+            <MKButton onClick={handleDeleteExam} color='error'>
+              Xoá bài thi
+            </MKButton>
+          </Box>
         </Box>
       </Box>
     </Modal>

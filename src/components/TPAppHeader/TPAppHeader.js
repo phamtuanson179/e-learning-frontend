@@ -1,6 +1,5 @@
 import LogoutIcon from "@mui/icons-material/Logout";
 import Avatar from "@mui/material/Avatar";
-import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 
 import Container from "@mui/material/Container";
@@ -15,6 +14,7 @@ import DefaultNavbarDropdown from "./DefaultNavbarDropdown";
 import DefaultNavbarMobile from "./DefaultNavbarMobile";
 import "./header.scss";
 import { Box, Button } from "@mui/material";
+import { Popover } from "antd";
 
 function TPAppHeader({ transparent, light, action, relative, center }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
@@ -23,8 +23,8 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
   const navigate = useNavigate();
   const [curTabs, setCurTabs] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const [openPopover, setOpenPopover] = useState(false);
+  const id = openPopover ? "simple-popover" : undefined;
 
   useEffect(() => {
     setCurTabs(location.pathname);
@@ -97,15 +97,45 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    setOpenPopover(true);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    setOpenPopover(false);
   };
 
   const logout = () => {
     localStorage.clear();
     navigate("/sign-in");
+  };
+  const content = () => {
+    return (
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <Typography variant='subtitle2' fontWeight='bold'>
+          <Button
+            onClick={() => {
+              navigate("/setting");
+              setCurTabs("avt");
+              handleClose();
+            }}
+            sx={{ padding: 0, minWidth: 0 }}
+          >
+            Thông tin cá nhân{" "}
+          </Button>
+        </Typography>
+
+        <Typography variant='subtitle2' fontWeight='bold' color='error'>
+          <Button
+            onClick={logout}
+            color='error'
+            sx={{ padding: 0, minWidth: 0 }}
+          >
+            Đăng xuất
+          </Button>
+        </Typography>
+      </Box>
+    );
   };
 
   return (
@@ -158,50 +188,20 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
             ml={{ xs: "auto", lg: 0 }}
             sx={{ display: "flex", alignItems: "center" }}
           >
-            <MKButton
-              sx={{ padding: 0, minWidth: 32 }}
-              aria-describedby={id}
-              variant='contained'
-              onClick={handleClick}
-              // onClick={() => navigate("/setting")}
-            >
-              <Avatar
-                alt='Remy Sharp'
-                sx={{ width: 24, height: 24 }}
-                src={localStorage.getItem("avatar")}
-              />
-            </MKButton>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              sx={{ zIndex: 101, marginRight: "7px" }}
-              className='header__popover'
-            >
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography variant='subtitle2' fontWeight='bold'>
-                  <Button
-                    onClick={() => {
-                      navigate("/setting");
-                      setCurTabs("avt");
-                      handleClose();
-                    }}
-                  >
-                    Thông tin cá nhân{" "}
-                  </Button>
-                </Typography>
-
-                <Typography variant='subtitle2' fontWeight='bold' color='error'>
-                  <Button onClick={logout} color='error'>
-                    Đăng xuất
-                  </Button>
-                </Typography>
-              </Box>
+            <Popover content={content}>
+              <MKButton
+                sx={{ padding: 0, minWidth: 32 }}
+                aria-describedby={id}
+                variant='contained'
+                onClick={handleClick}
+                // onClick={() => navigate("/setting")}
+              >
+                <Avatar
+                  alt='Remy Sharp'
+                  sx={{ width: 24, height: 24 }}
+                  src={localStorage.getItem("avatar")}
+                />
+              </MKButton>
             </Popover>
           </MKBox>
           <MKBox
