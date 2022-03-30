@@ -12,8 +12,6 @@ import DefaultNavbarDropdown from "./DefaultNavbarDropdown";
 import DefaultNavbarMobile from "./DefaultNavbarMobile";
 import "./header.scss";
 
-
-
 function TPAppHeader({ transparent, light, action, relative, center }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
@@ -27,16 +25,16 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
   }, []);
 
   const menuNavbar = [
-    {
-      name: "Đang học",
-      icon: <Icon>dashboard</Icon>,
-      route: "/current-courses",
-    },
-    {
-      name: "Khóa học",
-      icon: <Icon>view_day</Icon>,
-      route: "/all-courses",
-    },
+    // {
+    //   name: "Đang học",
+    //   icon: <Icon>dashboard</Icon>,
+    //   route: "/current-courses",
+    // },
+    // {
+    //   name: "Khóa học",
+    //   icon: <Icon>view_day</Icon>,
+    //   route: "/all-courses",
+    // },
     {
       name: "Bài thi",
       icon: <Icon>article</Icon>,
@@ -84,7 +82,10 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
     )
   );
   // console.log({ location });
-  if (location.pathname === "/sign-in" || location.pathname === "/forgot-password") {
+  if (
+    location.pathname === "/sign-in" ||
+    location.pathname === "/forgot-password"
+  ) {
     return null;
   }
 
@@ -147,7 +148,11 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
               sx={{ padding: 0, minWidth: 32 }}
               onClick={() => navigate("/setting")}
             >
-              <Avatar alt='Remy Sharp' sx={{ width: 24, height: 24 }} src={localStorage.getItem('avatar')} />
+              <Avatar
+                alt='Remy Sharp'
+                sx={{ width: 24, height: 24 }}
+                src={localStorage.getItem("avatar")}
+              />
             </MKButton>
             <MKButton
               sx={{ padding: 1, minWidth: 24, paddingLeft: 2 }}
