@@ -1,21 +1,34 @@
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Box, Typography } from "@mui/material";
-import { Progress } from "antd";
+import { Box, Button, Typography, Modal, Divider } from "@mui/material";
 import examAPI from "api/examAPI";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import RankingTable from "containers/RankingTable";
 import { convertSecondToTime } from "utils/convert";
+import CloseIcon from "@mui/icons-material/Close";
 import "./Ranking.scss";
 
-const Ranking = ({ lastestResultExam }) => {
+const style = {
+  bgcolor: "background.paper",
+  position: "absolute",
+  display: "flex",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%,-50%)",
+  flexDirection: "column",
+  borderRadius: "12px",
+  bgColor: "white",
+  border: "1px solid #0000003d",
+};
 
-  const caculatePercentResult = (point, maxPoint) => {
-    return (point / maxPoint) * 100;
-  };
 
-  const showTime = (duration) => {
-    const time = convertSecondToTime(duration);
-    return `${time.minutes}:${time.seconds}`;
-  };
+const Ranking = ({ rankingExam, historyRanking,shortRankingExam }) => {
+  console.log({rankingExam});
+  const [openModal, setOpenModal] = useState()
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
+  useEffect(()=> {
+    if (historyRanking)  convertDatatoShortRanking(historyRanking);
+  }, []);
 
   return (
     <>
@@ -33,37 +46,67 @@ const Ranking = ({ lastestResultExam }) => {
         <Typography
           variant='h5'
           component={"div"}
-          sx={{ marginBottom: 4, textAlign: "center" }}
+          sx={{ marginBottom: 2, textAlign: "center" }}
         >
           Xếp hạng
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-          }}
-        >
-          <Box flex={1} sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h1">1</Typography>
-            <Typography variant="body1" >Sonpt</Typography>
-          </Box>
 
-          <Box flex={1}>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="h5">1</Typography>
-              <Typography variant="subtitle2" >Sonpt</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="h5">1</Typography>
-              <Typography variant="subtitle2" >Sonpt</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="h5">1</Typography>
-              <Typography variant="subtitle2" >Sonpt</Typography>
-            </Box>
-          </Box>
+        <Box sx={{display:"block", alignItems:"center", justifyContent:"center", textAlign:"center"}}>
+          <Typography variant="h4" sx={{alignItems:"center", justifyContent:"center"}}>
+            {console.log({ shortRankingExam })}
+            {shortRankingExam?shortRankingExam[0].user_name:null}
+          </Typography>
+          <Typography variant="h5" sx={{display:"inline-block"}}>
+            {shortRankingExam?shortRankingExam[1].user_name:null}
+          </Typography>
+          <Typography variant="h6"> 
+            {shortRankingExam?shortRankingExam[2].user_name:null}
+          </Typography>
+          <Typography variant="h6" color="red">
+            Xếp hạng của bạn: {shortRankingExam?shortRankingExam[3].rank:null}            
+          </Typography>
         </Box>
+        <Button 
+          sx={{ fontSize: 12, padding: 0 }} 
+          onClick={() => setOpenModal(true)}>
+            Xem chi tiết
+        </Button>
+        <Modal
+              sx={{
+                overflowY: "auto",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              open={openModal}
+              onClose={handleCloseModal}
+              aria-labelledby='modal-modal-title'
+              aria-describedby='modal-modal-description'
+            >
+              <Box >
+          <Box sx={style}>
+                <Box
+                  display='flex'
+                  alginItems='center'
+                  justifyContent='space-between'
+                  sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
+                >
+                  <Typography id='modal-modal-title' variant='h5'>
+                    Xếp hạng
+                  </Typography>
+                  <CloseIcon
+                    fontSize='medium'
+                    sx={{ cursor: "pointer" }}
+                    onClick={handleCloseModal}
+                  />
+                  </Box>
+                  <Divider/>
+                  <Box>
+                    <RankingTable historyRanking={historyRanking} />
+                  </Box>
+                </Box>
+          </Box>
+          </Modal>
       </Box>
     </>
   );

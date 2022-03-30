@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,35 +6,33 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { Progress } from "antd";
 import examAPI from "api/examAPI";
 import { useEffect, useState } from "react";
-import DoneIcon from "@mui/icons-material/Done";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ErrorIcon from "@mui/icons-material/Error";
 import { isEmpty } from "lodash";
 import { convertSecondToTime } from "utils/convert";
 
-function createData(user_name, duration, point, isPass) {
-  return { user_name, duration, point, isPass };
+function createData(user_name, point, duration) {
+  return { user_name, point, duration };
 }
 
-const HistoryExamTable = ({ historyExam }) => {
-  console.log({ historyExam });
+const RankingTable = ({ historyRanking }) => {
+  console.log({ historyRanking });
   const [rows, setRows] = useState();
 
   const convertDataToRowTable = (datas  ) => {
     const rows = [];
     datas.map((data, idx) => {
       rows.push(
-        createData(data?.user_name, data?.duration, data?.point, data?.is_pass)
+        createData(data?.user_name, data?.point, data?.duration)
       );
     });
     setRows(rows);
   };
 
   useEffect(() => {
-    if (historyExam) convertDataToRowTable(historyExam);
+    if (historyRanking) convertDataToRowTable(historyRanking);
   }, []);
 
   const showTime = (duration) => {
@@ -44,14 +42,13 @@ const HistoryExamTable = ({ historyExam }) => {
 
   return (
     <TableContainer component={Paper} sx={{ maxHeight: '50vh' }}>
-      <Table stickyHeader sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
+      <Table stickyHeader sx={{ minWidth: 400 }} size='small' aria-label='a dense table'>
         <TableHead sx={{ display: "table-header-group" }}>
           <TableRow>
             <TableCell align='center'>Stt</TableCell>
             <TableCell>Tên</TableCell>
             <TableCell align='right'>Điểm</TableCell>
             <TableCell align='right'>Thời gian</TableCell>
-            <TableCell align='center'>Kết quả</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -67,13 +64,6 @@ const HistoryExamTable = ({ historyExam }) => {
                 </TableCell>
                 <TableCell align='right'>{row.point}</TableCell>
                 <TableCell align='right'>{showTime(row.duration)}</TableCell>
-                <TableCell align='center'>
-                  {row.isPass ? (
-                    <CheckCircleIcon color='success' />
-                  ) : (
-                    <ErrorIcon color='error' />
-                  )}
-                </TableCell>
               </TableRow>
             ))}
         </TableBody>
@@ -82,4 +72,4 @@ const HistoryExamTable = ({ historyExam }) => {
   );
 };
 
-export default HistoryExamTable;
+export default RankingTable;

@@ -12,6 +12,9 @@ const DetailExam = () => {
     const navigate = useNavigate()
     const [lastestResultExam, setLastestResultExam] = useState()
     const [historyExam, setHistoryExam] = useState()
+    const [rankingExam, setRankingExam] = useState()
+    const [historyRanking, setHistoryRankingExam] =useState()
+    const [shortRankingExam, setShortRankingExam]=useState()
 
     const getHistoryExam = async (params) => {
         await examAPI.getExamHistory(params).then((res) => {
@@ -32,6 +35,8 @@ const DetailExam = () => {
             if (res.status === 200) {
                 const data = res?.data
                 if (data) {
+                    setHistoryRankingExam(data)
+                    setRankingExam(data)
                 }
 
             }
@@ -43,6 +48,8 @@ const DetailExam = () => {
             if (res.status === 200) {
                 const data = res?.data
                 if (data) {
+                    console.log({data});
+                    setShortRankingExam(data)
                 }
 
             }
@@ -55,6 +62,7 @@ const DetailExam = () => {
 
     useEffect(() => {
         const params = {
+            user_id: localStorage.getItem('userId'),
             exam_id: location.state?.exam?.id
         }
         getFullRanking(params)
@@ -97,7 +105,7 @@ const DetailExam = () => {
                             <Box>
                                 <Typography variant='subtitle2' >Thời gian: {exam?.duration} </Typography>
                                 <Typography variant='subtitle2'>Số câu hỏi: {exam?.questionAmount}</Typography>
-                                <Typography variant='subtitle2'>Số câu đúng tối thiểu: {exam?.min_point_to_pass}</Typography>
+                                <Typography variant='subtitle2'>Số điểm tối thiểu: {exam?.min_point_to_pass}</Typography>
                             </Box>
                         </Box>
                         <Button className='start__button' sx={{ height: 40, alignSelf: 'center', marginLeft: 2 }} onClick={() => { navigate('/exam', { state: { exam: exam } }) }}>Bắt đầu</Button>
@@ -108,7 +116,7 @@ const DetailExam = () => {
                         </Box>
 
                         <Box sx={{ flex: 1, height: 'initial' }} >
-                            <Ranking />
+                            <Ranking rankingExam={rankingExam} historyRanking={historyRanking} shortRankingExam={shortRankingExam}/>
                         </Box>
 
                     </Box>
