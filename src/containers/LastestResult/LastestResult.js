@@ -1,5 +1,12 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Box, Button, Typography, Modal, Divider } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  Divider,
+  Skeleton,
+} from "@mui/material";
 import { Progress } from "antd";
 import examAPI from "api/examAPI";
 import { useState } from "react";
@@ -21,9 +28,9 @@ const style = {
   border: "1px solid #0000003d",
 };
 
-const LastestResult = ({ lastestResultExam, historyExam }) => {
-  console.log({ lastestResultExam })
-  const [openModal, setOpenModal] = useState()
+const LastestResult = ({ lastestResultExam, historyExam, isLoading }) => {
+  console.log({ lastestResultExam });
+  const [openModal, setOpenModal] = useState();
 
   const caculatePercentResult = (point, maxPoint) => {
     return (point / maxPoint) * 100;
@@ -35,8 +42,8 @@ const LastestResult = ({ lastestResultExam, historyExam }) => {
   };
 
   const handleCloseModal = () => {
-    setOpenModal(false)
-  }
+    setOpenModal(false);
+  };
 
   return (
     <>
@@ -64,29 +71,50 @@ const LastestResult = ({ lastestResultExam, historyExam }) => {
             alignItems: "center",
           }}
         >
-          <Progress
-            type='circle'
-            percent={caculatePercentResult(
-              lastestResultExam?.point,
-              lastestResultExam?.max_point
-            )}
-            style={{ alignSelf: "center" }}
-            status={lastestResultExam.is_pass ? "" : "exception"}
-          />
+          {isLoading ? (
+            <Skeleton variant='circular' width={120} height={120} />
+          ) : (
+            <Progress
+              type='circle'
+              percent={caculatePercentResult(
+                lastestResultExam?.point,
+                lastestResultExam?.max_point
+              )}
+              style={{ alignSelf: "center" }}
+              status={lastestResultExam.is_pass ? "" : "exception"}
+            />
+          )}
+
           <Box sx={{ marginLeft: 1 }}>
-            <Typography variant='h2'>
-              {`${lastestResultExam.point}/${lastestResultExam.max_point}`}
-            </Typography>
+            {isLoading ? (
+              <Skeleton variant='text' width={60} height={40} />
+            ) : (
+              <Typography variant='h2'>
+                {`${lastestResultExam.point}/${lastestResultExam.max_point}`}
+              </Typography>
+            )}
+            {isLoading ? (
+              <Typography variant='subtitle2'>
+                <Skeleton />
+              </Typography>
+            ) : (
+              <Typography
+                variant='subtitle2'
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <AccessTimeIcon sx={{ marginRight: 1 }} />
+                {showTime(lastestResultExam.duration)}
+              </Typography>
+            )}
+            {isLoading ? null : (
+              <Button
+                sx={{ fontSize: 12, padding: 0 }}
+                onClick={() => setOpenModal(true)}
+              >
+                Xem chi tiết
+              </Button>
+            )}
 
-            <Typography
-              variant='subtitle2'
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <AccessTimeIcon sx={{ marginRight: 1 }} />
-              {showTime(lastestResultExam.duration)}
-            </Typography>
-
-            <Button sx={{ fontSize: 12, padding: 0 }} onClick={() => setOpenModal(true)}>Xem chi tiết</Button>
             <Modal
               sx={{
                 overflowY: "auto",
@@ -116,12 +144,10 @@ const LastestResult = ({ lastestResultExam, historyExam }) => {
                   />
                 </Box>
                 <Divider />
-                <Box >
+                <Box>
                   <HistoryExamTable historyExam={historyExam} />
                 </Box>
-
               </Box>
-
             </Modal>
           </Box>
         </Box>

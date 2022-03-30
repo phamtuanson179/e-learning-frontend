@@ -290,6 +290,7 @@ const PersonalInfo = () => {
                   render={({ field }) => {
                     return (
                       <TextField
+                        disabled
                         sx={{
                           width: "100%",
                         }}

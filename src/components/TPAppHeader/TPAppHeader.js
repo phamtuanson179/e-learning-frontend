@@ -166,7 +166,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
           justifyContent='space-between'
           alignItems='center'
         >
-          <Link to='/current-courses'>
+          <Link to='/list-exams'>
             <MKBox
               lineHeight={1}
               py={transparent ? 1.5 : 0.75}
