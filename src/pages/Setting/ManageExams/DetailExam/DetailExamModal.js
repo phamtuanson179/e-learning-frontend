@@ -20,8 +20,7 @@ import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
 import { useEffect, useState } from "react";
 import examAPI from "../../../../api/examAPI";
-import unknowExam from 'assets/images/techpro-images/unknowExam.png'
-
+import unknowExam from "assets/images/techpro-images/unknowExam.png";
 
 const style = {
   bgcolor: "background.paper",
@@ -37,49 +36,15 @@ const style = {
   border: "1px solid #0000003d",
 };
 
-const checkCorrectAnswer = (answers) => {
-  for (let i in answers) {
-    if (answers[i]?.is_correct) return i;
-  }
-};
-const convertDatas = (data) => {
-  return {
-    ...data,
-    questions: data?.questions.map((question, idx) => {
-      return {
-        ...question,
-        correctAnswerIndex: checkCorrectAnswer(question?.answers),
-      };
-    }),
-  };
-};
-
 const DetailExamModal = ({
-  id,
+  exam,
   setIsOpenDetailExamModal,
   isOpenDetailExamModal,
-  setLoadingAgain,
+  setLoading,
 }) => {
-  const [exam, setExam] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [notification, setNotification] = useState({ type: '', message: '' });
-  const [openNoti, setOpenNoti] = useState(false)
-  const getExam = async (id) => {
-    if (id) {
-      const params = {
-        id: id,
-      };
-      await examAPI.getExam(params).then((res) => {
-        const data = convertDatas(res?.data);
-        setExam(data);
-        setLoading(false);
-      });
-    }
-  };
-
-  useEffect(() => {
-    getExam(id);
-  }, [id]);
+  console.log({ exam });
+  const [notification, setNotification] = useState({ type: "", message: "" });
+  const [openNoti, setOpenNoti] = useState(false);
 
   const renderAnwserQuestion = (question) => {
     return (
@@ -113,7 +78,6 @@ const DetailExamModal = ({
 
   const handleCloseDetailExamModal = () => {
     setIsOpenDetailExamModal(false);
-    setLoading(true)
   };
 
   const renderQuestions = (questions) => {
@@ -151,30 +115,27 @@ const DetailExamModal = ({
 
   const handleDeleteExam = async () => {
     const params = {
-      id: id,
+      id: exam?.id,
     };
     await examAPI.deleteExamById(params).then((res) => {
       if (res?.status == 200) {
         setNotification({
-          message: 'Xoá bài thi thành công!',
-          type: NOTIFICATION.SUCCESS
-        })
-        setOpenNoti(true)
-        setLoadingAgain(true);
+          message: "Xoá bài thi thành công!",
+          type: NOTIFICATION.SUCCESS,
+        });
+        setOpenNoti(true);
+        setLoading(true);
         setIsOpenDetailExamModal(false);
       } else {
         setNotification({
-          message: 'Xoá bài thi thất bại!',
-          type: NOTIFICATION.ERROR
-        })
-        setOpenNoti(true)
+          message: "Xoá bài thi thất bại!",
+          type: NOTIFICATION.ERROR,
+        });
+        setOpenNoti(true);
       }
-
     });
-
   };
   return (
-
     <Modal
       sx={{
         overflowY: "auto",
@@ -187,78 +148,86 @@ const DetailExamModal = ({
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'
     >
-      {!loading ? (
-        <Box sx={style}>
-          <Box
-            display='flex'
-            alginItems='center'
-            justifyContent='space-between'
-            sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
-          >
-            <Typography id='modal-modal-title' variant='h5'>
-              Chi tiết bài thi
-            </Typography>
-            <CloseIcon
-              fontSize='medium'
-              sx={{ cursor: "pointer" }}
-              onClick={handleCloseDetailExamModal}
-            />
-          </Box>
-          <Divider />
-          <Box margin={'auto'} overflow='hidden' borderRadius={1.5} width={180} height={180} border={'1px solid rgba(0,0,0,0.2)'} display='flex' justifyContent={'center'} alignItems={'center'}>
-            <img src={exam?.image ? exam?.image : unknowExam} width={180} height={180} />
-
-          </Box>
-          <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
-            <TextField
-              sx={{
-                width: "100%",
-                marginBottom: 2,
-              }}
-              size='normal'
-              variant='standard'
-              label='Tên bài thi'
-              value={exam?.name}
-            />
-
-            <TextField
-              sx={{ width: "100%", marginBottom: 2 }}
-              variant='standard'
-              label='Thời gian'
-              value={exam?.duration}
-            />
-
-            <TextField
-              sx={{ width: "100%", marginBottom: 2 }}
-              variant='standard'
-              label='Số câu đúng tối thiểu'
-              value={exam?.min_point_to_pass / 10}
-            />
-
-            <TextField
-              sx={{ width: "100%", marginBottom: 2 }}
-              variant='standard'
-              label='Thuộc phòng'
-              value={exam?.require_rooms}
-            />
-          </Box>
-          <Box
-            className='questions__section'
-            sx={{ maxHeight: "30vh", overflowY: "scroll", marginBottom: 2 }}
-          >
-            {renderQuestions(exam?.questions)}
-          </Box>
-          <Box sx={{ textAlign: "right", margin: 2 }}>
-            <MKButton onClick={handleDeleteExam} color='error'>
-              Xoá bài thi
-            </MKButton>
-          </Box>
+      <Box sx={style}>
+        <Box
+          display='flex'
+          alginItems='center'
+          justifyContent='space-between'
+          sx={{ marginTop: 2, marginLeft: 2, marginRight: 2 }}
+        >
+          <Typography id='modal-modal-title' variant='h5'>
+            Chi tiết bài thi
+          </Typography>
+          <CloseIcon
+            fontSize='medium'
+            sx={{ cursor: "pointer" }}
+            onClick={handleCloseDetailExamModal}
+          />
         </Box>
-      ) : (
-        <CircularProgress />
-      )}
-    </Modal>
+        <Divider />
+        <Box
+          margin={"auto"}
+          overflow='hidden'
+          borderRadius={1.5}
+          width={120}
+          height={120}
+          border={"1px solid rgba(0,0,0,0.2)"}
+          display='flex'
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <img
+            src={exam?.image ? exam?.image : unknowExam}
+            width={120}
+            height={120}
+          />
+        </Box>
+        <Box sx={{ margin: 2, marginTop: 0, marginBottom: 0 }}>
+          <TextField
+            sx={{
+              width: "100%",
+              marginBottom: 2,
+            }}
+            size='normal'
+            variant='standard'
+            label='Tên bài thi'
+            value={exam?.name}
+          />
 
+          <TextField
+            sx={{ width: "100%", marginBottom: 2 }}
+            variant='standard'
+            label='Thời gian'
+            value={exam?.duration}
+          />
+
+          <TextField
+            sx={{ width: "100%", marginBottom: 2 }}
+            variant='standard'
+            label='Số câu đúng tối thiểu'
+            value={exam?.min_point_to_pass / 10}
+          />
+
+          <TextField
+            sx={{ width: "100%", marginBottom: 2 }}
+            variant='standard'
+            label='Thuộc phòng'
+            value={exam?.require_rooms}
+          />
+        </Box>
+        <Box
+          className='questions__section'
+          sx={{ maxHeight: "30vh", overflowY: "scroll", marginBottom: 2 }}
+        >
+          {renderQuestions(exam?.questions)}
+        </Box>
+        <Box sx={{ textAlign: "right", margin: 2 }}>
+          <MKButton onClick={handleDeleteExam} color='error'>
+            Xoá bài thi
+          </MKButton>
+        </Box>
+      </Box>
+    </Modal>
   );
 };
 
