@@ -28,19 +28,19 @@ const Ranking = ({ rankingExam, historyRanking }) => {
     setOpenModal(false)
   }
 
-  const convertDatatoShortRanking=(datas ) =>{
-    const listShortcutRanking=[];
-    datas.map((data, idx) => {
-      listShortcutRanking.push(
-        createData(data?.user_name)
-      );
-    });
-    setList(listShortcutRanking);
-  };
+  // const convertDatatoShortRanking=(datas ) =>{
+  //   const listShortcutRanking=[];
+  //   datas.map((data, idx) => {
+  //     listShortcutRanking.push(
+  //       createData(data?.user_name)
+  //     );
+  //   });
+  //   setList(listShortcutRanking);
+  // };
 
-  useEffect(()=> {
-    if (historyRanking)  convertDatatoShortRanking(historyRanking);
-  }, []);
+  // useEffect(()=> {
+  //   if (historyRanking)  convertDatatoShortRanking(historyRanking);
+  // }, []);
 
   return (
     <>
@@ -62,14 +62,17 @@ const Ranking = ({ rankingExam, historyRanking }) => {
         >
           Xếp hạng
         </Typography>
-        <Box sx={{display:"flex", alignItems:"center", justifyContent:"center"}}>
+        {/* <Box sx={{display:"flex", alignItems:"center", justifyContent:"center"}}>
           { listShortcutRanking &&
           listShortcutRanking.map(list => (
                 <Typography variant='h5'>
                   {list.user_name}
                 </Typography>
               ))}
-        </Box>
+        </Box> */}
+        <Typography variant='h5'>
+          {/* {rankingExam.user_name} */}
+        </Typography>
         <Button 
           sx={{ fontSize: 12, padding: 0 }} 
           onClick={() => setOpenModal(true)}>
