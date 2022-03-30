@@ -21,19 +21,19 @@ export default {
   socials: [
     {
       icon: <FacebookIcon />,
-      link: "https://www.facebook.com/CreativeTim/",
+      link: "https://www.facebook.com/techpro.com.vn/",
     },
-    {
-      icon: <TwitterIcon />,
-      link: "https://twitter.com/creativetim",
-    },
-    {
-      icon: <GitHubIcon />,
-      link: "https://github.com/creativetimofficial",
-    },
+    // {
+    //   icon: <TwitterIcon />,
+    //   link: "https://twitter.com/creativetim",
+    // },
+    // {
+    //   icon: <GitHubIcon />,
+    //   link: "https://github.com/creativetimofficial",
+    // },
     {
       icon: <YouTubeIcon />,
-      link: "https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w",
+      link: "https://www.youtube.com/user/TechproIAGChannel",
     },
   ],
   menus: [
@@ -59,16 +59,16 @@ export default {
   ],
   copyright: (
     <MKTypography variant="button" fontWeight="regular">
-      All rights reserved. Copyright &copy; {date} Material Kit by{" "}
+      All rights reserved. Copyright &copy; {date} by{" "}
       <MKTypography
         component="a"
-        href="https://www.creative-tim.com"
+        href="https://techpro.vn/"
         target="_blank"
         rel="noreferrer"
         variant="button"
         fontWeight="regular"
       >
-        Creative Tim
+        Techpro Software
       </MKTypography>
       .
     </MKTypography>
