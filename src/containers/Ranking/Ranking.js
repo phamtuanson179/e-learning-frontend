@@ -26,18 +26,6 @@ const Ranking = ({ rankingExam, historyRanking,shortRankingExam }) => {
   const handleCloseModal = () => {
     setOpenModal(false)
   }
-
-  // const listShortRanking = shortRankingExam.map(shortRankingExam)
-  // const convertDatatoShortRanking=(datas ) =>{
-  //   const shortRankingExam=[];
-  //   datas.map((data, idx) => {
-  //     shortRankingExam.push(
-  //       createData(data?.user_name)
-  //     );
-  //   });
-  //   setList(shortRankingExam);
-  // };
-
   useEffect(()=> {
     if (historyRanking)  convertDatatoShortRanking(historyRanking);
   }, []);
@@ -75,9 +63,7 @@ const Ranking = ({ rankingExam, historyRanking,shortRankingExam }) => {
             {shortRankingExam?shortRankingExam[2].user_name:null}
           </Typography>
           <Typography variant="h6" color="red">
-            Xếp hạng của bạn: {shortRankingExam?shortRankingExam[3].rank:null}
-            {/* {shortRankingExam?shortRankingExam[3].user_name:null} */}
-            
+            Xếp hạng của bạn: {shortRankingExam?shortRankingExam[3].rank:null}            
           </Typography>
         </Box>
         <Button 
