@@ -32,7 +32,6 @@ const BlockExams = () => {
 
     await examAPI.getListExamForRoom(params).then((res) => {
       if (res?.data) {
-        console.log("res?.data", res?.data);
         const listExams = convertDatas(res?.data);
         setListExams(listExams);
         setLoading(false);
@@ -63,7 +62,6 @@ const BlockExams = () => {
     );
   };
   const renderSkeleton = () => {
-    console.log("first");
     const arrayElement = [];
     for (let i = 0; i < 3; i++) {
       arrayElement.push(

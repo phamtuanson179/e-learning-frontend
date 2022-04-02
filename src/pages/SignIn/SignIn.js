@@ -71,7 +71,6 @@ function SignIn() {
       };
 
       await loginAPI.login(payload).then((res) => {
-        console.log({ res });
         if (res?.status === 200) {
           localStorage.setItem("accessToken", res?.data.access_token);
           localStorage.setItem("email", data.email);

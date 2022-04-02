@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { STATUS } from "./constant";
 import "./exam.scss";
-import QuestionDetail from "./QuestionDetail.js";
-import QuestionNavbar from "./QuestionNavbar.js";
+import QuestionDetail from "./QuestionDetail";
+import QuestionNavbar from "./QuestionNavbar";
 
 const convertDatas = (datas) => {
   const result = datas?.map((data, idx) => {
@@ -14,6 +14,7 @@ const convertDatas = (datas) => {
       idx: idx,
       status: STATUS.NORESPONSE,
       curAnswer: -1,
+      curAnswerList: [],
     };
   });
   return result;
@@ -30,14 +31,15 @@ const Exam = (props) => {
   const [minPointToPass, setMinPointToPass] = useState();
   const [startCountDown, setStartCountDown] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [idExam, setIdExam] = useState('');
-  const [exam, setExam] = useState()
-
+  const [idExam, setIdExam] = useState("");
+  const [exam, setExam] = useState();
+  const [curQuestionType, setCurQuestionType] = useState();
   const searchQuestionByIdx = (id, questions) => {
     if (questions) {
       for (let question of questions) {
         if (question?.idx == id) {
           setCurQuestion(question);
+          setCurQuestionType(question?.type);
           break;
         }
       }
@@ -57,7 +59,7 @@ const Exam = (props) => {
   useEffect(() => {
     // getExam(location?.state?.exam);
     const exam = location.state?.exam;
-    setExam(exam)
+    setExam(exam);
     const questions = convertDatas(exam.questions);
     setNameTest(exam?.name);
     setDuration(exam?.duration);
@@ -65,20 +67,19 @@ const Exam = (props) => {
     setQuestions(questions);
     setQuestionAmount(questions.length);
     setCurQuestion(questions[0]);
-    setIdExam(exam?.id)
+    setIdExam(exam?.id);
     setLoading(false);
     // startCountDown(countDown);
   }, []);
 
   // tim cau hoi voi moi lua chon so cau
   useEffect(() => {
+    saveAnswerOfQuestion(curQuestion, questions);
     searchQuestionByIdx(curIndexQuestion, questions);
   }, [curIndexQuestion]);
 
   //thay doi cau tra loi moi khi nguoi dung chon cau tra loi khac
-  useEffect(() => {
-    saveAnswerOfQuestion(curQuestion, questions);
-  }, [curQuestion]);
+  // useEffect(() => {}, [curQuestion]);
 
   return (
     <Box className='exam__container'>
@@ -116,6 +117,7 @@ const Exam = (props) => {
             minPointToPass={minPointToPass}
             questionAmount={questionAmount}
             exam={exam}
+            curQuestionType={curQuestionType}
           />
         )}
       </Box>

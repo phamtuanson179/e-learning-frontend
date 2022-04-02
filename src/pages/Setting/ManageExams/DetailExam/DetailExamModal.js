@@ -2,8 +2,10 @@ import {
   Box,
   Button,
   ButtonBase,
+  Checkbox,
   FormControl,
   FormControlLabel,
+  FormGroup,
   Input,
   Modal,
   Radio,
@@ -21,6 +23,7 @@ import { NOTIFICATION } from "constants/notification";
 import { useEffect, useState } from "react";
 import examAPI from "../../../../api/examAPI";
 import unknowExam from "assets/images/techpro-images/unknowExam.png";
+import { QUESTION_TYPE } from "constants/questionType";
 
 const style = {
   bgcolor: "background.paper",
@@ -42,38 +45,69 @@ const DetailExamModal = ({
   isOpenDetailExamModal,
   setLoading,
 }) => {
-  console.log({ exam });
   const [notification, setNotification] = useState({ type: "", message: "" });
   const [openNoti, setOpenNoti] = useState(false);
 
-  const renderAnwserQuestion = (question) => {
-    return (
-      <Box>
-        <RadioGroup
-          aria-labelledby='demo-radio-buttons-group-label'
-          name='radio-buttons-group'
-          value={question?.correctAnswerIndex ?? ""}
-          sx={{ marginLeft: 1 }}
-        >
-          {question?.answers?.map((anwser, idx) => (
-            <FormControlLabel
-              value={idx}
-              key={idx}
-              label={
-                <Typography
-                  sx={{ display: "inline" }}
-                  variant='body2'
-                  fontWeight={400}
-                >
-                  {anwser.content}
-                </Typography>
-              }
-              control={<Radio />}
-            />
-          ))}
-        </RadioGroup>
-      </Box>
-    );
+  const renderAnwserQuestion = (question, typeQuestion) => {
+    if (
+      typeQuestion === QUESTION_TYPE.ONE_CORRECT_ANSWER ||
+      typeQuestion === QUESTION_TYPE.TRUE_FALSE_ANSWERS
+    ) {
+      return (
+        <Box>
+          <RadioGroup
+            aria-labelledby='demo-radio-buttons-group-label'
+            name='radio-buttons-group'
+            value={question?.correctAnswerIndex ?? ""}
+            sx={{ marginLeft: 1 }}
+          >
+            {question?.answers?.map((answer, idx) => (
+              <FormControlLabel
+                value={idx}
+                key={idx}
+                label={
+                  <Typography
+                    sx={{ display: "inline" }}
+                    variant='body2'
+                    fontWeight={400}
+                  >
+                    {answer.content}
+                  </Typography>
+                }
+                control={<Radio />}
+              />
+            ))}
+          </RadioGroup>
+        </Box>
+      );
+    } else if (typeQuestion === QUESTION_TYPE.MANY_CORRECT_ANSWERS) {
+      return (
+        <Box>
+          <FormGroup>
+            {question.answers.map((answer, idx) => (
+              <FormControlLabel
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: 0,
+                  marginBottom: 0,
+                }}
+                control={<Checkbox size='small' checked={answer.is_correct} />}
+                label={
+                  <Typography
+                    sx={{ display: "inline" }}
+                    variant='body2'
+                    fontWeight={400}
+                  >
+                    {answer.content}
+                  </Typography>
+                }
+              />
+            ))}
+          </FormGroup>
+        </Box>
+      );
+    }
   };
 
   const handleCloseDetailExamModal = () => {
@@ -102,9 +136,8 @@ const DetailExamModal = ({
             >
               {question.content}
             </Typography>
-
             <Box className='answer__container'>
-              {renderAnwserQuestion(question)}
+              {renderAnwserQuestion(question, question.type)}
             </Box>
           </Box>
         </Box>

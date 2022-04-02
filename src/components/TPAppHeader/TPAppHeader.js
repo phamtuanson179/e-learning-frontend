@@ -87,7 +87,6 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
       />
     )
   );
-  // console.log({ location });
   if (
     location.pathname === "/sign-in" ||
     location.pathname === "/forgot-password"

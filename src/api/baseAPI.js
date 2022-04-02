@@ -8,7 +8,7 @@ const apiCallStack = [];
 // const URL
 
 const axiosClient = axiosInstance.create({
-  baseURL: "http://localhost:8001",
+  baseURL: "http://192.168.1.105:8001",
   // headers: {
   //     'content-type': 'application/json',
   //     'accept': 'application/json',

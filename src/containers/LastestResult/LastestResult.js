@@ -30,7 +30,6 @@ const style = {
 };
 
 const LastestResult = ({ lastestResultExam, historyExam, isLoading }) => {
-  console.log({ lastestResultExam });
   const [openModal, setOpenModal] = useState();
 
   const caculatePercentResult = (point, maxPoint) => {

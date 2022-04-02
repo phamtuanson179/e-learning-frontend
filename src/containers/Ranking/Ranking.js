@@ -29,7 +29,6 @@ const style = {
 };
 
 const Ranking = ({ rankingExam, shortRankingExam, isLoading }) => {
-  console.log({ shortRankingExam });
   const [openModal, setOpenModal] = useState();
   const handleCloseModal = () => {
     setOpenModal(false);

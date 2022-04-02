@@ -20,10 +20,9 @@ function createData(user_name, duration, point, isPass) {
 }
 
 const HistoryExamTable = ({ historyExam }) => {
-  console.log({ historyExam });
   const [rows, setRows] = useState();
 
-  const convertDataToRowTable = (datas  ) => {
+  const convertDataToRowTable = (datas) => {
     const rows = [];
     datas.map((data, idx) => {
       rows.push(
@@ -43,8 +42,13 @@ const HistoryExamTable = ({ historyExam }) => {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: '50vh' }}>
-      <Table stickyHeader sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
+    <TableContainer component={Paper} sx={{ maxHeight: "50vh" }}>
+      <Table
+        stickyHeader
+        sx={{ minWidth: 650 }}
+        size='small'
+        aria-label='a dense table'
+      >
         <TableHead sx={{ display: "table-header-group" }}>
           <TableRow>
             <TableCell align='center'>Stt</TableCell>

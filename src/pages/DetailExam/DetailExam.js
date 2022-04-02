@@ -24,7 +24,6 @@ const DetailExam = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const getFullRanking = async (params) => {
-    console.log("full");
     await examAPI.getFullExamRanking(params).then((res) => {
       if (res.status === 200) {
         const data = res?.data;
@@ -43,14 +42,10 @@ const DetailExam = () => {
       user_id: localStorage.getItem("userId"),
       exam_id: location.state?.exam?.id,
     };
-    console.time("test");
     const test = await Promise.all([
       examAPI.getExamHistory(params),
       examAPI.getShortcutExamRanking(params),
     ]).then(([res1, res2]) => {
-      console.timeEnd("test");
-
-      console.log({ res1, res2 });
       if (res1.status === 200) {
         const data = res1.data;
         if (data) {
@@ -62,7 +57,6 @@ const DetailExam = () => {
       if (res2?.status === 200) {
         const data = res2?.data;
         if (data) {
-          console.log({ data });
           setShortRankingExam(data);
           setIsLoading(false);
         }

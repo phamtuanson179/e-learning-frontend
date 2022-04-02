@@ -50,7 +50,6 @@ const ManageExams = () => {
     await examAPI.getListExamForRoom(params).then((res) => {
       if (res?.data) {
         const listExams = convertDatas(res?.data);
-        console.log({ listExams });
         setListExams(listExams);
         if (listExams) setExam(listExams[0]);
         setLoading(false);
@@ -96,7 +95,6 @@ const ManageExams = () => {
   };
 
   const renderSkeleton = () => {
-    console.log("first");
     const arrayElement = [];
     for (let i = 0; i < 3; i++) {
       arrayElement.push(

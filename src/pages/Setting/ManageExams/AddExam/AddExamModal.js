@@ -1,35 +1,34 @@
-import * as React from 'react';
 import { yupResolver } from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Button,
-  ButtonBase,
   Divider,
   FormControlLabel,
-  Grid,
   Modal,
   Radio,
   RadioGroup,
   TextField,
   Typography,
+  Checkbox,
+  FormGroup,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import examAPI from "api/examAPI";
-import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
-import { transform } from "lodash";
+import TPNotification from "components/TPNotification";
+import TPUploadImage from "components/TPUploadImage";
+import { NOTIFICATION } from "constants/notification";
+import { QUESTION_TYPE } from "constants/questionType";
+import { ROOM, ROOM_ARRAY } from "constants/room";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import "./AddExamModal.scss";
 import AddQuestionModal from "./AddQuestionModal";
-import TPNotification from "components/TPNotification";
-import { NOTIFICATION } from "constants/notification";
-import TPUploadImage from "components/TPUploadImage";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 
 const style = {
   bgcolor: "background.paper",
@@ -92,41 +91,72 @@ const AddExamModal = ({ loading, setLoading }) => {
   } = useForm({ resolver: yupResolver(yupSchema) });
 
   useEffect(() => {
-    console.log({ questionList });
     setExam({
       ...exam,
       questions: questionList,
     });
   }, [questionList]);
 
-  const renderAnwserQuestion = (question) => {
-    return (
-      <Box>
-        <RadioGroup
-          aria-labelledby='demo-radio-buttons-group-label'
-          name='radio-buttons-group'
-          value={question?.correctAnswerIndex ?? ""}
-          sx={{ marginLeft: 1 }}
-        >
-          {question?.answers?.map((anwser, idx) => (
-            <FormControlLabel
-              value={idx}
-              key={idx}
-              label={
-                <Typography
-                  sx={{ display: "inline" }}
-                  variant='body2'
-                  fontWeight={400}
-                >
-                  {anwser.content}
-                </Typography>
-              }
-              control={<Radio />}
-            />
-          ))}
-        </RadioGroup>
-      </Box>
-    );
+  const renderAnwserQuestion = (question, typeQuestion) => {
+    if (
+      typeQuestion === QUESTION_TYPE.ONE_CORRECT_ANSWER ||
+      typeQuestion === QUESTION_TYPE.TRUE_FALSE_ANSWERS
+    ) {
+      return (
+        <Box>
+          <RadioGroup
+            aria-labelledby='demo-radio-buttons-group-label'
+            name='radio-buttons-group'
+            value={question?.correctAnswerIndex ?? ""}
+            sx={{ marginLeft: 1 }}
+          >
+            {question?.answers?.map((answer, idx) => (
+              <FormControlLabel
+                value={idx}
+                key={idx}
+                label={
+                  <Typography
+                    sx={{ display: "inline" }}
+                    variant='body2'
+                    fontWeight={400}
+                  >
+                    {answer.content}
+                  </Typography>
+                }
+                control={<Radio />}
+              />
+            ))}
+          </RadioGroup>
+        </Box>
+      );
+    } else if (typeQuestion === QUESTION_TYPE.MANY_CORRECT_ANSWERS) {
+      return (
+        <Box>
+          <FormGroup>
+            {question.answers.map((answer, idx) => (
+              <FormControlLabel
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: 0,
+                  marginBottom: 0,
+                }}
+                control={<Checkbox size='small' checked={answer.is_correct} />}
+                label={
+                  <Typography
+                    sx={{ display: "inline" }}
+                    variant='body2'
+                    fontWeight={400}
+                  >
+                    {answer.content}
+                  </Typography>
+                }
+              />
+            ))}
+          </FormGroup>
+        </Box>
+      );
+    }
   };
 
   const handleDeleteQuestion = (question) => {
@@ -156,9 +186,8 @@ const AddExamModal = ({ loading, setLoading }) => {
             >
               {question.content}
             </Typography>
-
             <Box className='answer__container'>
-              {renderAnwserQuestion(question)}
+              {renderAnwserQuestion(question, question.type)}
             </Box>
             <Box sx={{ textAlign: "right" }}>
               <Button
@@ -178,11 +207,10 @@ const AddExamModal = ({ loading, setLoading }) => {
   };
 
   const onSubmit = async (data) => {
-    console.log({ data });
     const convertQuestionList = questionList.map((question) => {
       const convertQuestion = {
         content: question.content,
-        type: 1,
+        type: question.type,
         url_file: "",
         answers: question.answers,
       };
@@ -222,6 +250,7 @@ const AddExamModal = ({ loading, setLoading }) => {
       }
     });
   };
+
   return (
     <Box>
       {/* <Button onClick={handleOpenAddExamModal}>Thêm bài thi</Button> */}
@@ -343,18 +372,40 @@ const AddExamModal = ({ loading, setLoading }) => {
                     defaultValue='AI'
                     render={({ field }) => {
                       return (
-                        <TextField
-                          sx={{ width: "100%", marginBottom: 2 }}
-                          variant='standard'
-                          helperText={
-                            <Typography variant='caption' color='error'>
-                              {" "}
-                              {errors.requireRoom?.message}
-                            </Typography>
-                          }
-                          label='Thuộc phòng'
-                          {...field}
-                        />
+                        <>
+                          <FormControl
+                            variant='standard'
+                            sx={{ m: 1, minWidth: 120 }}
+                          >
+                            <InputLabel id='demo-simple-select-standard-label'>
+                              Age
+                            </InputLabel>
+                            <Select
+                              labelId='demo-simple-select-standard-label'
+                              id='demo-simple-select-standard'
+                              // value={age}
+                              // onChange={handleChange}
+                              label='Phòng'
+                              {...field}
+                            >
+                              {ROOM_ARRAY.map((room, idx) => (
+                                <MenuItem value={room}>room</MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </>
+                        // <TextField
+                        //   sx={{ width: "100%", marginBottom: 2 }}
+                        //   variant='standard'
+                        //   helperText={
+                        //     <Typography variant='caption' color='error'>
+                        //       {" "}
+                        //       {errors.requireRoom?.message}
+                        //     </Typography>
+                        //   }
+                        //   label='Thuộc phòng'
+                        //   {...field}
+                        // />
                       );
                     }}
                   />

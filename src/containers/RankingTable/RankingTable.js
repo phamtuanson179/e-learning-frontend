@@ -18,7 +18,6 @@ function createData(user_name, point, duration) {
 }
 
 const RankingTable = ({ rankingExam }) => {
-  console.log({ rankingExam });
   const [rows, setRows] = useState();
 
   const convertDataToRowTable = (datas) => {

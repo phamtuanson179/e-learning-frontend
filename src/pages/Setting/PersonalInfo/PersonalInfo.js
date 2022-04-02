@@ -46,7 +46,6 @@ const PersonalInfo = () => {
 
   const getPersonalInfo = async () => {
     await infoAPI.getInfo().then((res) => {
-      console.log({ res });
       const data = res?.data;
       setPersonalInfo(data);
       setAvatar(data.url_avatar);
@@ -59,7 +58,6 @@ const PersonalInfo = () => {
   }, []);
 
   const onSubmit = async (data) => {
-    console.log({ data });
     const convertData = (data) => {
       return {
         ...data,
@@ -71,7 +69,6 @@ const PersonalInfo = () => {
     };
     const newData = convertData(data);
     await infoAPI.putUpdateUser(newData).then((res) => {
-      console.log({ res });
       if (res?.status == 200) {
         setNotification({
           message: "Thay đổi thông tin thành công!",
