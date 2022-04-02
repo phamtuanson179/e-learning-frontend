@@ -17,8 +17,8 @@ function createData(user_name, point, duration) {
   return { user_name, point, duration };
 }
 
-const RankingTable = ({ historyRanking }) => {
-  console.log({ historyRanking });
+const RankingTable = ({ rankingExam }) => {
+  console.log({ rankingExam });
   const [rows, setRows] = useState();
 
   const convertDataToRowTable = (datas) => {
@@ -30,7 +30,7 @@ const RankingTable = ({ historyRanking }) => {
   };
 
   useEffect(() => {
-    if (historyRanking) convertDataToRowTable(historyRanking);
+    if (rankingExam) convertDataToRowTable(rankingExam);
   }, []);
 
   const showTime = (duration) => {

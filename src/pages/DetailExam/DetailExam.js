@@ -27,10 +27,8 @@ const DetailExam = () => {
     console.log("full");
     await examAPI.getFullExamRanking(params).then((res) => {
       if (res.status === 200) {
-        console.timeEnd("test all");
         const data = res?.data;
         if (data) {
-          setHistoryRankingExam(data);
           setRankingExam(data);
         }
       }
@@ -49,10 +47,10 @@ const DetailExam = () => {
     const test = await Promise.all([
       examAPI.getExamHistory(params),
       examAPI.getShortcutExamRanking(params),
-    ]).then(([res1, res2, res3]) => {
+    ]).then(([res1, res2]) => {
       console.timeEnd("test");
 
-      console.log({ res1, res2, res3 });
+      console.log({ res1, res2 });
       if (res1.status === 200) {
         const data = res1.data;
         if (data) {
@@ -161,7 +159,6 @@ const DetailExam = () => {
             <Box sx={{ flex: 1, height: "initial" }}>
               <Ranking
                 rankingExam={rankingExam}
-                historyRanking={historyRanking}
                 shortRankingExam={shortRankingExam}
                 isLoading={isLoading}
               />
