@@ -14,13 +14,13 @@ const convertDatas = (datas) => {
       idx: idx,
       status: STATUS.NORESPONSE,
       curAnswer: -1,
-      curAnswerList: [],
+      curAnswerList: Array(4).fill(false),
     };
   });
   return result;
 };
 
-const Exam = (props) => {
+const Exam = () => {
   const location = useLocation();
   const [questions, setQuestions] = useState();
   const [questionAmount, setQuestionAmount] = useState(0);
