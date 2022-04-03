@@ -86,6 +86,7 @@ const DetailExamModal = ({
           <FormGroup>
             {question.answers.map((answer, idx) => (
               <FormControlLabel
+                key={idx}
                 sx={{
                   display: "flex",
                   alignItems: "center",

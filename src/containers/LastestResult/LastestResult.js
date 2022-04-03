@@ -33,7 +33,7 @@ const LastestResult = ({ lastestResultExam, historyExam, isLoading }) => {
   const [openModal, setOpenModal] = useState();
 
   const caculatePercentResult = (point, maxPoint) => {
-    return (point / maxPoint) * 100;
+    return ((point / maxPoint) * 100).toFixed(2);
   };
 
   const showTime = (duration) => {

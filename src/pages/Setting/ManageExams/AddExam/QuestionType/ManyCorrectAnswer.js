@@ -80,6 +80,7 @@ export const ManyCorrectAnswer = ({
     // setIsOpenAddQuestionModal(false);
     setIsOpenAddQuestionModal(false);
     reset({});
+    setStateCheckBoxList(Array(4).fill(false));
     // setValue();
   };
 
@@ -88,16 +89,14 @@ export const ManyCorrectAnswer = ({
   };
 
   const handleAnwsers = (answerList) => {
-    const correctAnswerList = getValues("correctAnswerList");
+    // const correctAnswerList = getValues("correctAnswerList");
+    // console.log({ correctAnswerList });
 
     let answers = [];
     for (let i = 0; i < answerList.length; i++) {
       let answer = {
         content: answerList[i],
-        is_correct:
-          i < correctAnswerList.length && correctAnswerList[i] === true
-            ? true
-            : false,
+        is_correct: stateCheckBoxList[i] === true ? true : false,
         url_file: null,
       };
       answers.push(answer);

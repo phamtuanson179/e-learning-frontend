@@ -1,28 +1,18 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
-  Checkbox,
   Divider,
   FormControl,
-  FormControlLabel,
-  FormGroup,
   InputLabel,
   MenuItem,
   Modal,
-  Radio,
-  RadioGroup,
   Select,
-  TextField,
   Typography,
 } from "@mui/material";
 import MKButton from "components/MKButton";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
 import TPNotification from "components/TPNotification";
-import { NOTIFICATION } from "constants/notification";
 import { QUESTION_TYPE } from "constants/questionType";
+import { useState } from "react";
 import ManyCorrectAnswer from "./QuestionType/ManyCorrectAnswer";
 import OneCorrectAnswer from "./QuestionType/OneCorrectAnswer";
 import TrueFalseAnswer from "./QuestionType/TrueFalseAnswer";

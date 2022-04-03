@@ -8,11 +8,11 @@ const QuestionNavbar = ({
   curIndexQuestion,
   setCurIndexQuestion,
   questions,
-  loading,
+  curQuestion,
 }) => {
   useEffect(() => {
     for (let i = 0; i < questionAmount; i++) {
-      //add style responsed cho nhung cau da tra loi
+      //add style cho nhung cau da tra loi
       if (questions) {
         if (questions[i]?.status !== STATUS.NORESPONSE) addStyleResponsed(i);
         else removeStyleResponsed(i);
@@ -25,7 +25,7 @@ const QuestionNavbar = ({
         removeStyleActive(i);
       }
     }
-  }, [curIndexQuestion]);
+  }, [curQuestion]);
 
   const renderQuestionContainer = () => {
     let result = [];

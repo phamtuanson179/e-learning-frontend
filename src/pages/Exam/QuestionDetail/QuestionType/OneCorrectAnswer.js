@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { STATUS } from "pages/Exam/constant";
-import { useState } from "react";
 
 const OneCorrectAnswer = ({ curQuestion, setCurQuestion }) => {
   const onClickClearAnswer = () => {

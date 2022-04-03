@@ -2,15 +2,11 @@ import {
   Box,
   Button,
   Checkbox,
-  FormControl,
   FormControlLabel,
   FormGroup,
-  Radio,
-  RadioGroup,
   Typography,
 } from "@mui/material";
 import { STATUS } from "pages/Exam/constant";
-import { useState } from "react";
 
 const ManyCorrectAnswer = ({ curQuestion, setCurQuestion }) => {
   const onClickClearAnswer = () => {
@@ -64,6 +60,7 @@ const ManyCorrectAnswer = ({ curQuestion, setCurQuestion }) => {
       <FormGroup>
         {answers.map((answer, idx) => (
           <FormControlLabel
+            key={idx}
             sx={{
               display: "flex",
               alignItems: "center",

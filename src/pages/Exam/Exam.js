@@ -30,16 +30,15 @@ const Exam = () => {
   const [duration, setDuration] = useState();
   const [minPointToPass, setMinPointToPass] = useState();
   const [startCountDown, setStartCountDown] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [idExam, setIdExam] = useState("");
   const [exam, setExam] = useState();
-  const [curQuestionType, setCurQuestionType] = useState();
+  const [isFinish, setIsFinish] = useState(false);
+  // const [curQuestionType, setCurQuestionType] = useState();
   const searchQuestionByIdx = (id, questions) => {
     if (questions) {
       for (let question of questions) {
         if (question?.idx == id) {
           setCurQuestion(question);
-          setCurQuestionType(question?.type);
+          // setCurQuestionType(question?.type);
           break;
         }
       }
@@ -52,6 +51,7 @@ const Exam = () => {
       let curQuestions = [...listQuestions];
       curQuestions[question.idx] = question;
       setQuestions(curQuestions);
+      console.log("eeeeeeeeeeeeee");
     }
   };
 
@@ -59,6 +59,7 @@ const Exam = () => {
   useEffect(() => {
     // getExam(location?.state?.exam);
     const exam = location.state?.exam;
+    console.log({ exam });
     setExam(exam);
     const questions = convertDatas(exam.questions);
     setNameTest(exam?.name);
@@ -67,8 +68,6 @@ const Exam = () => {
     setQuestions(questions);
     setQuestionAmount(questions.length);
     setCurQuestion(questions[0]);
-    setIdExam(exam?.id);
-    setLoading(false);
     // startCountDown(countDown);
   }, []);
 
@@ -76,50 +75,34 @@ const Exam = () => {
   useEffect(() => {
     saveAnswerOfQuestion(curQuestion, questions);
     searchQuestionByIdx(curIndexQuestion, questions);
-  }, [curIndexQuestion]);
-
-  //thay doi cau tra loi moi khi nguoi dung chon cau tra loi khac
-  // useEffect(() => {}, [curQuestion]);
+  }, [curIndexQuestion, isFinish]);
 
   return (
     <Box className='exam__container'>
       <Box className='exam__container--left'>
-        {loading ? (
-          <Box sx={{ textAlign: "center" }}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <QuestionNavbar
-            questionAmount={questionAmount}
-            setCurIndexQuestion={setCurIndexQuestion}
-            curIndexQuestion={curIndexQuestion}
-            curQuestion={curQuestion}
-            questions={questions}
-            loading={loading}
-          />
-        )}
+        <QuestionNavbar
+          questionAmount={questionAmount}
+          setCurIndexQuestion={setCurIndexQuestion}
+          curIndexQuestion={curIndexQuestion}
+          curQuestion={curQuestion}
+          questions={questions}
+        />
       </Box>
       <Box className='exam__container--right' sx={{ height: "100%" }}>
-        {loading ? (
-          <Box sx={{ textAlign: "center" }}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <QuestionDetail
-            curQuestion={curQuestion}
-            setCurQuestion={setCurQuestion}
-            nameTest={nameTest}
-            startCountDown={startCountDown}
-            setStartCountDown={setStartCountDown}
-            loading={loading}
-            questions={questions}
-            duration={duration}
-            minPointToPass={minPointToPass}
-            questionAmount={questionAmount}
-            exam={exam}
-            curQuestionType={curQuestionType}
-          />
-        )}
+        <QuestionDetail
+          curQuestion={curQuestion}
+          setCurQuestion={setCurQuestion}
+          nameTest={nameTest}
+          startCountDown={startCountDown}
+          setStartCountDown={setStartCountDown}
+          questions={questions}
+          duration={location.state?.exam?.duration}
+          minPointToPass={minPointToPass}
+          questionAmount={questionAmount}
+          exam={exam}
+          isFinish={isFinish}
+          setIsFinish={setIsFinish}
+        />
       </Box>
     </Box>
   );

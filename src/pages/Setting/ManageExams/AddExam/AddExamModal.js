@@ -373,23 +373,18 @@ const AddExamModal = ({ loading, setLoading }) => {
                     render={({ field }) => {
                       return (
                         <>
-                          <FormControl
-                            variant='standard'
-                            sx={{ m: 1, minWidth: 120 }}
-                          >
+                          <FormControl variant='standard' sx={{}} fullWidth>
                             <InputLabel id='demo-simple-select-standard-label'>
-                              Age
+                              Phòng
                             </InputLabel>
                             <Select
                               labelId='demo-simple-select-standard-label'
                               id='demo-simple-select-standard'
-                              // value={age}
-                              // onChange={handleChange}
                               label='Phòng'
                               {...field}
                             >
                               {ROOM_ARRAY.map((room, idx) => (
-                                <MenuItem value={room}>room</MenuItem>
+                                <MenuItem value={room}>{room}</MenuItem>
                               ))}
                             </Select>
                           </FormControl>

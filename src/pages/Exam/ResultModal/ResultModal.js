@@ -1,5 +1,6 @@
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Modal from "@mui/material/Modal";
+import { Popover } from "antd";
 import examAPI from "api/examAPI";
 // Material Kit 2 PRO React components
 import MKBox from "components/MKBox";
@@ -31,6 +32,7 @@ const ResultModal = ({
   minPointToPass,
   setIsFinish,
   countDown,
+  isFinish,
   duration,
   exam,
 }) => {
@@ -39,18 +41,28 @@ const ResultModal = ({
   const [openNoti, setOpenNoti] = useState(false);
   const [point, setPoint] = useState(0);
   const [isPass, setIsPass] = useState();
+  const [openPopover, setOpenPopover] = useState(false);
+
   const excutePointOfExam = () => {
     let result = 0;
-    for (let question of questions) {
-      if (question.status === STATUS.CORRECT) {
-        result += 10;
+    if (questions)
+      for (let question of questions) {
+        if (question.status === STATUS.CORRECT) {
+          result += 10;
+        }
       }
-    }
     setPoint(result);
   };
 
+  // dam bao luu xong ket qua moi show modal
   useEffect(() => {
-    excutePointOfExam();
+    if (isFinish) {
+      setShowModalResult(true);
+    }
+  }, [questions]);
+
+  useEffect(() => {
+    if (showModalResult === true) excutePointOfExam();
   }, [showModalResult]);
 
   useEffect(() => {
@@ -84,14 +96,54 @@ const ResultModal = ({
   };
   const handleOpenModal = () => {
     setIsFinish(true);
-    setShowModalResult(true);
+    // setShowModalResult(true);
+  };
+
+  const handleChangeVisiablePopover = (status) => {
+    setOpenPopover(status);
+  };
+
+  const handleClosePopover = () => {
+    setOpenPopover(false);
   };
   return (
     <MKBox component='section'>
       <Box>
-        <MKButton variant='gradient' color='info' onClick={handleOpenModal}>
-          Nộp bài
-        </MKButton>
+        <Popover
+          content={
+            <>
+              <Typography
+                variant='subtitle2'
+                width='100%'
+                textAlign='center'
+                color='error'
+                maxWidth={150}
+              >
+                Bạn có chắc chắn muốn nộp bài khi chưa hết thời gian làm bài
+                thi?
+              </Typography>
+              <Box sx={{ textAlign: "right" }}>
+                <Button onClick={handleClosePopover}>Đóng</Button>
+                <Button
+                  onClick={() => {
+                    setOpenPopover(false);
+                    handleOpenModal();
+                  }}
+                >
+                  Xác nhận
+                </Button>
+              </Box>
+            </>
+          }
+          trigger='click'
+          placement='topRight'
+          visible={openPopover}
+          onVisibleChange={handleChangeVisiablePopover}
+        >
+          <MKButton variant='gradient' color='info'>
+            Nộp bài
+          </MKButton>
+        </Popover>
         <Modal
           open={showModalResult}
           onClose={handleCloseModal}

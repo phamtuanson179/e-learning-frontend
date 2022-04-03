@@ -19,7 +19,6 @@ const DetailExam = () => {
   const [lastestResultExam, setLastestResultExam] = useState();
   const [historyExam, setHistoryExam] = useState();
   const [rankingExam, setRankingExam] = useState();
-  const [historyRanking, setHistoryRankingExam] = useState();
   const [shortRankingExam, setShortRankingExam] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
