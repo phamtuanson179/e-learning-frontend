@@ -83,6 +83,7 @@ const Ranking = ({ rankingExam, shortRankingExam, isLoading }) => {
           padding: 4,
           marginRight: 1,
           height: "100%",
+          padding: 2,
         }}
         className='ranking__container'
       >
@@ -111,7 +112,9 @@ const Ranking = ({ rankingExam, shortRankingExam, isLoading }) => {
             <Box
               sx={{
                 backgroundColor: renderColor(
-                  shortRankingExam
+                  shortRankingExam &&
+                    shortRankingExam[shortRankingExam.length - 1]?.user_id ==
+                      localStorage.getItem("userId")
                     ? shortRankingExam[shortRankingExam.length - 1].rank
                     : ""
                 ),
@@ -137,14 +140,18 @@ const Ranking = ({ rankingExam, shortRankingExam, isLoading }) => {
                 <Typography
                   variant='h1'
                   color={renderColor(
-                    shortRankingExam
+                    shortRankingExam &&
+                      shortRankingExam[shortRankingExam.length - 1]?.user_id ==
+                        localStorage.getItem("userId")
                       ? shortRankingExam[shortRankingExam.length - 1].rank
                       : ""
                   )}
                 >
-                  {shortRankingExam
+                  {shortRankingExam &&
+                  shortRankingExam[shortRankingExam.length - 1]?.user_id ==
+                    localStorage.getItem("userId")
                     ? shortRankingExam[shortRankingExam.length - 1]?.rank
-                    : ""}
+                    : "--"}
                 </Typography>
               </Box>
             </Box>
@@ -156,7 +163,7 @@ const Ranking = ({ rankingExam, shortRankingExam, isLoading }) => {
               <Skeleton variant='text' width={60} height={40} />
             </Box>
           ) : shortRankingExam && isEmpty(shortRankingExam[0]) ? null : (
-            <Box>
+            <Box sx={{ marginLeft: 1 }}>
               {renderRanking(shortRankingExam)}
               <Button
                 sx={{ fontSize: 12, padding: 0 }}

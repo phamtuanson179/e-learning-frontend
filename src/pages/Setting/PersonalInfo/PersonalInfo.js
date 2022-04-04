@@ -70,6 +70,8 @@ const PersonalInfo = () => {
     const newData = convertData(data);
     await infoAPI.putUpdateUser(newData).then((res) => {
       if (res?.status == 200) {
+        localStorage.setItem("avatar", avatar);
+        document.location.reload(true);
         setNotification({
           message: "Thay đổi thông tin thành công!",
           type: NOTIFICATION.SUCCESS,
@@ -145,7 +147,6 @@ const PersonalInfo = () => {
                         }}
                         helperText={
                           <Typography variant='caption' color='error'>
-                            {" "}
                             {errors.fullname?.message}
                           </Typography>
                         }

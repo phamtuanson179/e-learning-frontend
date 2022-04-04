@@ -12,6 +12,7 @@ import LastestResult from "containers/LastestResult";
 import "./DetailExam.scss";
 import examAPI from "api/examAPI";
 import Ranking from "containers/Ranking";
+import { convertSecondToTime } from "utils/convert";
 const DetailExam = () => {
   const [exam, setExam] = useState();
   const location = useLocation();
@@ -36,7 +37,8 @@ const DetailExam = () => {
   useEffect(() => {
     setExam(location.state?.exam);
   }, []);
-  const testPromiseAll = async () => {
+
+  const promiseAll = async () => {
     const params = {
       user_id: localStorage.getItem("userId"),
       exam_id: location.state?.exam?.id,
@@ -69,7 +71,7 @@ const DetailExam = () => {
       user_id: localStorage.getItem("userId"),
       exam_id: location.state?.exam?.id,
     };
-    testPromiseAll();
+    promiseAll();
     getFullRanking(params);
   }, []);
 
@@ -98,7 +100,16 @@ const DetailExam = () => {
             }}
             className='description__exam'
           >
-            <Box sx={{ flex: 1 }}>
+            <Box
+              sx={{
+                flex: 1,
+                borderRadius: 4,
+                overflow: "hidden",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <img
                 src={exam?.image}
                 style={{
@@ -120,7 +131,10 @@ const DetailExam = () => {
               </Typography>
               <Box>
                 <Typography variant='subtitle2'>
-                  Thời gian: {exam?.duration}{" "}
+                  Thời gian:{" "}
+                  {`${convertSecondToTime(exam?.duration).minutes}:${
+                    convertSecondToTime(exam?.duration).seconds
+                  }`}
                 </Typography>
                 <Typography variant='subtitle2'>
                   Số câu hỏi: {exam?.questionAmount}

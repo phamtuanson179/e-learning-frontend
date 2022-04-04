@@ -8,7 +8,7 @@ const apiCallStack = [];
 // const URL
 
 const axiosClient = axiosInstance.create({
-  baseURL: "http://192.168.1.105:8001",
+  baseURL: "http://192.168.1.84:8001",
   // headers: {
   //     'content-type': 'application/json',
   //     'accept': 'application/json',
@@ -17,28 +17,23 @@ const axiosClient = axiosInstance.create({
   // paramsSerializer: params => queryString.stringifyUrl(params),
 });
 
-axiosClient.interceptors.request.use(
-  function (config) {
-    //add handle token
-    let headers = {
-      accept: "application/json",
-      "Content-Type": "application/json",
+axiosClient.interceptors.request.use(function (config) {
+  //add handle token
+  let headers = {
+    accept: "application/json",
+    "Content-Type": "application/json",
+  };
+
+  if (localStorage.getItem("accessToken")) {
+    headers = {
+      ...headers,
+      token: localStorage.getItem("accessToken"),
     };
-
-    if (localStorage.getItem("accessToken")) {
-      headers = {
-        ...headers,
-        token: localStorage.getItem("accessToken"),
-      };
-    }
-
-    config.headers = headers;
-    return config;
-  },
-  function (error) {
-    return Promise.reject(error);
   }
-);
+
+  config.headers = headers;
+  return config;
+});
 
 axiosClient.interceptors.response.use(
   function (response) {

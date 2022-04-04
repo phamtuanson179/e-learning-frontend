@@ -12,6 +12,8 @@ import { NOTIFICATION } from "constants/notification";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { STATUS } from "../constant";
+import "./ResultModal.scss";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const style = {
   bgcolor: "background.paper",
@@ -110,33 +112,54 @@ const ResultModal = ({
     <MKBox component='section'>
       <Box>
         <Popover
+          overlayClassName='confirm__submit--exam'
           content={
             <>
+              <ErrorOutlineIcon color='error' fontSize='large' />
               <Typography
-                variant='subtitle2'
+                variant='h5'
                 width='100%'
                 textAlign='center'
                 color='error'
                 maxWidth={150}
               >
+                Xác nhận
+              </Typography>
+              <Typography
+                variant='subtitle2'
+                width='100%'
+                textAlign='center'
+                maxWidth={200}
+                marginTop={1}
+                marginBottom={1}
+              >
                 Bạn có chắc chắn muốn nộp bài khi chưa hết thời gian làm bài
                 thi?
               </Typography>
-              <Box sx={{ textAlign: "right" }}>
-                <Button onClick={handleClosePopover}>Đóng</Button>
-                <Button
+              <Box sx={{ textAlign: "right" }} className='button__confirm'>
+                <MKButton
+                  variant='gradient'
+                  color='dark'
+                  onClick={handleClosePopover}
+                  sx={{ marginRight: 2, padding: 1 }}
+                >
+                  Huỷ
+                </MKButton>
+                <MKButton
                   onClick={() => {
                     setOpenPopover(false);
                     handleOpenModal();
                   }}
+                  color='error'
+                  sx={{ padding: 1 }}
                 >
                   Xác nhận
-                </Button>
+                </MKButton>
               </Box>
             </>
           }
           trigger='click'
-          placement='topRight'
+          placement='bottomRight'
           visible={openPopover}
           onVisibleChange={handleChangeVisiablePopover}
         >
@@ -172,7 +195,7 @@ const ResultModal = ({
               </MKTypography>
               <MKTypography variant='h6' sx={{ fontStyle: "italic" }}>
                 {isPass
-                  ? "Chúc mừng bạn đã vuợt qua bài thi!"
+                  ? "Chúc mừng bạn đã vượt qua bài thi!"
                   : "Bạn chưa vượt qua bài thi, bạn cần ôn tập kỹ hơn để hoàn thành bài thi này."}
               </MKTypography>
             </MKBox>

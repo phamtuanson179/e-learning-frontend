@@ -51,10 +51,10 @@ const HistoryExamTable = ({ historyExam }) => {
       >
         <TableHead sx={{ display: "table-header-group" }}>
           <TableRow>
-            <TableCell align='center'>Stt</TableCell>
+            <TableCell align='center'>Lần thi</TableCell>
             <TableCell>Tên</TableCell>
             <TableCell align='right'>Điểm</TableCell>
-            <TableCell align='right'>Thời gian</TableCell>
+            <TableCell align='right'>Thời gian thi</TableCell>
             <TableCell align='center'>Kết quả</TableCell>
           </TableRow>
         </TableHead>

@@ -55,6 +55,7 @@ const LastestResult = ({ lastestResultExam, historyExam, isLoading }) => {
           padding: 4,
           marginRight: 1,
           height: "100%",
+          padding: 2,
         }}
         className='lastest-result__container'
       >
