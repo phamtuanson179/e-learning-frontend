@@ -31,6 +31,11 @@ const convertDatas = (datas) =>
         return {
           ...question,
           correctAnswerIndex: checkCorrectAnswer(question?.answers),
+          correctAnswerList: question.answers
+            .map((answer, idx) => {
+              if (answer?.is_correct) return idx;
+            })
+            .filter((item) => item != undefined),
         };
       }),
     };
@@ -49,6 +54,7 @@ const ManageExams = () => {
     await examAPI.getListExamForRoom(params).then((res) => {
       if (res?.data) {
         const listExams = convertDatas(res?.data);
+        console.log({ listExams });
         setListExams(listExams);
         if (listExams) setExam(listExams[0]);
         setLoading(false);

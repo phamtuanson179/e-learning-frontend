@@ -18,10 +18,12 @@ import TPNotification from "components/TPNotification";
 import { NOTIFICATION } from "constants/notification";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import otherAPI from "api/otherAPI";
 import * as yup from "yup";
 import "./PersonalInfo.scss";
 
 import TPUploadImage from "components/TPUploadImage";
+import { ROLE } from "constants/role";
 
 const yupSchema = yup.object().shape({
   fullname: yup.string().required("Trường này bắt buộc!"),
@@ -37,12 +39,26 @@ const PersonalInfo = () => {
   const [openNoti, setOpenNoti] = useState(false);
   const [avatar, setAvatar] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [allRooms, setAllRooms] = useState();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(yupSchema) });
+
+  const getAllRoom = async () => {
+    await otherAPI.getAllRoom().then((res) => {
+      console.log({ res });
+      if (res?.status == 200) {
+        const data = res?.data.map((item, idx) => {
+          return item?.alias;
+        });
+        console.log({ data });
+        setAllRooms(data);
+      }
+    });
+  };
 
   const getPersonalInfo = async () => {
     await infoAPI.getInfo().then((res) => {
@@ -54,10 +70,12 @@ const PersonalInfo = () => {
   };
 
   useEffect(() => {
+    getAllRoom();
     getPersonalInfo();
   }, []);
 
   const onSubmit = async (data) => {
+    console.log({ data });
     const convertData = (data) => {
       return {
         ...data,
@@ -65,12 +83,15 @@ const PersonalInfo = () => {
         token: null,
         url_avatar: avatar,
         user_id: personalInfo?.user_id,
+        // room: room,
       };
     };
     const newData = convertData(data);
     await infoAPI.putUpdateUser(newData).then((res) => {
       if (res?.status == 200) {
         localStorage.setItem("avatar", avatar);
+        localStorage.setItem("room", data?.room);
+        localStorage.setItem("email", data?.email);
         document.location.reload(true);
         setNotification({
           message: "Thay đổi thông tin thành công!",
@@ -262,7 +283,7 @@ const PersonalInfo = () => {
                         <Select
                           labelId='demo-simple-select-label'
                           id='demo-simple-select'
-                          label='ewrqewrqwerqew'
+                          label='Quyền'
                           sx={{ height: 44 }}
                           disabled
                           {...field}
@@ -287,15 +308,35 @@ const PersonalInfo = () => {
                   defaultValue={personalInfo?.room}
                   render={({ field }) => {
                     return (
-                      <TextField
-                        disabled
-                        sx={{
-                          width: "100%",
-                        }}
-                        label='Phòng'
-                        variant='outlined'
-                        {...field}
-                      />
+                      <FormControl fullWidth>
+                        <InputLabel id='demo-simple-select-label'>
+                          Phòng
+                        </InputLabel>
+                        <Select
+                          disabled={personalInfo?.role == ROLE.MEMBER}
+                          labelId='demo-simple-select-label'
+                          id='demo-simple-select'
+                          // value={age}
+                          label='Phòng'
+                          // onChange={handleChange}
+                          sx={{ height: 44 }}
+                          {...field}
+                        >
+                          {allRooms &&
+                            allRooms.map((room, idx) => (
+                              <MenuItem value={room}>{room}</MenuItem>
+                            ))}
+                        </Select>
+                      </FormControl>
+                      // <TextField
+                      //   disabled={personalInfo?.role == ROLE.MEMBER}
+                      //   sx={{
+                      //     width: "100%",
+                      //   }}
+                      //   label='Phòng'
+                      //   variant='outlined'
+                      //   {...field}
+                      // />
                     );
                   }}
                 />

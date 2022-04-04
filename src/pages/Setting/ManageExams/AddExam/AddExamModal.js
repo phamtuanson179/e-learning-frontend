@@ -30,7 +30,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import "./AddExamModal.scss";
-import AddQuestionModal from "./AddQuestionModal";
+import AddQuestionModal from "../AddQuestion/";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -76,7 +76,7 @@ const yupSchema = yup.object().shape({
     .required("Trường này bắt buộc")
     .integer("Cần nhập số nguyên!")
     .min(0, "Cần nhập số nguyên dương"),
-  requireRoom: yup.array().min("Cần chọn ít nhất một phòng!"),
+  // requireRoom: yup.array().min("Cần chọn ít nhất một phòng!"),
 });
 
 const AddExamModal = ({ loading, setLoading }) => {
@@ -177,6 +177,7 @@ const AddExamModal = ({ loading, setLoading }) => {
           <FormGroup>
             {question.answers.map((answer, idx) => (
               <FormControlLabel
+                key={idx}
                 sx={{
                   display: "flex",
                   alignItems: "center",

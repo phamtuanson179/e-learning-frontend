@@ -108,15 +108,21 @@ const DetailExam = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundImage: `url(${exam?.image})`,
+                backgroundRepeat: "no-repeat",
+                maxWidth: 180,
+                height: 180,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
               }}
             >
-              <img
+              {/* <img
                 src={exam?.image}
                 style={{
                   width: 180,
                   height: 180,
                 }}
-              />
+              /> */}
             </Box>
             <Box
               sx={{

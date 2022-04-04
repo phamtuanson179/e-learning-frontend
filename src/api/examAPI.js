@@ -40,6 +40,11 @@ const examAPI = {
     const url = "/get-shortcut-exam-ranking";
     return axiosClient.get(url, { params });
   },
+
+  updateExam: (data) => {
+    const url = "/admin/update_exam";
+    return axiosClient.put(url, data);
+  },
 };
 
 export default examAPI;

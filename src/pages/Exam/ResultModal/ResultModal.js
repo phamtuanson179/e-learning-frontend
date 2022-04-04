@@ -76,7 +76,7 @@ const ResultModal = ({
       point: point,
       max_point: questionAmount * 10,
       is_pass: isPass,
-      duration: duration - countDown,
+      duration: countDown < 0 ? duration : duration - countDown,
     };
     await examAPI.postSaveExam(body).then((res) => {
       if (res?.status === 200) {
