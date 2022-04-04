@@ -40,7 +40,7 @@ const BlockExams = () => {
   };
 
   useEffect(() => {
-    getListExams("AI");
+    getListExams(localStorage.getItem("room"));
   }, []);
 
   const renderListExams = () => {

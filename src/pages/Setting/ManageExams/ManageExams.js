@@ -33,7 +33,6 @@ const convertDatas = (datas) =>
           correctAnswerIndex: checkCorrectAnswer(question?.answers),
         };
       }),
-      route: "/exam",
     };
   });
 const ManageExams = () => {
@@ -59,7 +58,7 @@ const ManageExams = () => {
 
   useEffect(() => {
     if (loading) {
-      getListExams("AI");
+      getListExams(localStorage.getItem("room"));
     }
   }, [loading]);
 

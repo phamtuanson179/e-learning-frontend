@@ -3,33 +3,45 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
+  FormControl,
   FormControlLabel,
+  FormGroup,
+  InputLabel,
+  ListItemText,
+  MenuItem,
   Modal,
+  OutlinedInput,
   Radio,
   RadioGroup,
+  Select,
   TextField,
   Typography,
-  Checkbox,
-  FormGroup,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
 } from "@mui/material";
 import examAPI from "api/examAPI";
+import otherAPI from "api/otherAPI";
 import MKButton from "components/MKButton";
 import TPNotification from "components/TPNotification";
 import TPUploadImage from "components/TPUploadImage";
 import { NOTIFICATION } from "constants/notification";
 import { QUESTION_TYPE } from "constants/questionType";
-import { ROOM, ROOM_ARRAY } from "constants/room";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import "./AddExamModal.scss";
 import AddQuestionModal from "./AddQuestionModal";
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 const style = {
   bgcolor: "background.paper",
   position: "absolute",
@@ -37,7 +49,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%,-50%)",
-  maxWidth: "500px",
+  maxWidth: "700px",
   flexDirection: "column",
   borderRadius: "12px",
   bgColor: "white",
@@ -64,7 +76,7 @@ const yupSchema = yup.object().shape({
     .required("Trường này bắt buộc")
     .integer("Cần nhập số nguyên!")
     .min(0, "Cần nhập số nguyên dương"),
-  requireRoom: yup.string().required("Trường này bắt buộc!"),
+  requireRoom: yup.array().min("Cần chọn ít nhất một phòng!"),
 });
 
 const AddExamModal = ({ loading, setLoading }) => {
@@ -74,6 +86,18 @@ const AddExamModal = ({ loading, setLoading }) => {
   const [notification, setNotification] = useState({ type: "", message: "" });
   const [openNoti, setOpenNoti] = useState(false);
   const [img, setImg] = useState();
+  const [allRooms, setAllRooms] = useState();
+  const [roomList, setRoomList] = useState([]);
+
+  const handleChangeSelect = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setRoomList(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
 
   const handleCloseAddExamModal = () => {
     setIsOpenAddExamModal(false);
@@ -83,10 +107,28 @@ const AddExamModal = ({ loading, setLoading }) => {
     setIsOpenAddExamModal(true);
   };
 
+  const getAllRoom = async () => {
+    await otherAPI.getAllRoom().then((res) => {
+      console.log({ res });
+      if (res?.status == 200) {
+        const data = res?.data.map((item, idx) => {
+          return item?.alias;
+        });
+        console.log({ data });
+        setAllRooms(data);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getAllRoom();
+  }, []);
+
   const {
     control,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useForm({ resolver: yupResolver(yupSchema) });
 
@@ -222,7 +264,7 @@ const AddExamModal = ({ loading, setLoading }) => {
         name: data.name,
         min_point_to_pass: data.minCorrectAnswers * 10,
         duration: data.duration,
-        require_rooms: [data.requireRoom],
+        require_rooms: roomList,
         created_by: localStorage.getItem("email"),
         questions: convertQuestionList,
         image: img,
@@ -306,13 +348,13 @@ const AddExamModal = ({ loading, setLoading }) => {
                           sx={{
                             width: "100%",
                             marginBottom: 2,
+                            marginTop: 2,
                           }}
                           size='normal'
-                          variant='standard'
+                          variant='outlined'
                           label='Tên bài thi'
                           helperText={
                             <Typography variant='caption' color='error'>
-                              {" "}
                               {errors.name?.message}
                             </Typography>
                           }
@@ -329,7 +371,7 @@ const AddExamModal = ({ loading, setLoading }) => {
                       return (
                         <TextField
                           sx={{ width: "100%", marginBottom: 2 }}
-                          variant='standard'
+                          variant='outlined'
                           helperText={
                             <Typography variant='caption' color='error'>
                               {" "}
@@ -351,10 +393,9 @@ const AddExamModal = ({ loading, setLoading }) => {
                       return (
                         <TextField
                           sx={{ width: "100%", marginBottom: 2 }}
-                          variant='standard'
+                          variant='outlined'
                           helperText={
                             <Typography variant='caption' color='error'>
-                              {" "}
                               {errors.minCorrectAnswers?.message}
                             </Typography>
                           }
@@ -366,14 +407,38 @@ const AddExamModal = ({ loading, setLoading }) => {
                     }}
                   />
 
-                  <Controller
+                  {/* <Controller
                     name='requireRoom'
                     control={control}
                     defaultValue='AI'
                     render={({ field }) => {
                       return (
-                        <>
-                          <FormControl variant='standard' sx={{}} fullWidth>
+                        <> */}
+                  <FormControl fullWidth>
+                    <InputLabel id='demo-multiple-checkbox-label'>
+                      Yêu cầu phòng
+                    </InputLabel>
+                    <Select
+                      labelId='demo-multiple-checkbox-label'
+                      id='demo-multiple-checkbox'
+                      multiple
+                      sx={{ height: 45 }}
+                      value={roomList}
+                      onChange={handleChangeSelect}
+                      input={<OutlinedInput label='Yêu cầu phòng' />}
+                      renderValue={(selected) => selected.join(", ")}
+                      MenuProps={MenuProps}
+                    >
+                      {allRooms &&
+                        allRooms.map((room, idx) => (
+                          <MenuItem key={idx} value={room}>
+                            <Checkbox checked={roomList.indexOf(room) > -1} />
+                            <ListItemText primary={room} />
+                          </MenuItem>
+                        ))}
+                    </Select>
+                  </FormControl>
+                  {/* <FormControl variant='standard' sx={{}} fullWidth>
                             <InputLabel id='demo-simple-select-standard-label'>
                               Phòng
                             </InputLabel>
@@ -387,23 +452,11 @@ const AddExamModal = ({ loading, setLoading }) => {
                                 <MenuItem value={room}>{room}</MenuItem>
                               ))}
                             </Select>
-                          </FormControl>
-                        </>
-                        // <TextField
-                        //   sx={{ width: "100%", marginBottom: 2 }}
-                        //   variant='standard'
-                        //   helperText={
-                        //     <Typography variant='caption' color='error'>
-                        //       {" "}
-                        //       {errors.requireRoom?.message}
-                        //     </Typography>
-                        //   }
-                        //   label='Thuộc phòng'
-                        //   {...field}
-                        // />
-                      );
+                          </FormControl> */}
+                  {/* </> */}
+                  {/* );
                     }}
-                  />
+                  /> */}
                 </Box>
                 <Box
                   className='questions__section'
