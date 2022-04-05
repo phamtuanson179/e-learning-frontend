@@ -22,7 +22,7 @@ export default [
         route: "/",
       },
       {
-        image: image4,
+        image: "",
         name: "Nhập môn trí tuệ nhân tạo",
         count: 1,
         route: "/",

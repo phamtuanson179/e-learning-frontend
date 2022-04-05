@@ -81,7 +81,7 @@ const Ranking = ({ rankingExam, shortRankingExam, isLoading }) => {
           display: "flex",
           flexDirection: "column",
           padding: 4,
-          marginRight: 1,
+          marginLeft: 1,
           height: "100%",
           padding: 2,
         }}

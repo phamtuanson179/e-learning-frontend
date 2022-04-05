@@ -1,14 +1,7 @@
-import axios from "axios";
 import axiosInstance from "axios";
-import ENDPOINT from "./loginAPI";
-import queryString from "query-string";
-import { header } from "express-validator";
-
-const apiCallStack = [];
-// const URL
 
 const axiosClient = axiosInstance.create({
-  baseURL: "http://192.168.1.84:8001",
+  baseURL: "http://localhost:8001",
   // headers: {
   //     'content-type': 'application/json',
   //     'accept': 'application/json',
