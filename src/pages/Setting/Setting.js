@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { MENUBAR_ADMIN, MENUBAR_MEMBER, MENUBAR_SUPER_ADMIN } from "./constant";
 import { useLocation } from "react-router-dom";
 import "./Setting.scss";
+import MKBox from "components/MKBox";
 
 const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -98,12 +99,14 @@ const Setting = () => {
       );
   };
   return (
-    <Box className='setting__container'>
-      <Box className='left__container'>{renderTabs()}</Box>
-      <Box className='right__container' sx={{ height: "100%" }}>
-        {renderTabPanels()}
+    <MKBox component='section' pu={6}>
+      <Box className='setting__container' sx={{ marginTop: 4 }}>
+        <Box className='left__container'>{renderTabs()}</Box>
+        <Box className='right__container' sx={{ height: "100%" }}>
+          {renderTabPanels()}
+        </Box>
       </Box>
-    </Box>
+    </MKBox>
   );
 };
 

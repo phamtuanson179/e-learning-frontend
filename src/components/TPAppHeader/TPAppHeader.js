@@ -9,7 +9,7 @@ import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import brandLogoTechpro from "../../assets/images/techpro-images/brand.png";
+import brandLogoTechpro from "../../assets/images/brand.png";
 import DefaultNavbarDropdown from "./DefaultNavbarDropdown";
 import DefaultNavbarMobile from "./DefaultNavbarMobile";
 import "./header.scss";
@@ -111,7 +111,11 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
   const content = () => {
     return (
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <Typography variant='subtitle2' fontWeight='bold'>
+        <Typography
+          variant='subtitle2'
+          fontWeight='bold'
+          sx={{ width: "100%", textAlign: "center" }}
+        >
           <Button
             onClick={() => {
               navigate("/setting");
@@ -124,7 +128,11 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
           </Button>
         </Typography>
 
-        <Typography variant='subtitle2' fontWeight='bold' color='error'>
+        <Typography
+          variant='subtitle2'
+          fontWeight='bold'
+          sx={{ width: "100%", textAlign: "center" }}
+        >
           <Button
             onClick={logout}
             color='error'
@@ -138,7 +146,7 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
   };
 
   return (
-    <Container className='header__wrapper'>
+    <Container className='header__wrapper' sx={{ position: "sticky" }}>
       <MKBox
         py={1}
         px={{ xs: 4, sm: transparent ? 2 : 3, lg: transparent ? 0 : 2 }}
@@ -187,7 +195,11 @@ function TPAppHeader({ transparent, light, action, relative, center }) {
             ml={{ xs: "auto", lg: 0 }}
             sx={{ display: "flex", alignItems: "center" }}
           >
-            <Popover content={content}>
+            <Popover
+              content={content}
+              placement='bottom'
+              overlayClassName='header__popover'
+            >
               <MKButton
                 sx={{ padding: 0, minWidth: 32 }}
                 aria-describedby={id}

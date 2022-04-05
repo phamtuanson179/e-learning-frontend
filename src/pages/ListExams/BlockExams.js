@@ -1,5 +1,5 @@
 // react-router-dom components
-import { CircularProgress, Skeleton, Typography } from "@mui/material";
+import { Skeleton, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import examAPI from "api/examAPI";
@@ -8,7 +8,7 @@ import MKTypography from "components/MKTypography";
 import TPCardItem from "components/TPCardItem";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import unknowExam from "../../assets/images/techpro-images/unknowExam.png";
+import unknowExam from "../../assets/images/unknowExam.png";
 
 const convertDatas = (datas) =>
   datas.map((data, idx) => {

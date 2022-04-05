@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import examAPI from "api/examAPI";
 import { useEffect, useState } from "react";
-import unknowExam from "../../../assets/images/techpro-images/unknowExam.png";
+import unknowExam from "../../../assets/images/unknowExam.png";
 import MKBox from "../../../components/MKBox";
 import TPCardItem from "../../../components/TPCardItem";
 import AddExamModal from "./AddExam";

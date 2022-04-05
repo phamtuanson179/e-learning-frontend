@@ -74,18 +74,27 @@ const QuestionNavbar = ({
 
   return (
     <Box>
-      <Typography className='title__box' component='div' variant='h5'>
-        Question Navigator
+      <Typography
+        className='title__box'
+        component='div'
+        variant='h5'
+        textAlign={"center"}
+      >
+        Chọn câu hỏi
       </Typography>
       <Typography
         variant='subtitle2'
-        sx={{ opacity: "0.6", margin: 2 }}
-        fontWeight={"bold"}
+        sx={{ opacity: "0.6", margin: 2, fontSize: 13 }}
+        fontWeight={""}
+        color='info'
       >
-        Chào mừng các bạn đến với bài thi. Hãy thật bình tĩnh và cố gắng để
-        giành được kết quả cao nhất.
-        <br />
-        Đừng quên kiểm tra kĩ bài làm trước khi nộp bài nhé
+        <i>
+          Chào mừng các bạn đến với bài thi.
+          <br style={{ marginTop: "8px" }} />
+          Hãy thật bình tĩnh và cố gắng để giành được kết quả cao nhất.
+          <br />
+          Đừng quên kiểm tra kĩ bài làm trước khi nộp bài nhé!
+        </i>
       </Typography>
       <Box className='select-question__box'>
         <Box className='select-question'>{renderQuestionContainer()}</Box>

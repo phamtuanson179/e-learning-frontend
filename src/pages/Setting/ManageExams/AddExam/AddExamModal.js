@@ -68,15 +68,14 @@ const yupSchema = yup.object().shape({
   name: yup.string().required("Trường này bắt buộc!"),
   duration: yup
     .number()
-    .required("Trường này bắt buộc")
+    .required("Trường này bắt buộc!")
     .integer("Cần nhập số nguyên!")
-    .min(0, "Cần nhập số nguyên dương"),
+    .min(0, "Cần nhập số nguyên dương!"),
   minCorrectAnswers: yup
     .number()
-    .required("Trường này bắt buộc")
+    .required("Trường này bắt buộc!")
     .integer("Cần nhập số nguyên!")
-    .min(0, "Cần nhập số nguyên dương"),
-  // requireRoom: yup.array().min("Cần chọn ít nhất một phòng!"),
+    .min(0, "Cần nhập số nguyên dương!"),
 });
 
 const AddExamModal = ({ loading, setLoading }) => {
@@ -93,6 +92,8 @@ const AddExamModal = ({ loading, setLoading }) => {
     const {
       target: { value },
     } = event;
+    console.log({ value });
+
     setRoomList(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
@@ -129,7 +130,10 @@ const AddExamModal = ({ loading, setLoading }) => {
     handleSubmit,
     reset,
     getValues,
+    setValue,
     formState: { errors },
+    clearErrors,
+    setError,
   } = useForm({ resolver: yupResolver(yupSchema) });
 
   useEffect(() => {
@@ -408,13 +412,6 @@ const AddExamModal = ({ loading, setLoading }) => {
                     }}
                   />
 
-                  {/* <Controller
-                    name='requireRoom'
-                    control={control}
-                    defaultValue='AI'
-                    render={({ field }) => {
-                      return (
-                        <> */}
                   <FormControl fullWidth>
                     <InputLabel id='demo-multiple-checkbox-label'>
                       Yêu cầu phòng
@@ -439,25 +436,6 @@ const AddExamModal = ({ loading, setLoading }) => {
                         ))}
                     </Select>
                   </FormControl>
-                  {/* <FormControl variant='standard' sx={{}} fullWidth>
-                            <InputLabel id='demo-simple-select-standard-label'>
-                              Phòng
-                            </InputLabel>
-                            <Select
-                              labelId='demo-simple-select-standard-label'
-                              id='demo-simple-select-standard'
-                              label='Phòng'
-                              {...field}
-                            >
-                              {ROOM_ARRAY.map((room, idx) => (
-                                <MenuItem value={room}>{room}</MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl> */}
-                  {/* </> */}
-                  {/* );
-                    }}
-                  /> */}
                 </Box>
                 <Box
                   className='questions__section'

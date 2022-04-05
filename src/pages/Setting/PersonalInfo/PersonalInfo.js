@@ -24,6 +24,7 @@ import "./PersonalInfo.scss";
 
 import TPUploadImage from "components/TPUploadImage";
 import { ROLE } from "constants/role";
+import MKBox from "components/MKBox";
 
 const yupSchema = yup.object().shape({
   fullname: yup.string().required("Trường này bắt buộc!"),

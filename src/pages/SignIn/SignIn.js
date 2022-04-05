@@ -10,7 +10,7 @@ import { Typography } from "antd";
 import infoAPI from "api/infoAPI";
 import loginAPI from "api/loginAPI";
 // Images
-import bgImage from "assets/images/techpro-images/backgroundSignIn.jpeg";
+import bgImage from "assets/images/backgroundSignIn.jpeg";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
