@@ -1,10 +1,19 @@
-import { Box, Button, Typography, Modal, Divider } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Modal,
+  Divider,
+  Skeleton,
+  CircularProgress,
+} from "@mui/material";
 import examAPI from "api/examAPI";
 import { useEffect, useState } from "react";
 import RankingTable from "containers/RankingTable";
 import { convertSecondToTime } from "utils/convert";
 import CloseIcon from "@mui/icons-material/Close";
 import "./Ranking.scss";
+import { isEmpty } from "lodash";
 
 const style = {
   bgcolor: "background.paper",
@@ -19,16 +28,50 @@ const style = {
   border: "1px solid #0000003d",
 };
 
-
-const Ranking = ({ rankingExam, historyRanking,shortRankingExam }) => {
-  console.log({rankingExam});
-  const [openModal, setOpenModal] = useState()
+const Ranking = ({ rankingExam, shortRankingExam, isLoading }) => {
+  const [openModal, setOpenModal] = useState();
   const handleCloseModal = () => {
-    setOpenModal(false)
-  }
-  useEffect(()=> {
-    if (historyRanking)  convertDatatoShortRanking(historyRanking);
-  }, []);
+    setOpenModal(false);
+  };
+
+  const renderColor = (rank) => {
+    if (rank == 1) return "#FEDA16";
+    else if (rank == 2) return "#9E9EA7";
+    else if (rank == 3) return "#D89143";
+    else return "#1a73e8";
+  };
+
+  const renderRanking = (datas) => {
+    return (
+      <>
+        {datas &&
+          datas.map((data, idx) => {
+            if (idx != datas.length - 1)
+              return (
+                <>
+                  {isLoading ? (
+                    <Skeleton variant='text' width={60} height={40} />
+                  ) : (
+                    <Box
+                      sx={{
+                        backgroundColor: renderColor(idx + 1),
+                        borderRadius: 3,
+                        paddingLeft: 1,
+                        paddingRight: 1,
+                        marginBottom: 0.5,
+                      }}
+                    >
+                      <Typography variant='h6' color='#fff'>
+                        {data?.user_name}
+                      </Typography>
+                    </Box>
+                  )}
+                </>
+              );
+          })}
+      </>
+    );
+  };
 
   return (
     <>
@@ -38,53 +81,115 @@ const Ranking = ({ rankingExam, historyRanking,shortRankingExam }) => {
           display: "flex",
           flexDirection: "column",
           padding: 4,
-          marginRight: 1,
-          height: '100%'
+          marginLeft: 1,
+          height: "100%",
+          padding: 2,
         }}
         className='ranking__container'
       >
         <Typography
           variant='h5'
           component={"div"}
-          sx={{ marginBottom: 2, textAlign: "center" }}
+          sx={{ marginBottom: 4, textAlign: "center" }}
         >
           Xếp hạng
         </Typography>
 
-        <Box sx={{display:"block", alignItems:"center", justifyContent:"center", textAlign:"center"}}>
-          <Typography variant="h4" sx={{alignItems:"center", justifyContent:"center"}}>
-            {console.log({ shortRankingExam })}
-            {shortRankingExam?shortRankingExam[0].user_name:null}
-          </Typography>
-          <Typography variant="h5" sx={{display:"inline-block"}}>
-            {shortRankingExam?shortRankingExam[1].user_name:null}
-          </Typography>
-          <Typography variant="h6"> 
-            {shortRankingExam?shortRankingExam[2].user_name:null}
-          </Typography>
-          <Typography variant="h6" color="red">
-            Xếp hạng của bạn: {shortRankingExam?shortRankingExam[3].rank:null}            
-          </Typography>
-        </Box>
-        <Button 
-          sx={{ fontSize: 12, padding: 0 }} 
-          onClick={() => setOpenModal(true)}>
-            Xem chi tiết
-        </Button>
-        <Modal
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
+          {isLoading ? (
+            <Skeleton variant='circular' width={120} height={120} />
+          ) : shortRankingExam && isEmpty(shortRankingExam[0]) ? (
+            <Typography variant='body1' textAlign={"center"} color='info'>
+              Chưa có dữ liệu về bài thi này
+            </Typography>
+          ) : (
+            <Box
               sx={{
-                overflowY: "auto",
+                backgroundColor: renderColor(
+                  shortRankingExam &&
+                    shortRankingExam[shortRankingExam.length - 1]?.user_id ==
+                      localStorage.getItem("userId")
+                    ? shortRankingExam[shortRankingExam.length - 1].rank
+                    : ""
+                ),
+                height: 120,
+                aspectRatio: "1/1",
+                borderRadius: "50%",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              open={openModal}
-              onClose={handleCloseModal}
-              aria-labelledby='modal-modal-title'
-              aria-describedby='modal-modal-description'
             >
-              <Box >
-          <Box sx={style}>
+              <Box
+                sx={{
+                  backgroundColor: "#ffffff",
+                  height: "calc(100% - 16px)",
+                  aspectRatio: "1/1",
+                  borderRadius: "50%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant='h1'
+                  color={renderColor(
+                    shortRankingExam &&
+                      shortRankingExam[shortRankingExam.length - 1]?.user_id ==
+                        localStorage.getItem("userId")
+                      ? shortRankingExam[shortRankingExam.length - 1].rank
+                      : ""
+                  )}
+                >
+                  {shortRankingExam &&
+                  shortRankingExam[shortRankingExam.length - 1]?.user_id ==
+                    localStorage.getItem("userId")
+                    ? shortRankingExam[shortRankingExam.length - 1]?.rank
+                    : "--"}
+                </Typography>
+              </Box>
+            </Box>
+          )}
+          {isLoading ? (
+            <Box>
+              <Skeleton variant='text' width={60} height={40} />
+              <Skeleton variant='text' width={60} height={40} />
+              <Skeleton variant='text' width={60} height={40} />
+            </Box>
+          ) : shortRankingExam && isEmpty(shortRankingExam[0]) ? null : (
+            <Box sx={{ marginLeft: 1 }}>
+              {renderRanking(shortRankingExam)}
+              <Button
+                sx={{ fontSize: 12, padding: 0 }}
+                onClick={() => setOpenModal(true)}
+              >
+                Xem chi tiết
+              </Button>
+            </Box>
+          )}
+        </Box>
+
+        <Modal
+          sx={{
+            overflowY: "auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          open={openModal}
+          onClose={handleCloseModal}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          {rankingExam ? (
+            <Box>
+              <Box sx={style}>
                 <Box
                   display='flex'
                   alginItems='center'
@@ -99,14 +204,17 @@ const Ranking = ({ rankingExam, historyRanking,shortRankingExam }) => {
                     sx={{ cursor: "pointer" }}
                     onClick={handleCloseModal}
                   />
-                  </Box>
-                  <Divider/>
-                  <Box>
-                    <RankingTable historyRanking={historyRanking} />
-                  </Box>
                 </Box>
-          </Box>
-          </Modal>
+                <Divider />
+                <Box>
+                  <RankingTable rankingExam={rankingExam} />
+                </Box>
+              </Box>
+            </Box>
+          ) : (
+            <CircularProgress />
+          )}
+        </Modal>
       </Box>
     </>
   );

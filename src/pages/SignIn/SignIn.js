@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { Box } from "@mui/material";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -9,7 +10,7 @@ import { Typography } from "antd";
 import infoAPI from "api/infoAPI";
 import loginAPI from "api/loginAPI";
 // Images
-import bgImage from "assets/images/techpro-images/backgroundSignIn.jpeg";
+import bgImage from "assets/images/backgroundSignIn.jpeg";
 // Material Kit 2 React components
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
@@ -71,7 +72,6 @@ function SignIn() {
       };
 
       await loginAPI.login(payload).then((res) => {
-        console.log({ res });
         if (res?.status === 200) {
           localStorage.setItem("accessToken", res?.data.access_token);
           localStorage.setItem("email", data.email);
@@ -90,6 +90,7 @@ function SignIn() {
           localStorage.setItem("userId", data?.user_id);
           localStorage.setItem("role", data?.role);
           localStorage.setItem("avatar", data?.url_avatar);
+          localStorage.setItem("room", data?.room);
           if (location.state?.from) {
             navigate(location.state.from);
           } else navigate("/list-exams");
@@ -167,9 +168,9 @@ function SignIn() {
                 </MKTypography>
               </MKBox>
               <form onSubmit={handleSubmit(onSubmit)} id='sign-in-form'>
-                <MKBox pt={4} pb={3} px={3}>
-                  <MKBox component='form' role='form'>
-                    <MKBox mb={2}>
+                <Box pt={4} pb={3} px={3}>
+                  <Box component='form' role='form'>
+                    <Box mb={2}>
                       <Controller
                         name='email'
                         control={control}
@@ -193,7 +194,7 @@ function SignIn() {
                           );
                         }}
                       />
-                    </MKBox>
+                    </Box>
                     <MKBox
                       display='flex'
                       alignItems='center'
@@ -242,8 +243,8 @@ function SignIn() {
                     {/* <MKBox mt={3} mb={1} textAlign='center' onClick={() => navigate('/forgot-password', { state: { email: email } })}>
                                         <MKButton>Bạn quên mật khẩu?</MKButton>
                                     </MKBox> */}
-                  </MKBox>
-                </MKBox>
+                  </Box>
+                </Box>
               </form>
               <MKBox mt={4} mb={1} sx={{ margin: 2, marginBottom: 2 }}>
                 <MKButton

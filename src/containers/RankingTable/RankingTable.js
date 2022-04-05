@@ -17,22 +17,19 @@ function createData(user_name, point, duration) {
   return { user_name, point, duration };
 }
 
-const RankingTable = ({ historyRanking }) => {
-  console.log({ historyRanking });
+const RankingTable = ({ rankingExam }) => {
   const [rows, setRows] = useState();
 
-  const convertDataToRowTable = (datas  ) => {
+  const convertDataToRowTable = (datas) => {
     const rows = [];
     datas.map((data, idx) => {
-      rows.push(
-        createData(data?.user_name, data?.point, data?.duration)
-      );
+      rows.push(createData(data?.user_name, data?.point, data?.duration));
     });
     setRows(rows);
   };
 
   useEffect(() => {
-    if (historyRanking) convertDataToRowTable(historyRanking);
+    if (rankingExam) convertDataToRowTable(rankingExam);
   }, []);
 
   const showTime = (duration) => {
@@ -41,8 +38,13 @@ const RankingTable = ({ historyRanking }) => {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: '50vh' }}>
-      <Table stickyHeader sx={{ minWidth: 400 }} size='small' aria-label='a dense table'>
+    <TableContainer component={Paper} sx={{ maxHeight: "50vh" }}>
+      <Table
+        stickyHeader
+        sx={{ minWidth: 650 }}
+        size='small'
+        aria-label='a dense table'
+      >
         <TableHead sx={{ display: "table-header-group" }}>
           <TableRow>
             <TableCell align='center'>Stt</TableCell>

@@ -12,10 +12,10 @@ export const MENUBAR_ADMIN = [
     component: <ManageExams />,
   },
 
-  {
-    name: "Các trang quản lý khác của admin",
-    component: null,
-  },
+  // {
+  //   name: "Các trang quản lý khác của admin",
+  //   component: null,
+  // },
 ];
 
 export const MENUBAR_MEMBER = [
@@ -24,10 +24,10 @@ export const MENUBAR_MEMBER = [
     component: <PersonalInfo />,
   },
 
-  {
-    name: "Các trang quản lý khác của admin",
-    component: null,
-  },
+  // {
+  //   name: "Các trang quản lý khác của admin",
+  //   component: null,
+  // },
 ];
 
 export const MENUBAR_SUPER_ADMIN = [
@@ -39,8 +39,8 @@ export const MENUBAR_SUPER_ADMIN = [
     name: "Quản lý bài thi",
     component: <ManageExams />,
   },
-  {
-    name: "Các trang quản lý khác của admin",
-    component: null,
-  },
+  // {
+  //   name: "Các trang quản lý khác của admin",
+  //   component: null,
+  // },
 ];
