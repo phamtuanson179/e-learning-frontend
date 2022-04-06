@@ -1,19 +1,7 @@
-import axios from "axios";
 import axiosInstance from "axios";
-import ENDPOINT from "./loginAPI";
-import queryString from "query-string";
-import { header } from "express-validator";
-
-const apiCallStack = [];
-// const URL
 
 const axiosClient = axiosInstance.create({
-<<<<<<< HEAD
-  baseURL: process.env.REACT_APP_API_URL_LOCALHOST,
-=======
-  baseURL: process.env.REACT_APP_API_URL,
-  // baseURL: process.env.REACT_APP_API_URL_DUONG_COMPUTER,
->>>>>>> 3483a2ebdd0ad5579d72b51d9ea333b061191e92
+  baseURL: "http://localhost:8001",
   // headers: {
   //     'content-type': 'application/json',
   //     'accept': 'application/json',
@@ -22,28 +10,23 @@ const axiosClient = axiosInstance.create({
   // paramsSerializer: params => queryString.stringifyUrl(params),
 });
 
-axiosClient.interceptors.request.use(
-  function (config) {
-    //add handle token
-    let headers = {
-      accept: "application/json",
-      "Content-Type": "application/json",
+axiosClient.interceptors.request.use(function (config) {
+  //add handle token
+  let headers = {
+    accept: "application/json",
+    "Content-Type": "application/json",
+  };
+
+  if (localStorage.getItem("accessToken")) {
+    headers = {
+      ...headers,
+      token: localStorage.getItem("accessToken"),
     };
-
-    if (localStorage.getItem("accessToken")) {
-      headers = {
-        ...headers,
-        token: localStorage.getItem("accessToken"),
-      };
-    }
-
-    config.headers = headers;
-    return config;
-  },
-  function (error) {
-    return Promise.reject(error);
   }
-);
+
+  config.headers = headers;
+  return config;
+});
 
 axiosClient.interceptors.response.use(
   function (response) {

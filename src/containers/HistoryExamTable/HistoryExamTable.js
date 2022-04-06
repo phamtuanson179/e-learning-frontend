@@ -15,19 +15,18 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { isEmpty } from "lodash";
 import { convertSecondToTime } from "utils/convert";
 
-function createData(id, duration, point, isPass) {
-  return { id, duration, point, isPass };
+function createData(user_name, duration, point, isPass) {
+  return { user_name, duration, point, isPass };
 }
 
 const HistoryExamTable = ({ historyExam }) => {
-  console.log({ historyExam });
   const [rows, setRows] = useState();
 
   const convertDataToRowTable = (datas) => {
     const rows = [];
     datas.map((data, idx) => {
       rows.push(
-        createData(data?.id, data?.duration, data?.point, data?.is_pass)
+        createData(data?.user_name, data?.duration, data?.point, data?.is_pass)
       );
     });
     setRows(rows);
@@ -43,14 +42,19 @@ const HistoryExamTable = ({ historyExam }) => {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: '50vh' }}>
-      <Table stickyHeader sx={{ minWidth: 650 }} size='small' aria-label='a dense table'>
+    <TableContainer component={Paper} sx={{ maxHeight: "50vh" }}>
+      <Table
+        stickyHeader
+        sx={{ minWidth: 650 }}
+        size='small'
+        aria-label='a dense table'
+      >
         <TableHead sx={{ display: "table-header-group" }}>
           <TableRow>
-            <TableCell align='center'>Stt</TableCell>
-            <TableCell>Id</TableCell>
+            <TableCell align='center'>Lần thi</TableCell>
+            <TableCell>Tên</TableCell>
             <TableCell align='right'>Điểm</TableCell>
-            <TableCell align='right'>Thời gian</TableCell>
+            <TableCell align='right'>Thời gian thi</TableCell>
             <TableCell align='center'>Kết quả</TableCell>
           </TableRow>
         </TableHead>
@@ -63,7 +67,7 @@ const HistoryExamTable = ({ historyExam }) => {
               >
                 <TableCell align='center'>{idx + 1}</TableCell>
                 <TableCell component='th' scope='row'>
-                  {row.id}
+                  {row.user_name}
                 </TableCell>
                 <TableCell align='right'>{row.point}</TableCell>
                 <TableCell align='right'>{showTime(row.duration)}</TableCell>

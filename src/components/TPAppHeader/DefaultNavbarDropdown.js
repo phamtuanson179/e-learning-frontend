@@ -3,9 +3,6 @@ import MKTypography from "components/MKTypography";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-
-
-
 function DefaultNavbarDropdown({
   name,
   icon,
@@ -16,11 +13,9 @@ function DefaultNavbarDropdown({
   setCurTabs,
   ...rest
 }) {
-
   const onClick = () => {
-    console.log('first')
-    setCurTabs(route)
-  }
+    setCurTabs(route);
+  };
   return (
     <>
       <Link to={route}>
@@ -36,7 +31,7 @@ function DefaultNavbarDropdown({
           <MKTypography
             variant='body2'
             lineHeight={1}
-            color={curTabs === route ? 'info' : 'inherit'}
+            color={curTabs === route ? "info" : "inherit"}
             // color='info'
             sx={{ alignSelf: "center", "& *": { verticalAlign: "middle" } }}
           >
@@ -46,7 +41,7 @@ function DefaultNavbarDropdown({
             variant='button'
             fontWeight='regular'
             textTransform='capitalize'
-            color={curTabs === route ? 'info' : 'inherit'}
+            color={curTabs === route ? "info" : "inherit"}
             sx={{ fontWeight: "100%", ml: 1, mr: 0.25 }}
           >
             {name}

@@ -21,10 +21,14 @@ function TPCardItem({ image, name, count, type, ...rest }) {
             "perspective(999px) rotateX(7deg) translate3d(0px, -4px, 5px)",
         },
         aspectRatio: "1/1",
+        backgroundImage: `url(${image})`,
+        backgroundSize: "contain",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
       }}
       {...rest}
     >
-      <img component='img' src={image} alt={name} width='100%' my='auto' />
+      {/* <img component='img' src={image} alt={name} width='100%' my='auto' /> */}
     </MKBox>
   );
 

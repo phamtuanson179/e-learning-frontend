@@ -2,10 +2,13 @@
 @import "../../assets/scss/variables/mixin";
 
 .header__wrapper {
-  position: fixed !important;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  // position: fixed !important;
+  // top: 24px;
+  // left: 50%;
+  // transform: translateX(-50%);
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
   z-index: $header-index;
   > div {
     width: 100%;
@@ -14,8 +17,7 @@
 }
 
 .header__popover {
-  .MuiPaper-root > .MuiBox-root {
-    @include sub-section;
-    background-color: #ffffff;
+  .ant-popover-inner {
+    border-radius: 12px;
   }
 }
