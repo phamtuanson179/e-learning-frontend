@@ -11,7 +11,7 @@ import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
 
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
 import { LoginComponent } from './pages/login/login.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { vi_VN } from 'ng-zorro-antd/i18n';
@@ -26,7 +26,7 @@ registerLocaleData(vi);
 @NgModule({
   declarations: [
     AppComponent,
-    AdminLayoutComponent,
+    DefaultLayoutComponent,
     LoginComponent
   ],
   imports: [
