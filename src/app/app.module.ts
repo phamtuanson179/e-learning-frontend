@@ -19,6 +19,7 @@ import { registerLocaleData } from '@angular/common';
 import vi from '@angular/common/locales/vi';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { SubjectComponent } from './pages/subject/subject.component';
 
 registerLocaleData(vi);
 
@@ -27,7 +28,8 @@ registerLocaleData(vi);
   declarations: [
     AppComponent,
     DefaultLayoutComponent,
-    LoginComponent
+    LoginComponent,
+    SubjectComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -6,7 +6,7 @@ import { LoginComponent } from "./pages/login/login.component";
 export const AppRoutes: Routes = [
   {
     path: "",
-    redirectTo: "login",
+    redirectTo: "subject",
     pathMatch: "full",
   },
   {
