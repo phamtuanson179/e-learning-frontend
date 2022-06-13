@@ -8,7 +8,8 @@
       "amount_question": 10,
       "min_correct_question_to_pass": 6,
       "description": "Day la mon toan cao cap 1",
-      "generate_exam_type": "hello"
+      "generate_exam_type": "hello",
+      "avatar": ""
     },
     {
       "id": "2",
@@ -18,7 +19,8 @@
       "amount_question": 10,
       "min_correct_question_to_pass": 6,
       "description": "Day la mon mang may tinh",
-      "generate_exam_type": "hello"
+      "generate_exam_type": "hello",
+      "avatar": ""
     },
     {
       "id": "3",
@@ -28,7 +30,8 @@
       "amount_question": 10,
       "min_correct_question_to_pass": 6,
       "description": "Day la mon cau truc du lieu va thuat toan",
-      "generate_exam_type": "hello"
+      "generate_exam_type": "hello",
+      "avatar": ""
     }
   ],
   "comments": [{ "id": 1, "body": "some comment", "postId": 1 }],

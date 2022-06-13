@@ -1,4 +1,4 @@
-export interface SubjectCreate {
+export interface SubjectSPTCreate {
   name: string;
   alias: string;
   time: number;
@@ -8,6 +8,6 @@ export interface SubjectCreate {
   generate_exam_type?: string;
 }
 
-export interface Subject extends SubjectCreate {
+export interface SubjectSPT extends SubjectSPTCreate {
   id: string;
 }

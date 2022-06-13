@@ -1,64 +1,29 @@
 <div class="row">
-  <div class="col-md-4" (click)="on_click_subject()">
-    <div class="card">
+  <div
+    class="col-md-4"
+    (click)="on_click_subject(subject)"
+    *ngFor="let subject of subject_data"
+  >
+    <div class="card h-100">
       <div class="card-header">
-        <h5 class="card-title">Toán cao cấp 1</h5>
-        <p class="card-category">Đây là môn toán cao cấp 1</p>
+        <h5 class="card-title">{{ subject?.name }}</h5>
+        <p class="card-category">{{ subject?.description }}</p>
       </div>
-      <div class="card-body">
+      <div class="card-body d-flex align-items-end">
         <div
           style="
-            background-image: url(../../../assets/img/spt_img/subject_img_default.jpg);
             aspect-ratio: 1/1;
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
           "
+          [ngStyle]="{
+            'background-image': subject?.avatar
+              ? 'url(' + subject.avatar + ')'
+              : 'url(../../../assets/img/spt_img/subject_img_default.jpg )'
+          }"
           class="w-100"
         ></div>
-        <!-- <img src="../../../assets/img/spt_img/subject_img_default.jpg" alt="" /> -->
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title">Toán cao cấp 1</h5>
-        <p class="card-category">Đây là môn toán cao cấp 1</p>
-      </div>
-      <div class="card-body">
-        <div
-          style="
-            background-image: url(../../../assets/img/spt_img/subject_img_default.jpg);
-            aspect-ratio: 1/1;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-          "
-          class="w-100"
-        ></div>
-        <!-- <img src="../../../assets/img/spt_img/subject_img_default.jpg" alt="" /> -->
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="card-title">Toán cao cấp 1</h5>
-        <p class="card-category">Đây là môn toán cao cấp 1</p>
-      </div>
-      <div class="card-body">
-        <div
-          style="
-            background-image: url(../../../assets/img/spt_img/subject_img_default.jpg);
-            aspect-ratio: 1/1;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-          "
-          class="w-100"
-        ></div>
-        <!-- <img src="../../../assets/img/spt_img/subject_img_default.jpg" alt="" /> -->
       </div>
     </div>
   </div>

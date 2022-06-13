@@ -1,24 +1,42 @@
 <div class="row">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-header">
-        <h5 class="card-title">Toán cao cấp 1</h5>
-        <p class="card-category">Đây là môn toán cao cấp 1</p>
-      </div>
       <div class="card-body">
-        <div
-          style="
-            background-image: url(../../../assets/img/spt_img/subject_img_default.jpg);
-            aspect-ratio: 1/1;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-          "
-          class="w-100"
-        ></div>
-        <!-- <img src="../../../assets/img/spt_img/subject_img_default.jpg" alt="" /> -->
+        <div class="row" style="padding: 0 1rem">
+          <div
+            style="
+              aspect-ratio: 1/1;
+              background-repeat: no-repeat;
+              background-position: center;
+              background-size: cover;
+            "
+            [ngStyle]="{
+              'background-image': subject?.avatar
+                ? 'url(' + subject.avatar + ')'
+                : 'url(../../../assets/img/spt_img/subject_img_default.jpg )'
+            }"
+            class="w-100 col-4"
+          ></div>
+          <div class="col-8 row">
+            <h4
+              class="card-title col-12"
+              style="margin: 0 0 1rem; font-weight: bold"
+            >
+              {{ subject?.name }}
+            </h4>
+            <div class="col-4">Mã môn học:</div>
+            <h6 class="col-8">{{ subject?.alias }}</h6>
+            <div class="col-4">Thời gia thi:</div>
+            <h6 class="col-8">{{ subject?.time }} giây</h6>
+            <div class="col-4">Số lượng câu hỏi:</div>
+            <h6 class="col-8">{{ subject?.amount_question }}</h6>
+            <div class="col-4">Số câu trả lời đúng tối thiểu:</div>
+            <h6 class="col-8">{{ subject?.min_correct_question_to_pass }}</h6>
+            <div class="col-4">Mô tả môn học:</div>
+            <h6 class="col-8">{{ subject?.description }}</h6>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-asdfasdfasdf

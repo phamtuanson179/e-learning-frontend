@@ -1,0 +1,25 @@
+.checkbox__base-table {
+  margin: 10px;
+  .mat-checkbox-layout {
+    margin: 0;
+  }
+}
+
+.image__column {
+  margin: 0.5rem;
+  background-color: black;
+  width: 4rem;
+  display: inline-block;
+  aspect-ratio: 4/3;
+  img {
+    width: 100%;
+  }
+}
+
+.image-table__tooltip {
+  width: 10rem;
+  aspect-ratio: 4/3;
+  img {
+    width: 100%;
+  }
+}

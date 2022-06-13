@@ -14,6 +14,10 @@ export class SubjectService {
     return this.httpClient.get('http://localhost:3000/subject').pipe(map(res=>res))
   }
 
+  get_subject_by_id(params:{id:string}):Observable<any>{
+    return this.httpClient.get('http://localhost:3000/subject',{params}).pipe(map(res=>res))
+  }
+
   create(data:any):Observable<any>{
     return this.httpClient.post('http://localhost:3000/subject', data).pipe(map(res=>res))
   }

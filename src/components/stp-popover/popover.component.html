@@ -1,0 +1,11 @@
+<ng-template #popTitle>
+  <h6 class="text-center font-weight-bold m-0">{{popoverTitle}}</h6>
+</ng-template>
+<ng-template #popContent>
+  <ng-content select="[popContent]"></ng-content>
+</ng-template>
+
+<span [ngbPopover]="popContent" [popoverTitle]="popTitle" [placement]="placement" [disablePopover]="disablePopover"
+  [autoClose]="autoClose ?autoClose:true">
+  <ng-content select="[triggerPopover]"></ng-content>
+</span>

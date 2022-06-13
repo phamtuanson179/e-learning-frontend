@@ -1,0 +1,240 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="card-title">Quản lý môn học</h4>
+    </div>
+    <div class="card-body">
+      <app-stp-base-table
+        [columns]="table_columns"
+        [dataSource]="subject_datas_table"
+        [isLoadingDataAgain]="is_loading_data_again"
+      >
+        <ng-template #actionRow let-element="element">
+          <app-stp-base-modal
+            [isClose]="is_close_edit_modal"
+            [title]="title.edit_modal"
+          >
+            <span
+              triggerModal
+              (click)="onClickEdit(element?.id, element?.detailData)"
+            >
+              <button class="btn mr-2 p-0">
+                <i class="fa fa-pencil text-success fa-lg"></i>
+              </button>
+            </span>
+
+            <div bodyModal>
+              <div class="modal-body">
+                <form
+                  [formGroup]="device_form"
+                  autocomplete="false"
+                  id="edit-form"
+                  (ngSubmit)="onSubmitEditForm()"
+                >
+                  <mat-form-field class="w-100 m-0" appearance="fill">
+                    <mat-label class="m-0">Tên thiết bị</mat-label>
+                    <input
+                      matInput
+                      formControlName="name"
+                      class="m-0"
+                      required
+                    />
+                    <mat-error
+                      *ngIf="
+                        device_form.status == 'INVALID' &&
+                        device_form.touched &&
+                        device_form.controls.name.errors?.required
+                      "
+                    >
+                      Trường này bắt buộc!
+                    </mat-error>
+                  </mat-form-field>
+
+                  <div class="row">
+                    <mat-form-field class="col-8" appearance="fill">
+                      <mat-label>Địa chỉ ip</mat-label>
+                      <input matInput formControlName="ip_address" required />
+                      <mat-error
+                        *ngIf="
+                          device_form.status == 'INVALID' &&
+                          device_form.touched &&
+                          device_form.controls.ip_address.errors?.required &&
+                          !device_form.controls.ip_address.errors?.checkIP
+                        "
+                      >
+                        Trường này bắt buộc!
+                      </mat-error>
+                      <mat-error
+                        *ngIf="
+                          device_form.status == 'INVALID' &&
+                          device_form.touched &&
+                          device_form.controls.ip_address.errors?.required &&
+                          device_form.controls.ip_address.errors?.checkIP
+                        "
+                      >
+                        Trường này bắt buộc!
+                      </mat-error>
+                      <mat-error
+                        *ngIf="
+                          device_form.status == 'INVALID' &&
+                          device_form.touched &&
+                          device_form.controls.ip_address.errors?.checkIP &&
+                          !device_form.controls.ip_address.errors?.required
+                        "
+                      >
+                        Chưa đúng định dạng!
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-4" appearance="fill">
+                      <mat-label>Port</mat-label>
+                      <input
+                        matInput
+                        formControlName="port"
+                        required
+                        type="number"
+                      />
+                      <mat-error
+                        *ngIf="
+                          device_form.status == 'INVALID' &&
+                          device_form.touched &&
+                          device_form.controls.port.errors?.required
+                        "
+                      >
+                        Trường này bắt buộc!
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="row">
+                    <mat-form-field class="col-6" appearance="fill">
+                      <mat-label>Loại thiết bị</mat-label>
+                      <mat-select formControlName="type" required>
+                        <mat-option [value]="DEVICE_MODEL.IFDC">
+                          IFDC
+                        </mat-option>
+                        <mat-option [value]="DEVICE_MODEL.ADAM">
+                          ADAM
+                        </mat-option>
+                        <mat-option [value]="DEVICE_MODEL.AI_DEVICE">
+                          AI DEVICE
+                        </mat-option>
+                        <mat-option [value]="DEVICE_MODEL.ZKTECO">
+                          ZKTECO
+                        </mat-option>
+                      </mat-select>
+                      <mat-error
+                        *ngIf="
+                          device_form.status == 'INVALID' &&
+                          device_form.touched &&
+                          device_form.controls.type.errors?.required
+                        "
+                      >
+                        Trường này bắt buộc!
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="col-6" appearance="fill">
+                      <mat-label>Model</mat-label>
+                      <input matInput formControlName="model" />
+                    </mat-form-field>
+                  </div>
+
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Tài khoản</mat-label>
+                    <input matInput formControlName="username" />
+                  </mat-form-field>
+
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Mật khẩu</mat-label>
+                    <input matInput formControlName="password" />
+                  </mat-form-field>
+                </form>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  class="btn btn-dark font-weight-bold"
+                  (click)="closeEditModal()"
+                >
+                  Huỷ
+                </button>
+
+                <span
+                  [ngbTooltip]="
+                    !device_form.valid
+                      ? 'Vui lòng kiểm tra lại các trường thông tin'
+                      : ''
+                  "
+                >
+                  <button
+                    type="submit"
+                    form="edit-form"
+                    class="btn btn-primary font-weight-bold"
+                    [disabled]="!device_form.valid"
+                  >
+                    Lưu
+                  </button>
+                </span>
+              </div>
+            </div>
+          </app-stp-base-modal>
+
+          <app-stp-base-popover
+            [popoverTitle]="title.delete_popover"
+            [placement]="'left'"
+          >
+            <span triggerPopover>
+              <button class="btn mr-2 pl-1 pr-1">
+                <i class="fa fa-trash-o fa-lg text-danger"></i>
+              </button>
+            </span>
+            <div popContent>
+              <div
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                "
+                class="ml-2 mr-2"
+              >
+                <div
+                  style="
+                    font-size: 32px;
+                    width: 52px;
+                    height: 52px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                  class="text-light bg-danger mb-2"
+                >
+                  <i class="fa fa-exclamation"></i>
+                </div>
+                <div class="text-center mb-4">
+                  Bạn đã chắc chắn sẽ xoá thiết bị này?
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <button
+                    class="btn btn-dark text-light font-weight-bold"
+                    style="margin-right: 1rem"
+                  >
+                    Huỷ
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger font-weight-bold text-light"
+                    (click)="disableData(element.id)"
+                  >
+                    Xác nhận
+                  </button>
+                </div>
+              </div>
+            </div>
+          </app-stp-base-popover>
+        </ng-template></app-stp-base-table
+      >
+    </div>
+  </div>
+</div>

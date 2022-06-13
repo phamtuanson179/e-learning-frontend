@@ -1,4 +1,4 @@
-import { Subject } from "./subject";
+import { SubjectSPT } from "./subject";
 
 export interface Answer {
   content: string;
@@ -9,7 +9,7 @@ export interface Answer {
 export interface QuestionCreate {
   type: number;
   title: string;
-  subject: Subject;
+  subject: SubjectSPT;
   url_file: any;
   anwsers: Answer[];
 }

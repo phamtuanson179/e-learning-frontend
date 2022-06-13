@@ -1,4 +1,4 @@
-import { Subject } from "./subject";
+import { SubjectSPT } from "./subject";
 
 export interface UserCreate {
   username: string;
@@ -9,7 +9,7 @@ export interface UserCreate {
   dob: string;
   url_avatar: string;
   token?: string;
-  subjects?: Subject[];
+  subjects?: SubjectSPT[];
 }
 
 export interface User extends UserCreate {

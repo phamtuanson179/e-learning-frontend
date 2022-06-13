@@ -1,29 +1,37 @@
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
 import { ToastrModule } from "ngx-toastr";
 
-import { SidebarModule } from './sidebar/sidebar.module';
-import { FooterModule } from './shared/footer/footer.module';
-import { NavbarModule} from './shared/navbar/navbar.module';
-import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
+import { SidebarModule } from "./sidebar/sidebar.module";
+import { FooterModule } from "./shared/footer/footer.module";
+import { NavbarModule } from "./shared/navbar/navbar.module";
+import { FixedPluginModule } from "./shared/fixedplugin/fixedplugin.module";
 
-import { AppComponent } from './app.component';
-import { AppRoutes } from './app.routing';
+import { AppComponent } from "./app.component";
+import { AppRoutes } from "./app.routing";
 
-import { DefaultLayoutComponent } from './layouts/default-layout/default-layout.component';
-import { LoginComponent } from './pages/login/login.component';
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
-import { vi_VN } from 'ng-zorro-antd/i18n';
-import { registerLocaleData } from '@angular/common';
-import vi from '@angular/common/locales/vi';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { SubjectComponent } from './pages/subject/subject.component';
-import { DetailSubjectComponent } from './pages/detail-subject/detail-subject.component';
+import { DefaultLayoutComponent } from "./layouts/default-layout/default-layout.component";
+import { LoginComponent } from "./pages/login/login.component";
+import { NZ_I18N } from "ng-zorro-antd/i18n";
+import { vi_VN } from "ng-zorro-antd/i18n";
+import { registerLocaleData } from "@angular/common";
+import vi from "@angular/common/locales/vi";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { SubjectComponent } from "./pages/subject/subject.component";
+import { DetailSubjectComponent } from "./pages/detail-subject/detail-subject.component";
+import { SubjectManagerComponent } from "./pages/subject-manager/subject-manager.component";
+import { MaterialModule } from "./material.module";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { ModalComponent } from "components/spt-modal/modal.component";
+import { PopoverComponent } from "components/stp-popover/popover.component";
+import { TableComponent } from "components/stp-table/table.component";
+import { TimeFilterComponent } from "components/stp-time-filter/time-filter.component";
+import { ToastsContainer } from "components/stp-toast/toast-container.component";
+import { ModalModule } from "ngx-bootstrap/modal";
 
 registerLocaleData(vi);
-
 
 @NgModule({
   declarations: [
@@ -31,12 +39,18 @@ registerLocaleData(vi);
     DefaultLayoutComponent,
     LoginComponent,
     SubjectComponent,
-    DetailSubjectComponent
+    DetailSubjectComponent,
+    SubjectManagerComponent,
+    ModalComponent,
+    PopoverComponent,
+    TableComponent,
+    TimeFilterComponent,
+    ToastsContainer,
   ],
   imports: [
     BrowserAnimationsModule,
-    RouterModule.forRoot(AppRoutes,{
-      useHash: true
+    RouterModule.forRoot(AppRoutes, {
+      useHash: true,
     }),
     SidebarModule,
     NavbarModule,
@@ -44,9 +58,14 @@ registerLocaleData(vi);
     FooterModule,
     FixedPluginModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MaterialModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ModalModule.forRoot(),
   ],
   providers: [{ provide: NZ_I18N, useValue: vi_VN }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

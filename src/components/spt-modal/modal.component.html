@@ -1,0 +1,18 @@
+<span (click)="openModal(baseModal)">
+  <ng-content select="[triggerModal]"></ng-content>
+</span>
+
+
+<ng-template #baseModal>
+  <div class="base-modal">
+    <div class="modal-header d-flex justify-content-between align-items-center ">
+      <h5 class="modal-title pull-left m-0 font-weight-bolder">{{title}}</h5>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()"
+        *ngIf="isHaveIconClose != undefined ? isHaveIconClose: true">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <ng-content select="[bodyModal]"></ng-content>
+  </div>
+
+</ng-template>
