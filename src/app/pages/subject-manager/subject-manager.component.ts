@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { STPColumnTable } from "app/model/front-end";
@@ -14,17 +15,30 @@ import { Subject } from "rxjs";
 export class SubjectManagerComponent implements OnInit {
   public title = {
     title_page: "Quản lý môn học",
-    add_modal: "Thêm thông tin môn học",
-    edit_modal: "Cập nhật thông tin môn học",
+    add_modal: "Thêm môn học",
+    edit_modal: "Cập nhật môn học",
     delete_popover: "Xóa môn học",
   };
+
+  subject_form: FormGroup;
   subject_datas: SubjectSPT[];
+  edit_element_id: string;
   subject_datas_table = new MatTableDataSource<any>();
   table_columns: STPColumnTable[] = TABLE_COLUMNS;
   is_loading_data_again = new Subject<Boolean>();
   is_close_edit_modal = new Subject<Boolean>();
   constructor(private subject_service: SubjectService) {}
   ngOnInit(): void {
+    this.subject_form = new FormGroup({
+      name: new FormControl(""),
+      alias: new FormControl(""),
+      time: new FormControl(),
+      amount_question: new FormControl(),
+      min_correct_question_to_pass: new FormControl(""),
+      description: new FormControl(""),
+      avatar: new FormControl(""),
+    });
+
     this.get_all_subject();
     this.is_loading_data_again.subscribe((res) => {
       if (res) {
@@ -74,6 +88,39 @@ export class SubjectManagerComponent implements OnInit {
       return new_item;
     });
   }
+
+  on_click_edit(id: string, element: SubjectSPT) {
+    console.log({ element });
+    this.edit_element_id = id;
+    this.subject_form.patchValue({
+      name: element.name,
+      alias: element.alias,
+      min_correct_question_to_pass: element.min_correct_question_to_pass,
+      amount_question: element.amount_question,
+      description: element.description,
+      time: element.time,
+      avatar: element.avatar,
+    });
+  }
+
+  change_avatar(e: string) {
+    this.subject_form.patchValue({
+      avatar: e,
+    });
+  }
+
+  on_submit_edit_form() {
+    let data = this.subject_form.value;
+    data = { ...data, id: this.edit_element_id };
+    const params = {
+      id: this.edit_element_id,
+    };
+    this.subject_service.update(data, params).subscribe((res) => {
+      console.log({ res });
+    });
+  }
+
+  delete(id: string) {}
 }
 
 export const TABLE_COLUMNS: STPColumnTable[] = [

@@ -1,70 +1,137 @@
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort class="w-100" style="table-layout: fixed;"
-    (matSortChange)="handleSortChange($event)">
-
+<div class="">
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    matSort
+    class="w-100"
+    style="table-layout: fixed"
+    (matSortChange)="handleSortChange($event)"
+  >
     <ng-container [matColumnDef]="column.id" *ngFor="let column of columns">
-
-      <ng-container *ngIf="column.id!='action' && column.id!='select'; else action">
+      <ng-container
+        *ngIf="column.id != 'action' && column.id != 'select'; else action"
+      >
         <ng-template [ngIf]="column?.isSort" [ngIfElse]="sortTableHeader">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header
-            [ngStyle]="{width: column.width ?column.width:' auto','text-align': column.align ?column.align:'' }">
-            <span [title]="column.name" style="font-weight: bold; color: #000000;">{{column.name}}</span>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            [ngStyle]="{
+              width: column.width ? column.width : ' auto',
+              'text-align': column.align ? column.align : ''
+            }"
+          >
+            <span
+              [title]="column.name"
+              style="font-weight: bold; color: #000000"
+              >{{ column.name }}</span
+            >
           </th>
         </ng-template>
         <ng-template #sortTableHeader>
-          <th mat-header-cell *matHeaderCellDef
-            [ngStyle]="{width: column.width ?column.width:' auto','text-align': column.align ?column.align:'' }">
-            <span [title]="column.name" style="font-weight: bold; color: #000000;">{{column.name}}</span>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            [ngStyle]="{
+              width: column.width ? column.width : ' auto',
+              'text-align': column.align ? column.align : ''
+            }"
+          >
+            <span
+              [title]="column.name"
+              style="font-weight: bold; color: #000000"
+              >{{ column.name }}</span
+            >
           </th>
         </ng-template>
 
-
-        <td mat-cell *matCellDef="let element"
-          [ngStyle]="{width: column.width ?column.width:'auto', 'white-space' :column.ellipsis ? 'nowrap': '','overflow' :column.ellipsis ? 'hidden': '','text-overflow' :column.ellipsis ? 'ellipsis': '', 'text-align': column.align ?column.align:''}"
-          placement="top">
+        <td
+          mat-cell
+          *matCellDef="let element"
+          [ngStyle]="{
+            width: column.width ? column.width : 'auto',
+            'white-space': column.ellipsis ? 'nowrap' : '',
+            overflow: column.ellipsis ? 'hidden' : '',
+            'text-overflow': column.ellipsis ? 'ellipsis' : '',
+            'text-align': column.align ? column.align : ''
+          }"
+          placement="top"
+        >
           <ng-template #popTemplate>
-            <div [innerHtml]="element[column.id]?.tooltip" placement="top"></div>
+            <div
+              [innerHtml]="element[column.id]?.tooltip"
+              placement="top"
+            ></div>
           </ng-template>
 
-          <div *ngIf="element[column.id]?.value" [innerHTML]="element[column.id]?.value"
-            [ngbTooltip]="column.tooltip ? popTemplate : '' " [title]="element[column.id]?.value" placement="left">
-          </div>
-
+          <div
+            *ngIf="element[column.id]?.value"
+            [innerHTML]="element[column.id]?.value"
+            [ngbTooltip]="column.tooltip ? popTemplate : ''"
+            [title]="element[column.id]?.value"
+            placement="left"
+          ></div>
         </td>
       </ng-container>
 
       <ng-template #action>
-        <ng-container *ngIf="column.id=='action';else select">
-          <th mat-header-cell *matHeaderCellDef [ngStyle]="{width: column.width ?column.width:'auto'}"> </th>
-          <td mat-cell *matCellDef="let element" class="text-center" style="width: 10%;">
-            <ng-container *ngTemplateOutlet='actionRow;context:{element:element}'>
+        <ng-container *ngIf="column.id == 'action'; else select">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            [ngStyle]="{ width: column.width ? column.width : 'auto' }"
+          ></th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            class="text-center"
+            style="width: 10%"
+          >
+            <ng-container
+              *ngTemplateOutlet="actionRow; context: { element: element }"
+            >
             </ng-container>
           </td>
         </ng-container>
       </ng-template>
 
       <ng-template #select>
-        <th mat-header-cell *matHeaderCellDef style="padding:0;width: 7%; text-align: center;"
-          class="checkbox__base-table">
-          <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-            [indeterminate]="selection.hasValue() && !isAllSelected()">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          style="padding: 0; width: 7%; text-align: center"
+          class="checkbox__base-table"
+        >
+          <mat-checkbox
+            (change)="$event ? masterToggle() : null"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()"
+          >
           </mat-checkbox>
         </th>
-        <td mat-cell *matCellDef="let element" style="padding:0;width: 7%; text-align: center;"
-          class="checkbox__base-table">
-          <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? onChangeCheckboxTD(element) : null"
-            [checked]="selection.isSelected(element)">
+        <td
+          mat-cell
+          *matCellDef="let element"
+          style="padding: 0; width: 7%; text-align: center"
+          class="checkbox__base-table"
+        >
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="$event ? onChangeCheckboxTD(element) : null"
+            [checked]="selection.isSelected(element)"
+          >
           </mat-checkbox>
         </td>
       </ng-template>
-
     </ng-container>
 
-
-
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons aria-label="Select page of periodic elements">
+  <mat-paginator
+    [pageSizeOptions]="[20, 50, 100]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
   </mat-paginator>
 </div>

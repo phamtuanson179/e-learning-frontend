@@ -16,9 +16,9 @@
           >
             <span
               triggerModal
-              (click)="onClickEdit(element?.id, element?.detailData)"
+              (click)="on_click_edit(element?.id, element?.detail_data)"
             >
-              <button class="btn mr-2 p-0">
+              <button class="btn bg-white p-1" style="margin-right: 0.5rem">
                 <i class="fa fa-pencil text-success fa-lg"></i>
               </button>
             </span>
@@ -26,152 +26,82 @@
             <div bodyModal>
               <div class="modal-body">
                 <form
-                  [formGroup]="device_form"
-                  autocomplete="false"
+                  nz-form
+                  [formGroup]="subject_form"
                   id="edit-form"
-                  (ngSubmit)="onSubmitEditForm()"
+                  (ngSubmit)="on_submit_edit_form()"
                 >
-                  <mat-form-field class="w-100 m-0" appearance="fill">
-                    <mat-label class="m-0">Tên thiết bị</mat-label>
-                    <input
-                      matInput
-                      formControlName="name"
-                      class="m-0"
-                      required
-                    />
-                    <mat-error
-                      *ngIf="
-                        device_form.status == 'INVALID' &&
-                        device_form.touched &&
-                        device_form.controls.name.errors?.required
-                      "
-                    >
-                      Trường này bắt buộc!
-                    </mat-error>
-                  </mat-form-field>
-
                   <div class="row">
-                    <mat-form-field class="col-8" appearance="fill">
-                      <mat-label>Địa chỉ ip</mat-label>
-                      <input matInput formControlName="ip_address" required />
-                      <mat-error
-                        *ngIf="
-                          device_form.status == 'INVALID' &&
-                          device_form.touched &&
-                          device_form.controls.ip_address.errors?.required &&
-                          !device_form.controls.ip_address.errors?.checkIP
-                        "
-                      >
-                        Trường này bắt buộc!
-                      </mat-error>
-                      <mat-error
-                        *ngIf="
-                          device_form.status == 'INVALID' &&
-                          device_form.touched &&
-                          device_form.controls.ip_address.errors?.required &&
-                          device_form.controls.ip_address.errors?.checkIP
-                        "
-                      >
-                        Trường này bắt buộc!
-                      </mat-error>
-                      <mat-error
-                        *ngIf="
-                          device_form.status == 'INVALID' &&
-                          device_form.touched &&
-                          device_form.controls.ip_address.errors?.checkIP &&
-                          !device_form.controls.ip_address.errors?.required
-                        "
-                      >
-                        Chưa đúng định dạng!
-                      </mat-error>
-                    </mat-form-field>
+                    <div class="col-6">
+                      <mat-form-field class="w-100" appearance="fill">
+                        <mat-label>Tên môn học</mat-label>
+                        <input matInput formControlName="name" />
+                      </mat-form-field>
+                      <mat-form-field class="w-100" appearance="fill">
+                        <mat-label>Mã môn học</mat-label>
+                        <input matInput formControlName="alias" />
+                      </mat-form-field>
+                      <mat-form-field class="w-100" appearance="fill">
+                        <mat-label>Thời gian thi</mat-label>
+                        <input matInput formControlName="time" />
+                      </mat-form-field>
+                    </div>
 
-                    <mat-form-field class="col-4" appearance="fill">
-                      <mat-label>Port</mat-label>
-                      <input
-                        matInput
-                        formControlName="port"
-                        required
-                        type="number"
-                      />
-                      <mat-error
-                        *ngIf="
-                          device_form.status == 'INVALID' &&
-                          device_form.touched &&
-                          device_form.controls.port.errors?.required
-                        "
+                    <div class="col-6">
+                      <app-stp-upload-image
+                        [width]="'180px'"
+                        [height]="'180px'"
+                        [image]="subject_form?.value?.avatar"
+                        (imageData)="change_avatar($event)"
                       >
-                        Trường này bắt buộc!
-                      </mat-error>
-                    </mat-form-field>
+                      </app-stp-upload-image>
+                    </div>
+
+                    <div class="col-6">
+                      <mat-form-field class="w-100" appearance="fill">
+                        <mat-label>Số câu hỏi</mat-label>
+                        <input matInput formControlName="amount_question" />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                      <mat-form-field class="w-100" appearance="fill">
+                        <mat-label>Số câu đúng tối thiểu</mat-label>
+                        <input
+                          matInput
+                          formControlName="min_correct_question_to_pass"
+                        />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-12">
+                      <mat-form-field class="w-100" appearance="fill">
+                        <mat-label> Mô tả</mat-label>
+                        <textarea
+                          matInput
+                          formControlName="description"
+                        ></textarea>
+                      </mat-form-field>
+                    </div>
                   </div>
-
-                  <div class="row">
-                    <mat-form-field class="col-6" appearance="fill">
-                      <mat-label>Loại thiết bị</mat-label>
-                      <mat-select formControlName="type" required>
-                        <mat-option [value]="DEVICE_MODEL.IFDC">
-                          IFDC
-                        </mat-option>
-                        <mat-option [value]="DEVICE_MODEL.ADAM">
-                          ADAM
-                        </mat-option>
-                        <mat-option [value]="DEVICE_MODEL.AI_DEVICE">
-                          AI DEVICE
-                        </mat-option>
-                        <mat-option [value]="DEVICE_MODEL.ZKTECO">
-                          ZKTECO
-                        </mat-option>
-                      </mat-select>
-                      <mat-error
-                        *ngIf="
-                          device_form.status == 'INVALID' &&
-                          device_form.touched &&
-                          device_form.controls.type.errors?.required
-                        "
-                      >
-                        Trường này bắt buộc!
-                      </mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field class="col-6" appearance="fill">
-                      <mat-label>Model</mat-label>
-                      <input matInput formControlName="model" />
-                    </mat-form-field>
-                  </div>
-
-                  <mat-form-field class="w-100" appearance="fill">
-                    <mat-label>Tài khoản</mat-label>
-                    <input matInput formControlName="username" />
-                  </mat-form-field>
-
-                  <mat-form-field class="w-100" appearance="fill">
-                    <mat-label>Mật khẩu</mat-label>
-                    <input matInput formControlName="password" />
-                  </mat-form-field>
                 </form>
               </div>
 
               <div class="modal-footer">
                 <button
-                  class="btn btn-dark font-weight-bold"
-                  (click)="closeEditModal()"
+                  class="btn btn-dark font-weight-bold m-0"
+                  (click)="is_close_edit_modal.next(true)"
                 >
                   Huỷ
                 </button>
 
                 <span
                   [ngbTooltip]="
-                    !device_form.valid
-                      ? 'Vui lòng kiểm tra lại các trường thông tin'
-                      : ''
+                    true ? 'Vui lòng kiểm tra lại các trường thông tin' : ''
                   "
                 >
                   <button
                     type="submit"
                     form="edit-form"
-                    class="btn btn-primary font-weight-bold"
-                    [disabled]="!device_form.valid"
+                    class="btn btn-primary font-weight-bold m-0"
                   >
                     Lưu
                   </button>
@@ -185,7 +115,7 @@
             [placement]="'left'"
           >
             <span triggerPopover>
-              <button class="btn mr-2 pl-1 pr-1">
+              <button class="btn bg-white p-1">
                 <i class="fa fa-trash-o fa-lg text-danger"></i>
               </button>
             </span>
@@ -225,7 +155,7 @@
                   <button
                     type="button"
                     class="btn btn-danger font-weight-bold text-light"
-                    (click)="disableData(element.id)"
+                    (click)="delete(element.id)"
                   >
                     Xác nhận
                   </button>
@@ -233,8 +163,8 @@
               </div>
             </div>
           </app-stp-base-popover>
-        </ng-template></app-stp-base-table
-      >
+        </ng-template>
+      </app-stp-base-table>
     </div>
   </div>
 </div>

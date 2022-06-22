@@ -1,15 +1,14 @@
 {
   "subject": [
     {
-      "id": "1",
-      "name": "Toan cao cap 1",
+      "name": "Toan cao cap ",
       "alias": "TCC1",
       "time": 60,
       "amount_question": 10,
       "min_correct_question_to_pass": 6,
       "description": "Day la mon toan cao cap 1",
-      "generate_exam_type": "hello",
-      "avatar": ""
+      "avatar": "",
+      "id": "1"
     },
     {
       "id": "2",
@@ -34,6 +33,14 @@
       "avatar": ""
     }
   ],
-  "comments": [{ "id": 1, "body": "some comment", "postId": 1 }],
-  "profile": { "name": "typicode" }
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
 }

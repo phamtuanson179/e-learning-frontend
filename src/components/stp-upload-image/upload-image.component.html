@@ -1,14 +1,31 @@
 <div class="container">
-  <div class="picture-container"
-    [ngStyle]="{width: width, height: height, 'border-radius': type == 'AVATAR' ? '50%':'8px' }">
-    <div class="picture"
-      [ngStyle]="{width:image?'100%':'25%', height: image?'100%':'25%', 'border-radius': type == 'AVATAR' ? '50%':'8px'}">
-      <img [src]="image?image:'assets/images/plus_icon.png'" class="picture-src" id="wizardPicturePreview">
-      <!-- <div class="picture-src" id="wizardPicturePreview" title=""
-        [ngStyle]="{'background-image':'url('+image?image:'assets/plus_icon.png'+')', 'background-repeat':'no-repeat','background-size':'contain'}"
-        [style.background-image]="'url(' + image?image:'assets/plus_icon.png' + ')'">
-      </div> -->
-      <input type="file" id="wizard-picture" class="" (change)="uploadImage($event)">
+  <div
+    class="picture-container"
+    [ngStyle]="{
+      width: width,
+      height: height,
+      'border-radius': type == 'AVATAR' ? '50%' : '8px'
+    }"
+  >
+    <div
+      class="picture"
+      [ngStyle]="{
+        width: image ? '100%' : '25%',
+        height: image ? '100%' : '25%',
+        'border-radius': type == 'AVATAR' ? '50%' : '8px'
+      }"
+    >
+      <img
+        [src]="image ? image : '../../assets/img/spt_img/plus_icon.png'"
+        class="picture-src"
+        id="wizardPicturePreview"
+      />
+      <input
+        type="file"
+        id="wizard-picture"
+        class=""
+        (change)="uploadImage($event)"
+      />
     </div>
   </div>
 </div>

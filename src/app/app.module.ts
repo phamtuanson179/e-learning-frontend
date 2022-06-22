@@ -30,6 +30,8 @@ import { TableComponent } from "components/stp-table/table.component";
 import { TimeFilterComponent } from "components/stp-time-filter/time-filter.component";
 import { ToastsContainer } from "components/stp-toast/toast-container.component";
 import { ModalModule } from "ngx-bootstrap/modal";
+import { MatInputModule } from "@angular/material/input";
+import { UploadImageComponent } from "components/stp-upload-image/upload-image.component";
 
 registerLocaleData(vi);
 
@@ -46,6 +48,7 @@ registerLocaleData(vi);
     TableComponent,
     TimeFilterComponent,
     ToastsContainer,
+    UploadImageComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -63,6 +66,7 @@ registerLocaleData(vi);
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    MatInputModule,
     ModalModule.forRoot(),
   ],
   providers: [{ provide: NZ_I18N, useValue: vi_VN }],
