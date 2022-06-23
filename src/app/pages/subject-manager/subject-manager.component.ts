@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { STPColumnTable } from "app/model/front-end";
 import { SubjectSPT } from "app/model/subject";
 import { SubjectService } from "app/service/api-service/subject.service";
+import { ToastService } from "components/stp-toast/toast-service";
 import { Subject } from "rxjs";
 
 @Component({
@@ -27,7 +28,11 @@ export class SubjectManagerComponent implements OnInit {
   table_columns: STPColumnTable[] = TABLE_COLUMNS;
   is_loading_data_again = new Subject<Boolean>();
   is_close_edit_modal = new Subject<Boolean>();
-  constructor(private subject_service: SubjectService) {}
+  is_close_add_modal = new Subject<Boolean>();
+  constructor(
+    private subject_service: SubjectService,
+    private toast_service: ToastService
+  ) {}
   ngOnInit(): void {
     this.subject_form = new FormGroup({
       name: new FormControl(""),
@@ -103,6 +108,10 @@ export class SubjectManagerComponent implements OnInit {
     });
   }
 
+  on_click_add() {
+    this.subject_form.reset();
+  }
+
   change_avatar(e: string) {
     this.subject_form.patchValue({
       avatar: e,
@@ -116,11 +125,34 @@ export class SubjectManagerComponent implements OnInit {
       id: this.edit_element_id,
     };
     this.subject_service.update(data, params).subscribe((res) => {
-      console.log({ res });
+      this.is_close_edit_modal.next(true);
+      this.is_loading_data_again.next(true);
+      this.toast_service.show("Chỉnh sửa môn học thành công!", {
+        classname: "bg-success text-light",
+      });
     });
   }
 
-  delete(id: string) {}
+  on_submit_add_form() {}
+
+  delete(id: string) {
+    const params = {
+      id: id,
+    };
+    this.subject_service.delete(params).subscribe(
+      (res) => {
+        this.toast_service.show("Xóa môn học thành công!", {
+          classname: "bg-success text-light",
+        });
+        this.is_loading_data_again.next(true);
+      },
+      (err) => {
+        this.toast_service.show("Xóa môn học thất bại!", {
+          classname: "bg-danger text-light",
+        });
+      }
+    );
+  }
 }
 
 export const TABLE_COLUMNS: STPColumnTable[] = [

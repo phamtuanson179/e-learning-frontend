@@ -1,7 +1,106 @@
 <div class="col-md-12">
   <div class="card">
-    <div class="card-header">
-      <h4 class="card-title">Quản lý môn học</h4>
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h4 class="card-title m-0">Quản lý môn học</h4>
+
+      <div class="d-flex align-items-center"></div>
+      <app-stp-base-modal
+        [isClose]="is_close_add_modal"
+        [title]="title.add_modal"
+      >
+        <span triggerModal>
+          <button
+            class="btn bg-primary m -0"
+            style="margin-right: 0.5rem"
+            (click)="on_click_add()"
+          >
+            <i class="fa-solid fa-plus text-white"></i>
+          </button>
+        </span>
+
+        <div bodyModal>
+          <div class="modal-body">
+            <form
+              nz-form
+              [formGroup]="subject_form"
+              id="edit-form"
+              (ngSubmit)="on_submit_add_form()"
+            >
+              <div class="row">
+                <div class="col-6">
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Tên môn học</mat-label>
+                    <input matInput formControlName="name" />
+                  </mat-form-field>
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Mã môn học</mat-label>
+                    <input matInput formControlName="alias" />
+                  </mat-form-field>
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Thời gian thi</mat-label>
+                    <input matInput formControlName="time" />
+                  </mat-form-field>
+                </div>
+
+                <div class="col-6">
+                  <app-stp-upload-image
+                    [width]="'180px'"
+                    [height]="'180px'"
+                    [image]="subject_form?.value?.avatar"
+                    (imageData)="change_avatar($event)"
+                  >
+                  </app-stp-upload-image>
+                </div>
+
+                <div class="col-6">
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Số câu hỏi</mat-label>
+                    <input matInput formControlName="amount_question" />
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label>Số câu đúng tối thiểu</mat-label>
+                    <input
+                      matInput
+                      formControlName="min_correct_question_to_pass"
+                    />
+                  </mat-form-field>
+                </div>
+                <div class="col-12">
+                  <mat-form-field class="w-100" appearance="fill">
+                    <mat-label> Mô tả</mat-label>
+                    <textarea matInput formControlName="description"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              class="btn btn-dark font-weight-bold m-0"
+              (click)="is_close_add_modal.next(true)"
+            >
+              Huỷ
+            </button>
+
+            <span
+              [ngbTooltip]="
+                true ? 'Vui lòng kiểm tra lại các trường thông tin' : ''
+              "
+            >
+              <button
+                type="submit"
+                form="add-form"
+                class="btn btn-primary font-weight-bold m-0"
+              >
+                Lưu
+              </button>
+            </span>
+          </div>
+        </div>
+      </app-stp-base-modal>
     </div>
     <div class="card-body">
       <app-stp-base-table

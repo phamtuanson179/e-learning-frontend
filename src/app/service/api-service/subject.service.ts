@@ -29,13 +29,13 @@ export class SubjectService {
 
   update(data: any, params: any): Observable<any> {
     return this.httpClient
-      .put("http://localhost:3000/subject", data, { params })
+      .put("http://localhost:3000/subject/" + params?.id, data)
       .pipe(map((res) => res));
   }
 
-  delete(params: any, data: any): Observable<any> {
+  delete(params: any): Observable<any> {
     return this.httpClient
-      .delete("http://localhost:3000/subject", { params: params })
+      .delete("http://localhost:3000/subject/" + params?.id)
       .pipe(map((res) => res));
   }
 }

@@ -6,20 +6,9 @@
       "time": 60,
       "amount_question": 10,
       "min_correct_question_to_pass": 6,
-      "description": "Day la mon toan cao cap 1",
+      "description": "Day la mon toan cao cap ",
       "avatar": "",
       "id": "1"
-    },
-    {
-      "id": "2",
-      "name": "Mang may tinh",
-      "alias": "MMT",
-      "time": 60,
-      "amount_question": 10,
-      "min_correct_question_to_pass": 6,
-      "description": "Day la mon mang may tinh",
-      "generate_exam_type": "hello",
-      "avatar": ""
     },
     {
       "id": "3",
