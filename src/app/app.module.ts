@@ -32,6 +32,7 @@ import { ToastsContainer } from "components/stp-toast/toast-container.component"
 import { ModalModule } from "ngx-bootstrap/modal";
 import { MatInputModule } from "@angular/material/input";
 import { UploadImageComponent } from "components/stp-upload-image/upload-image.component";
+import { UserManagerComponent } from "./pages/user-manager/user-manager.component";
 
 registerLocaleData(vi);
 
@@ -49,6 +50,7 @@ registerLocaleData(vi);
     TimeFilterComponent,
     ToastsContainer,
     UploadImageComponent,
+    UserManagerComponent,
   ],
   imports: [
     BrowserAnimationsModule,

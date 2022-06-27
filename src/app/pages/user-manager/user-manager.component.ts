@@ -4,90 +4,104 @@ import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { STPColumnTable } from "app/model/front-end";
 import { SubjectSPT } from "app/model/subject";
+import { User } from "app/model/user";
 import { SubjectService } from "app/service/api-service/subject.service";
+import { UserService } from "app/service/api-service/user.service";
 import { ToastService } from "components/stp-toast/toast-service";
 import { Subject } from "rxjs";
+import { list_roles } from "utils/customArray";
+import { convert_role_be_to_fe } from "utils/customString";
 
 import { v4 } from "uuid";
-
 @Component({
-  selector: "app-subject-manager",
-  templateUrl: "./subject-manager.component.html",
-  styleUrls: ["./subject-manager.component.scss"],
+  selector: "app-user-manager",
+  templateUrl: "./user-manager.component.html",
+  styleUrls: ["./user-manager.component.scss"],
 })
-export class SubjectManagerComponent implements OnInit {
+export class UserManagerComponent implements OnInit {
   public title = {
-    title_page: "Quản lý môn học",
-    add_modal: "Thêm môn học",
-    edit_modal: "Cập nhật môn học",
-    delete_popover: "Xóa môn học",
+    title_page: "Quản lý người dùng",
+    add_modal: "Thêm người dùng",
+    edit_modal: "Cập nhật thông tin người dùng",
+    delete_popover: "Xóa người dùng",
   };
 
-  subject_form: FormGroup;
+  user_form: FormGroup;
   subject_datas: SubjectSPT[];
+  user_datas: User[];
   edit_element_id: string;
-  subject_datas_table = new MatTableDataSource<any>();
+  user_datas_table = new MatTableDataSource<any>();
   table_columns: STPColumnTable[] = TABLE_COLUMNS;
   is_loading_data_again = new Subject<Boolean>();
   is_close_edit_modal = new Subject<Boolean>();
   is_close_add_modal = new Subject<Boolean>();
+  list_roles: any[];
   constructor(
+    private user_service: UserService,
     private subject_service: SubjectService,
     private toast_service: ToastService
   ) {}
   ngOnInit(): void {
-    this.subject_form = new FormGroup({
-      name: new FormControl(""),
-      alias: new FormControl(""),
-      time: new FormControl(),
-      amount_question: new FormControl(),
-      min_correct_question_to_pass: new FormControl(""),
-      description: new FormControl(""),
+    this.user_form = new FormGroup({
+      username: new FormControl(""),
+      fullname: new FormControl(""),
       avatar: new FormControl(""),
+      password: new FormControl(),
+      dob: new FormControl(),
+      role: new FormControl(),
+      email: new FormControl(),
+      list_subjects_id: new FormControl(),
     });
+
+    this.get_all_subject();
 
     this.is_loading_data_again.subscribe((res) => {
       if (res) {
-        this.get_all_subject();
+        this.get_all_user();
       }
     });
 
     this.is_loading_data_again.next(true);
+
+    this.list_roles = list_roles();
   }
 
   get_all_subject() {
     this.subject_service.get_all().subscribe((res) => {
       this.subject_datas = res;
-      this.subject_datas_table.data = this.convert_subject_data_to_table_data(
-        this.subject_datas
+    });
+  }
+
+  get_all_user() {
+    this.user_service.get_all().subscribe((res) => {
+      this.user_datas = res;
+      this.user_datas_table.data = this.convert_user_data_to_table_data(
+        this.user_datas
       );
     });
   }
 
-  convert_subject_data_to_table_data(data: SubjectSPT[]) {
+  convert_user_data_to_table_data(data: User[]) {
     console.log(data);
     return data?.map((item, idx) => {
       const new_item = {
-        idx: {
-          value: idx + 1,
+        username: {
+          value: item?.username,
         },
-        name: {
-          value: item?.name,
+        email: {
+          value: item?.email,
         },
-        alias: {
-          value: item?.alias,
+        role: {
+          value: convert_role_be_to_fe(item?.role),
         },
-        time: {
-          value: item?.time,
+        fullname: {
+          value: item?.fullname,
         },
-        amount_question: {
-          value: item?.amount_question,
+        dob: {
+          value: item?.dob,
         },
-        min_correct_question_to_pass: {
-          value: item?.min_correct_question_to_pass,
-        },
-        description: {
-          value: item?.description,
+        subjects: {
+          value: item?.dob,
         },
         id: item?.id,
         detail_data: item,
@@ -96,10 +110,14 @@ export class SubjectManagerComponent implements OnInit {
     });
   }
 
+  render_list_role() {
+    return list_roles();
+  }
+
   on_click_edit(id: string, element: SubjectSPT) {
     console.log({ element });
     this.edit_element_id = id;
-    this.subject_form.patchValue({
+    this.user_form.patchValue({
       name: element.name,
       alias: element.alias,
       min_correct_question_to_pass: element.min_correct_question_to_pass,
@@ -111,38 +129,38 @@ export class SubjectManagerComponent implements OnInit {
   }
 
   on_click_add() {
-    this.subject_form.reset();
+    this.user_form.reset();
   }
 
   change_avatar(e: string) {
-    this.subject_form.patchValue({
+    this.user_form.patchValue({
       avatar: e,
     });
   }
 
   on_submit_edit_form() {
-    let data = this.subject_form.value;
+    let data = this.user_form.value;
     data = { ...data, id: this.edit_element_id };
     const params = {
       id: this.edit_element_id,
     };
-    this.subject_service.update(data, params).subscribe((res) => {
+    this.user_service.update(data, params).subscribe((res) => {
       this.is_close_edit_modal.next(true);
       this.is_loading_data_again.next(true);
-      this.toast_service.show("Chỉnh sửa môn học thành công!", {
+      this.toast_service.show("Chỉnh sửa thông tin người dùng thành công!", {
         classname: "bg-success text-light",
       });
     });
   }
 
   on_submit_add_form() {
-    let data = this.subject_form.value;
+    let data = this.user_form.value;
     data.id = v4();
-    this.subject_service.create(data).subscribe(
+    this.user_service.create(data).subscribe(
       (res) => {
         this.is_close_add_modal.next(true);
         this.is_loading_data_again.next(true);
-        this.toast_service.show("Thêm môn học thành công!", {
+        this.toast_service.show("Thêm người dùng thành công!", {
           classname: "bg-success text-light",
         });
       },
@@ -176,40 +194,34 @@ export class SubjectManagerComponent implements OnInit {
 
 export const TABLE_COLUMNS: STPColumnTable[] = [
   {
-    id: "idx",
-    name: "STT",
-    width: "5%",
-  },
-  {
-    id: "name",
-    name: "Tên môn học",
+    id: "fullname",
+    name: "Tên người dùng",
     width: "15%",
   },
   {
-    id: "alias",
-    name: "Mã môn học",
+    id: "username",
+    name: "Tên đăng nhập",
+    width: "15%",
+  },
+  {
+    id: "email",
+    name: "Email",
     width: "10%",
   },
   {
-    id: "time",
-    name: "Thời gian thi",
+    id: "dob",
+    name: "Ngày sinh",
     width: "10%",
   },
   {
-    id: "amount_question",
-    name: "Số câu hỏi",
+    id: "subjects",
+    name: "Môn học",
     width: "10%",
   },
   {
-    id: "min_correct_question_to_pass",
-    name: "Số câu đúng tối thiểu",
+    id: "role",
+    name: "Vai trò",
     width: "10%",
-  },
-  {
-    id: "description",
-    name: "Mô tả",
-    width: "30%",
-    ellipsis: true,
   },
   {
     id: "action",

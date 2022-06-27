@@ -7,9 +7,9 @@ export interface UserCreate {
   role: string;
   fullname: string;
   dob: string;
-  url_avatar: string;
+  avatar: string;
   token?: string;
-  subjects?: SubjectSPT[];
+  list_subjects_id?: SubjectSPT[];
 }
 
 export interface User extends UserCreate {

@@ -32,14 +32,32 @@
       "id": "4116f3e6-c242-420a-8116-07de4714cc01"
     }
   ],
-  "comments": [
+  "user": [
     {
       "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "username": "admin",
+      "password": "",
+      "email": "admin@gmail.com",
+      "role": "ADMIN",
+      "fullname": "admin",
+      "dob": "1231231231",
+      "url_avatar": "",
+      "token": "",
+      "list_subjects_id": []
+    },
+    {
+      "username": "admin1",
+      "fullname": null,
+      "avatar": null,
+      "password": "admin1",
+      "dob": null,
+      "role": "TEACHER",
+      "email": null,
+      "list_subjects_id": [
+        "1",
+        "3"
+      ],
+      "id": "ab1472e5-023a-41cf-ba61-d0f58a4f5a40"
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }
