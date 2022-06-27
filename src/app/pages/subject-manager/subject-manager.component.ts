@@ -8,6 +8,8 @@ import { SubjectService } from "app/service/api-service/subject.service";
 import { ToastService } from "components/stp-toast/toast-service";
 import { Subject } from "rxjs";
 
+import { v4 } from "uuid";
+
 @Component({
   selector: "app-subject-manager",
   templateUrl: "./subject-manager.component.html",
@@ -133,7 +135,24 @@ export class SubjectManagerComponent implements OnInit {
     });
   }
 
-  on_submit_add_form() {}
+  on_submit_add_form() {
+    let data = this.subject_form.value;
+    data.id = v4();
+    this.subject_service.create(data).subscribe(
+      (res) => {
+        this.is_close_add_modal.next(true);
+        this.is_loading_data_again.next(true);
+        this.toast_service.show("Thêm môn học thành công!", {
+          classname: "bg-success text-light",
+        });
+      },
+      (err) => {
+        this.toast_service.show("Xóa môn học thất bại!", {
+          classname: "bg-danger text-light",
+        });
+      }
+    );
+  }
 
   delete(id: string) {
     const params = {
