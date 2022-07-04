@@ -9,8 +9,10 @@ import { SubjectService } from "app/service/api-service/subject.service";
 import { UserService } from "app/service/api-service/user.service";
 import { ToastService } from "components/stp-toast/toast-service";
 import { Subject } from "rxjs";
+import { convertTimestampToDateString } from "utils/convertTime";
 import { list_roles } from "utils/customArray";
 import { convert_role_be_to_fe } from "utils/customString";
+import { search_subject_by_id } from "utils/general";
 
 import { v4 } from "uuid";
 @Component({
@@ -62,7 +64,6 @@ export class UserManagerComponent implements OnInit {
     });
 
     this.is_loading_data_again.next(true);
-
     this.list_roles = list_roles();
   }
 
@@ -98,10 +99,12 @@ export class UserManagerComponent implements OnInit {
           value: item?.fullname,
         },
         dob: {
-          value: item?.dob,
+          value: convertTimestampToDateString(item?.dob),
         },
         subjects: {
-          value: item?.dob,
+          value: this.render_subject(item?.list_subjects_id)
+            .map((item) => item?.name)
+            .join(", "),
         },
         id: item?.id,
         detail_data: item,
@@ -114,18 +117,27 @@ export class UserManagerComponent implements OnInit {
     return list_roles();
   }
 
-  on_click_edit(id: string, element: SubjectSPT) {
+  render_subject(list_subject_id: string[]) {
+    return list_subject_id.map((item) =>
+      search_subject_by_id(this.subject_datas, item)
+    );
+  }
+
+  on_click_edit(id: string, element: User) {
+    this.user_form.reset();
     console.log({ element });
     this.edit_element_id = id;
     this.user_form.patchValue({
-      name: element.name,
-      alias: element.alias,
-      min_correct_question_to_pass: element.min_correct_question_to_pass,
-      amount_question: element.amount_question,
-      description: element.description,
-      time: element.time,
-      avatar: element.avatar,
+      username: element?.username,
+      password: element?.password,
+      fullname: element?.fullname,
+      dob: new Date(element?.dob),
+      role: element?.role,
+      avatar: element?.avatar,
+      list_subjects_id: element?.list_subjects_id,
+      email: element?.email,
     });
+    console.log(this.user_form?.value);
   }
 
   on_click_add() {
@@ -156,6 +168,7 @@ export class UserManagerComponent implements OnInit {
   on_submit_add_form() {
     let data = this.user_form.value;
     data.id = v4();
+    data.dob = data.dob.getTime();
     this.user_service.create(data).subscribe(
       (res) => {
         this.is_close_add_modal.next(true);
@@ -173,18 +186,19 @@ export class UserManagerComponent implements OnInit {
   }
 
   delete(id: string) {
+    console.log({ id });
     const params = {
       id: id,
     };
-    this.subject_service.delete(params).subscribe(
+    this.user_service.delete(params).subscribe(
       (res) => {
-        this.toast_service.show("Xóa môn học thành công!", {
+        this.toast_service.show("Xóa người dùng thành công!", {
           classname: "bg-success text-light",
         });
         this.is_loading_data_again.next(true);
       },
       (err) => {
-        this.toast_service.show("Xóa môn học thất bại!", {
+        this.toast_service.show("Xóa người dùng thất bại!", {
           classname: "bg-danger text-light",
         });
       }

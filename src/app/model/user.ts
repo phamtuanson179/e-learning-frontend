@@ -6,10 +6,10 @@ export interface UserCreate {
   email: string;
   role: string;
   fullname: string;
-  dob: string;
+  dob: number;
   avatar: string;
   token?: string;
-  list_subjects_id?: SubjectSPT[];
+  list_subjects_id?: string[];
 }
 
 export interface User extends UserCreate {

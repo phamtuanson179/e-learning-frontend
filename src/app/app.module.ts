@@ -33,6 +33,7 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { MatInputModule } from "@angular/material/input";
 import { UploadImageComponent } from "components/stp-upload-image/upload-image.component";
 import { UserManagerComponent } from "./pages/user-manager/user-manager.component";
+import { PersonalInformationComponent } from "./pages/personal-information/personal-information.component";
 
 registerLocaleData(vi);
 
@@ -51,6 +52,7 @@ registerLocaleData(vi);
     ToastsContainer,
     UploadImageComponent,
     UserManagerComponent,
+    PersonalInformationComponent,
   ],
   imports: [
     BrowserAnimationsModule,
