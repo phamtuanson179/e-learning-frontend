@@ -10,26 +10,22 @@
                     </div>
 
                 </div>
-                <form action="#" class="signin-form">
+                <form #loginForm="ngForm" id="login-form" (ngSubmit)="onSubmit(loginForm)">
                     <div class="form-group mb-3">
                         <label class="label" for="name">Tên đăng nhập</label>
-                        <input type="text" class="form-control" placeholder="Tên đăng nhập" required>
+                        <input type="text" class="form-control" placeholder="Tên đăng nhập" name="username" ngModel
+                            required>
                     </div>
                     <div class="form-group mb-3">
                         <label class="label" for="password">Mật khẩu</label>
-                        <input type="password" class="form-control" placeholder="Mật khẩu" required>
+                        <input type="password" class="form-control" placeholder="Mật khẩu" name="password" ngModel
+                            required>
                     </div>
                     <div class="form-group">
                         <button type="submit" class="form-control btn btn-primary rounded submit px-3">Đăng
                             nhập</button>
                     </div>
                     <div class="form-group d-md-flex">
-                        <!-- <div class="w-50 text-left">
-                            <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
-                                <input type="checkbox" checked>
-                                <span class="checkmark"></span>
-                            </label>
-                        </div> -->
                         <a href="#">Quên mật khẩu?</a>
                     </div>
                 </form>
